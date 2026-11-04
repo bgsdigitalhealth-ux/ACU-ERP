@@ -44,6 +44,7 @@ export const UniversityAdminLayout: React.FC<UniversityAdminLayoutProps> = ({ on
   const [coeTab, setCoeTab] = useState('dashboard');
   const [regTab, setRegTab] = useState('dashboard');
 
+  const [vcSidebarCollapsed, setVcSidebarCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
 
   return (
@@ -74,43 +75,61 @@ export const UniversityAdminLayout: React.FC<UniversityAdminLayoutProps> = ({ on
 
       {/* Role 2: Vice-Chancellor */}
       {activeRole === 'vice-chancellor' && (
-        <div className="flex-1 flex flex-col min-h-0">
+        <div className="min-h-screen bg-[#f4f6fc] text-slate-800 flex flex-col font-sans">
           <VcHeader
             onLogout={onLogout}
-            onToggleSidebar={() => setMobileOpen(!mobileOpen)}
+            onToggleSidebar={() => setVcSidebarCollapsed(!vcSidebarCollapsed)}
+            onNavigate={(tab) => setVcTab(tab)}
           />
-          <div className="flex-1 flex min-w-0">
+          <div className="flex flex-1 pt-14 sm:pt-16">
             <VcSidebar
               activeTab={vcTab}
               setActiveTab={(tab) => {
                 setVcTab(tab);
                 setMobileOpen(false);
               }}
+              sidebarCollapsed={vcSidebarCollapsed}
               isMobileOpen={mobileOpen}
               setIsMobileOpen={setMobileOpen}
             />
-            <main className="flex-1 min-w-0 overflow-y-auto">
-              {vcTab === 'dashboard' && <VcDashboard onNavigate={(tab) => setVcTab(tab)} />}
-              {vcTab === 'univ-exam-status' && <VcUniversityExamStatusPage />}
-              {vcTab === 'college-monitoring' && <VcCollegeMonitoringPage />}
-              {vcTab === 'exam-readiness' && <VcExamReadinessPage />}
-              {vcTab === 'exam-regulations' && <VcExamRegulationsPage />}
-              {vcTab === 'policies-guidelines' && <VcPoliciesGuidelinesPage />}
-              {vcTab === 'academic-calendar' && <VcAcademicCalendarPage />}
-              {vcTab === 'scheme-reforms' && <VcSchemeReformsPage />}
-              {vcTab === 'exceptional-cases' && <VcExceptionalCasesPage />}
-              {vcTab === 'schedule-modifications' && <VcScheduleModificationsPage />}
-              {vcTab === 'malpractice-disciplinary' && <VcMalpracticeDisciplinaryPage />}
-              {vcTab === 'result-authorisation' && <VcResultAuthorisationPage />}
-              {vcTab === 'valuation-progress-vc' && <VcValuationProgressPage />}
-              {vcTab === 'result-processing-vc' && <VcResultProcessingPage />}
-              {vcTab === 'result-analysis-vc' && <VcResultAnalysisPage />}
-              {vcTab === 'performance-reports-vc' && <VcPerformanceReportsPage />}
-              {vcTab === 'trend-analysis-vc' && <VcTrendAnalysisPage />}
-              {vcTab === 'accreditation-vc' && <VcAccreditationPage />}
-              {vcTab === 'settings' && <VcSettingsPage />}
+            <main
+              className={`flex-1 transition-all duration-300 p-4 sm:p-6 min-w-0 overflow-y-auto ${
+                vcSidebarCollapsed ? 'ml-16' : 'ml-64'
+              }`}
+            >
+              <div className="max-w-7xl xl:max-w-[1700px] mx-auto">
+                {vcTab === 'dashboard' && <VcDashboard onNavigate={(tab) => setVcTab(tab)} />}
+                {vcTab === 'univ-exam-status' && <VcUniversityExamStatusPage />}
+                {vcTab === 'college-monitoring' && <VcCollegeMonitoringPage />}
+                {vcTab === 'exam-readiness' && <VcExamReadinessPage />}
+                {vcTab === 'exam-regulations' && <VcExamRegulationsPage />}
+                {vcTab === 'policies-guidelines' && <VcPoliciesGuidelinesPage />}
+                {vcTab === 'academic-calendar' && <VcAcademicCalendarPage />}
+                {vcTab === 'scheme-reforms' && <VcSchemeReformsPage />}
+                {vcTab === 'exceptional-cases' && <VcExceptionalCasesPage />}
+                {vcTab === 'schedule-modifications' && <VcScheduleModificationsPage />}
+                {vcTab === 'malpractice-disciplinary' && <VcMalpracticeDisciplinaryPage />}
+                {vcTab === 'result-authorisation' && <VcResultAuthorisationPage />}
+                {vcTab === 'valuation-progress-vc' && <VcValuationProgressPage />}
+                {vcTab === 'result-processing-vc' && <VcResultProcessingPage />}
+                {vcTab === 'result-analysis-vc' && <VcResultAnalysisPage />}
+                {vcTab === 'performance-reports-vc' && <VcPerformanceReportsPage />}
+                {vcTab === 'trend-analysis-vc' && <VcTrendAnalysisPage />}
+                {vcTab === 'accreditation-vc' && <VcAccreditationPage />}
+                {vcTab === 'settings' && <VcSettingsPage />}
+              </div>
             </main>
           </div>
+          {/* Reusable Footer matching Faculty & Student */}
+          <footer
+            className={`bg-white border-t border-slate-200 py-3 px-6 text-center text-xs text-slate-500 transition-all duration-300 ${
+              vcSidebarCollapsed ? 'ml-16' : 'ml-64'
+            }`}
+          >
+            <p>
+              Adichunchanagiri University (ACU) ERP &copy; {new Date().getFullYear()} &bull; AMS Autonomous Ultimate Plus v4.4.1.20 &bull; All Rights Reserved.
+            </p>
+          </footer>
         </div>
       )}
 
