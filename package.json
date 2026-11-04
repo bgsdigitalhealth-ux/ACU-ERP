@@ -1,0 +1,13 @@
+{
+  "name": "acu-erp",
+  "version": "1.0.0",
+  "description": "ACU ERP - Enterprise Resource Planning System",
+  "scripts": {
+    "dev": "npm run dev:frontend",
+    "dev:frontend": "npm --prefix frontend run dev",
+    "dev:backend": "npm --prefix backend run dev",
+    "build": "npm --prefix frontend run build",
+    "start:backend": "npm --prefix backend start"
+  }
+}
+
