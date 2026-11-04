@@ -1,7 +1,7 @@
 import { MetricStat, MonthlyChartData, RatingsData, VisitsDistribution, ErpModuleItem } from '../types/erp';
 
-const API_BASE = import.meta.env.VITE_API_URL
-  ? `${import.meta.env.VITE_API_URL.replace(/\/$/, '')}/api`
+const API_BASE = (import.meta as any).env?.VITE_API_URL
+  ? `${(import.meta as any).env.VITE_API_URL.replace(/\/$/, '')}/api`
   : '/api';
 
 export const fallbackData = {

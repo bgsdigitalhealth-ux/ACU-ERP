@@ -3,7 +3,11 @@ import { Gavel, Calendar, AlertTriangle, FileText, Settings2, ChevronRight } fro
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 import { VcApprovalItem } from '../../../types/universityAdmin';
 
-export const VcApprovals: React.FC = () => {
+interface VcApprovalsProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const VcApprovals: React.FC<VcApprovalsProps> = ({ onNavigate }) => {
   const { vcApprovals, setSelectedVcApproval, setActiveVcModal } = useUniversityAdmin();
 
   const getUrgencyBadge = (urgency: VcApprovalItem['urgency']) => {
@@ -36,7 +40,15 @@ export const VcApprovals: React.FC = () => {
 
   const handleClick = (item: VcApprovalItem) => {
     setSelectedVcApproval(item);
-    setActiveVcModal('approval');
+    if (onNavigate) {
+      if (item.category === 'Schedule Modification') onNavigate('schedule-modifications');
+      else if (item.category === 'Malpractice') onNavigate('malpractice-disciplinary');
+      else if (item.category === 'Result Authorisation') onNavigate('result-authorisation');
+      else if (item.category === 'Policy Amendment') onNavigate('policies-guidelines');
+      else setActiveVcModal('approval');
+    } else {
+      setActiveVcModal('approval');
+    }
   };
 
   return (

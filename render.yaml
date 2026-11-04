@@ -14,3 +14,4 @@ services:
         value: 10000
       - key: MONGODB_URI
         sync: false
+

@@ -2,7 +2,11 @@ import React from 'react';
 import { Clock } from 'lucide-react';
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 
-export const VcRecentActivities: React.FC = () => {
+interface VcRecentActivitiesProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const VcRecentActivities: React.FC<VcRecentActivitiesProps> = ({ onNavigate }) => {
   const { vcActivities } = useUniversityAdmin();
 
   return (
@@ -15,9 +19,14 @@ export const VcRecentActivities: React.FC = () => {
             Recent Activities
           </h3>
         </div>
-        <span className="text-[11px] text-purple-200 font-medium hover:text-white cursor-pointer">
+        <button
+          onClick={() => {
+            if (onNavigate) onNavigate('performance-reports-vc');
+          }}
+          className="text-[11px] text-purple-200 font-bold hover:text-amber-300 cursor-pointer transition-colors"
+        >
           View All →
-        </span>
+        </button>
       </div>
 
       {/* Table */}

@@ -3,7 +3,11 @@ import { Building2 } from 'lucide-react';
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 import { CollegeExamStatusItem } from '../../../types/universityAdmin';
 
-export const VcCollegeStatusTable: React.FC = () => {
+interface VcCollegeStatusTableProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const VcCollegeStatusTable: React.FC<VcCollegeStatusTableProps> = ({ onNavigate }) => {
   const { collegeStatusList } = useUniversityAdmin();
 
   const getStatusBadge = (status: CollegeExamStatusItem['status']) => {
@@ -55,8 +59,17 @@ export const VcCollegeStatusTable: React.FC = () => {
           </thead>
           <tbody className="divide-y divide-purple-100">
             {collegeStatusList.map((item, idx) => (
-              <tr key={idx} className="hover:bg-purple-50/50 transition-colors">
-                <td className="py-2.5 px-4 font-bold text-gray-900">{item.collegeName}</td>
+              <tr
+                key={idx}
+                onClick={() => {
+                  if (onNavigate) onNavigate('college-monitoring');
+                }}
+                className="hover:bg-purple-50/70 transition-colors cursor-pointer group"
+                title="Click to view college monitoring details"
+              >
+                <td className="py-2.5 px-4 font-bold text-gray-900 group-hover:text-purple-900 transition-colors">
+                  {item.collegeName}
+                </td>
                 <td className="py-2.5 px-3 text-center font-semibold text-gray-700">{item.exams}</td>
                 <td className="py-2.5 px-3 text-center font-semibold text-gray-700">{item.conducted}</td>
                 <td className="py-2.5 px-3 text-center font-semibold text-gray-700">{item.evaluation}</td>

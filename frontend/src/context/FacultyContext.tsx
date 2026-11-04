@@ -330,7 +330,7 @@ export const FacultyProvider: React.FC<{ children: React.ReactNode }> = ({ child
     }
 
     // Persist to MongoDB Atlas backend if reachable
-    const backendBase = (import.meta.env.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
+    const backendBase = ((import.meta as any).env?.VITE_API_URL || 'http://localhost:5000').replace(/\/$/, '');
     fetch(`${backendBase}/api/assessments`, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   LayoutDashboard,
   Eye,
@@ -36,6 +36,14 @@ export const VcSidebar: React.FC<VcSidebarProps> = ({
   const toggleSection = (id: string) => {
     setOpenSections(prev => ({ ...prev, [id]: !prev[id] }));
   };
+
+  useEffect(() => {
+    menuSections.forEach(section => {
+      if (section.subItems && section.subItems.some(sub => sub.id === activeTab)) {
+        setOpenSections(prev => ({ ...prev, [section.id]: true }));
+      }
+    });
+  }, [activeTab]);
 
   const menuSections = [
     {

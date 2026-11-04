@@ -130,3 +130,199 @@ export interface RegistrarActivityItem {
   by: string;
 }
 
+// ============================================================
+// Comprehensive Vice-Chancellor Submodule Types
+// ============================================================
+
+export interface CollegeMonitoringDetail {
+  id: string;
+  name: string;
+  code: string;
+  principal: string;
+  totalStudents: number;
+  examsScheduled: number;
+  examsConducted: number;
+  evaluationProgress: number; // percentage
+  resultsPublished: number; // percentage
+  complianceScore: number; // out of 100
+  cctvStatus: 'Online' | 'Offline' | 'Degraded';
+  invigilatorsActive: number;
+  malpracticeCount: number;
+  deanName: string;
+}
+
+export interface ExamReadinessDetail {
+  id: string;
+  category: string;
+  task: string;
+  deadline: string;
+  status: 'Ready' | 'In Progress' | 'Attention Needed';
+  progress: number;
+  responsibleOfficer: string;
+  notes: string;
+}
+
+export interface ExamRegulationDetail {
+  id: string;
+  title: string;
+  code: string;
+  category: 'Medical (CBME)' | 'Pharmacy' | 'Nursing' | 'Engineering' | 'General';
+  academicYear: string;
+  programme: string;
+  effectiveDate: string;
+  status: 'Gazetted' | 'Pending Council Review' | 'Active';
+  description: string;
+  clauses: string[];
+}
+
+export interface ExamPolicyDetail {
+  id: string;
+  title: string;
+  category: string;
+  version: string;
+  effectiveDate: string;
+  status: 'Active' | 'Under Review' | 'Draft';
+  description: string;
+  keyRules: string[];
+}
+
+export interface UniversityCalendarEvent {
+  id: string;
+  eventName: string;
+  category: 'Examination' | 'Internal Assessment' | 'Administrative' | 'Holiday' | 'Result Declaration';
+  startDate: string;
+  endDate: string;
+  programme: string;
+  status: 'Upcoming' | 'Ongoing' | 'Completed';
+  targetCohort: string;
+}
+
+export interface ExamReformDetail {
+  id: string;
+  title: string;
+  initiative: string;
+  phase: string;
+  targetYear: string;
+  status: 'Implemented' | 'In Progress' | 'Proposed';
+  impact: string;
+  leadDepartment: string;
+}
+
+export interface ExceptionalCaseDetail {
+  id: string;
+  studentName: string;
+  usn: string;
+  college: string;
+  programme: string;
+  semester: string;
+  requestType: 'Medical Condonation' | 'Scribe & Extra Time' | 'Special Exam Session' | 'Re-Checking OMR';
+  reason: string;
+  submittedDate: string;
+  urgency: 'High' | 'Urgent' | 'Pending';
+  documentsAttached: string[];
+  status: 'Pending VC Decision' | 'Approved' | 'Rejected';
+  remarks?: string;
+  recommendingAuthority: string;
+}
+
+export interface ScheduleModificationDetail {
+  id: string;
+  college: string;
+  programme: string;
+  semester: string;
+  courseName: string;
+  courseCode: string;
+  existingDate: string;
+  existingSession: string;
+  proposedDate: string;
+  proposedSession: string;
+  reason: string;
+  affectedStudents: number;
+  status: 'Pending Approval' | 'Approved' | 'Rejected';
+  requestedBy: string;
+  coERecommendation: string;
+}
+
+export interface MalpracticeCaseDetail {
+  id: string;
+  caseNo: string;
+  studentName: string;
+  usn: string;
+  college: string;
+  examName: string;
+  examDate: string;
+  violationType: 'Unauthorized Notes / Chits' | 'Smart Watch / Electronic Device' | 'Impersonation' | 'Copying from Peer';
+  description: string;
+  committeeRecommendation: string;
+  vcDecree?: string;
+  status: 'Under Review' | 'Penalty Imposed' | 'Pardoned';
+  evidencePhotos: string[];
+}
+
+export interface ResultAuthorisationDetail {
+  id: string;
+  programme: string;
+  semester: string;
+  college: string;
+  examSession: string;
+  totalStudents: number;
+  passedCount: number;
+  passPercentage: number;
+  distinctionCount: number;
+  moderationApplied: boolean;
+  moderationMarksAvg: number;
+  discrepanciesResolved: boolean;
+  authorisationStatus: 'Pending VC Signature' | 'Authorised' | 'Withheld';
+  signedDate?: string;
+}
+
+export interface ValuationCampDetail {
+  id: string;
+  campName: string;
+  location: string;
+  chiefValuer: string;
+  totalBundles: number;
+  scriptsReceived: number;
+  evaluatedFirst: number;
+  evaluatedSecond: number;
+  thirdValuationTriggered: number;
+  evaluatorsTurnout: number; // percentage
+  completionRate: number; // percentage
+  estimatedCompletionDate: string;
+}
+
+export interface ResultProcessingStageBatch {
+  id: string;
+  batchName: string;
+  programme: string;
+  semester: string;
+  currentStage: number; // 1 to 6
+  stageName: string;
+  status: 'On Schedule' | 'Awaiting Moderation' | 'Pending VC Assent' | 'Published';
+  pendingTasks: string;
+  responsibleOfficer: string;
+}
+
+export interface UniversityRankHolder {
+  rank: number;
+  studentName: string;
+  usn: string;
+  college: string;
+  programme: string;
+  percentage: number;
+  medal: 'Gold Medal' | 'Silver Medal' | 'Bronze Medal' | 'Certificate of Merit';
+}
+
+export interface AccreditationMetricDetail {
+  id: string;
+  criterion: string;
+  metricNo: string;
+  title: string;
+  benchmark: string;
+  currentScore: string;
+  complianceRate: number;
+  documentsCount: number;
+  auditStatus: 'Compliant' | 'Verified' | 'Pending Documentation';
+}
+
+

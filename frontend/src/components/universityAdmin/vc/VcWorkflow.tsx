@@ -2,16 +2,20 @@ import React from 'react';
 import { Layers, Calendar, Users, ClipboardList, BarChart2, Gavel, Award, ArrowRight } from 'lucide-react';
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 
-export const VcWorkflow: React.FC = () => {
+interface VcWorkflowProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const VcWorkflow: React.FC<VcWorkflowProps> = ({ onNavigate }) => {
   const { setActiveVcModal } = useUniversityAdmin();
 
   const stages = [
-    { id: 'planning', label: 'Exam Planning', icon: Calendar, status: 'Completed' },
-    { id: 'conduct', label: 'Conduct & Monitoring', icon: Users, status: 'Completed' },
-    { id: 'eval', label: 'Evaluation (Valuation)', icon: ClipboardList, status: 'Completed' },
-    { id: 'processing', label: 'Result Processing', icon: BarChart2, status: 'Completed' },
-    { id: 'vc-approval', label: 'VC Approval (Exceptional)', icon: Gavel, status: 'Active' },
-    { id: 'publication', label: 'Result Publication', icon: Award, status: 'Pending' }
+    { id: 'planning', target: 'academic-calendar', label: 'Exam Planning', icon: Calendar, status: 'Completed' },
+    { id: 'conduct', target: 'college-monitoring', label: 'Conduct & Monitoring', icon: Users, status: 'Completed' },
+    { id: 'eval', target: 'valuation-progress-vc', label: 'Evaluation (Valuation)', icon: ClipboardList, status: 'Completed' },
+    { id: 'processing', target: 'result-processing-vc', label: 'Result Processing', icon: BarChart2, status: 'Completed' },
+    { id: 'vc-approval', target: 'result-authorisation', label: 'VC Approval (Exceptional)', icon: Gavel, status: 'Active' },
+    { id: 'publication', target: 'result-authorisation', label: 'Result Publication', icon: Award, status: 'Pending' }
   ];
 
   return (
@@ -42,7 +46,11 @@ export const VcWorkflow: React.FC = () => {
                 {/* Node */}
                 <div
                   onClick={() => {
-                    if (isActive) setActiveVcModal('approval');
+                    if (onNavigate) {
+                      onNavigate(stage.target);
+                    } else if (isActive) {
+                      setActiveVcModal('approval');
+                    }
                   }}
                   className="flex flex-col items-center text-center cursor-pointer group flex-1"
                 >

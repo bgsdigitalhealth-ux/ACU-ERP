@@ -2,7 +2,11 @@ import React from 'react';
 import { LayoutGrid, Calendar, CheckSquare, BarChart2, FileText, Award } from 'lucide-react';
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 
-export const VcQuickAccess: React.FC = () => {
+interface VcQuickAccessProps {
+  onNavigate?: (tab: string) => void;
+}
+
+export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
   const { setActiveVcModal, setToast } = useUniversityAdmin();
 
   const accessItems = [
@@ -13,7 +17,10 @@ export const VcQuickAccess: React.FC = () => {
       color: 'text-purple-700',
       bg: 'bg-purple-50',
       border: 'border-purple-200',
-      action: () => setToast('Opening University Comprehensive Exam Status.')
+      action: () => {
+        if (onNavigate) onNavigate('univ-exam-status');
+        else setToast('Opening University Comprehensive Exam Status.');
+      }
     },
     {
       id: 'approve-requests',
@@ -22,7 +29,10 @@ export const VcQuickAccess: React.FC = () => {
       color: 'text-emerald-700',
       bg: 'bg-emerald-50',
       border: 'border-emerald-200',
-      action: () => setActiveVcModal('approval')
+      action: () => {
+        if (onNavigate) onNavigate('exceptional-cases');
+        else setActiveVcModal('approval');
+      }
     },
     {
       id: 'analytics',
@@ -31,7 +41,10 @@ export const VcQuickAccess: React.FC = () => {
       color: 'text-blue-700',
       bg: 'bg-blue-50',
       border: 'border-blue-200',
-      action: () => setToast('Navigating to Detailed Faculty Analytics.')
+      action: () => {
+        if (onNavigate) onNavigate('result-analysis-vc');
+        else setToast('Navigating to Detailed Faculty Analytics.');
+      }
     },
     {
       id: 'annual-report',
@@ -40,7 +53,10 @@ export const VcQuickAccess: React.FC = () => {
       color: 'text-pink-700',
       bg: 'bg-pink-50',
       border: 'border-pink-200',
-      action: () => setToast('Generating Annual Examination Audit Report.')
+      action: () => {
+        if (onNavigate) onNavigate('performance-reports-vc');
+        else setToast('Generating Annual Examination Audit Report.');
+      }
     },
     {
       id: 'accreditation',
@@ -49,7 +65,10 @@ export const VcQuickAccess: React.FC = () => {
       color: 'text-amber-700',
       bg: 'bg-amber-50',
       border: 'border-amber-200',
-      action: () => setToast('Exporting NIRF Criterion 2.5 exam outcome records.')
+      action: () => {
+        if (onNavigate) onNavigate('accreditation-vc');
+        else setToast('Exporting NIRF Criterion 2.5 exam outcome records.');
+      }
     }
   ];
 

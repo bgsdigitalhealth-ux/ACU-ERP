@@ -4,6 +4,24 @@ import { useUniversityAdmin } from '../../context/UniversityAdminContext';
 import { VcHeader } from './vc/VcHeader';
 import { VcSidebar } from './vc/VcSidebar';
 import { VcDashboard } from './vc/VcDashboard';
+import { VcUniversityExamStatusPage } from './vc/pages/VcUniversityExamStatusPage';
+import { VcCollegeMonitoringPage } from './vc/pages/VcCollegeMonitoringPage';
+import { VcExamReadinessPage } from './vc/pages/VcExamReadinessPage';
+import { VcExamRegulationsPage } from './vc/pages/VcExamRegulationsPage';
+import { VcPoliciesGuidelinesPage } from './vc/pages/VcPoliciesGuidelinesPage';
+import { VcAcademicCalendarPage } from './vc/pages/VcAcademicCalendarPage';
+import { VcSchemeReformsPage } from './vc/pages/VcSchemeReformsPage';
+import { VcExceptionalCasesPage } from './vc/pages/VcExceptionalCasesPage';
+import { VcScheduleModificationsPage } from './vc/pages/VcScheduleModificationsPage';
+import { VcMalpracticeDisciplinaryPage } from './vc/pages/VcMalpracticeDisciplinaryPage';
+import { VcResultAuthorisationPage } from './vc/pages/VcResultAuthorisationPage';
+import { VcValuationProgressPage } from './vc/pages/VcValuationProgressPage';
+import { VcResultProcessingPage } from './vc/pages/VcResultProcessingPage';
+import { VcResultAnalysisPage } from './vc/pages/VcResultAnalysisPage';
+import { VcPerformanceReportsPage } from './vc/pages/VcPerformanceReportsPage';
+import { VcTrendAnalysisPage } from './vc/pages/VcTrendAnalysisPage';
+import { VcAccreditationPage } from './vc/pages/VcAccreditationPage';
+import { VcSettingsPage } from './vc/pages/VcSettingsPage';
 import { CoeHeader } from './coe/CoeHeader';
 import { CoeSidebar } from './coe/CoeSidebar';
 import { CoeDashboard } from './coe/CoeDashboard';
@@ -72,7 +90,25 @@ export const UniversityAdminLayout: React.FC<UniversityAdminLayoutProps> = ({ on
               setIsMobileOpen={setMobileOpen}
             />
             <main className="flex-1 min-w-0 overflow-y-auto">
-              <VcDashboard />
+              {vcTab === 'dashboard' && <VcDashboard onNavigate={(tab) => setVcTab(tab)} />}
+              {vcTab === 'univ-exam-status' && <VcUniversityExamStatusPage />}
+              {vcTab === 'college-monitoring' && <VcCollegeMonitoringPage />}
+              {vcTab === 'exam-readiness' && <VcExamReadinessPage />}
+              {vcTab === 'exam-regulations' && <VcExamRegulationsPage />}
+              {vcTab === 'policies-guidelines' && <VcPoliciesGuidelinesPage />}
+              {vcTab === 'academic-calendar' && <VcAcademicCalendarPage />}
+              {vcTab === 'scheme-reforms' && <VcSchemeReformsPage />}
+              {vcTab === 'exceptional-cases' && <VcExceptionalCasesPage />}
+              {vcTab === 'schedule-modifications' && <VcScheduleModificationsPage />}
+              {vcTab === 'malpractice-disciplinary' && <VcMalpracticeDisciplinaryPage />}
+              {vcTab === 'result-authorisation' && <VcResultAuthorisationPage />}
+              {vcTab === 'valuation-progress-vc' && <VcValuationProgressPage />}
+              {vcTab === 'result-processing-vc' && <VcResultProcessingPage />}
+              {vcTab === 'result-analysis-vc' && <VcResultAnalysisPage />}
+              {vcTab === 'performance-reports-vc' && <VcPerformanceReportsPage />}
+              {vcTab === 'trend-analysis-vc' && <VcTrendAnalysisPage />}
+              {vcTab === 'accreditation-vc' && <VcAccreditationPage />}
+              {vcTab === 'settings' && <VcSettingsPage />}
             </main>
           </div>
         </div>
