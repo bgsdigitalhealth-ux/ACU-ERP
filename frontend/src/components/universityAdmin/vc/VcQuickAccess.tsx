@@ -1,5 +1,13 @@
 import React from 'react';
-import { LayoutGrid, Calendar, CheckSquare, BarChart2, FileText, Award } from 'lucide-react';
+import {
+  LayoutGrid,
+  Calendar,
+  Microscope,
+  Coins,
+  MessageSquareHeart,
+  CalendarDays,
+  Award
+} from 'lucide-react';
 import { useUniversityAdmin } from '../../../context/UniversityAdminContext';
 
 interface VcQuickAccessProps {
@@ -7,12 +15,13 @@ interface VcQuickAccessProps {
 }
 
 export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
-  const { setActiveVcModal, setToast } = useUniversityAdmin();
+  const { setToast } = useUniversityAdmin();
 
   const accessItems = [
     {
       id: 'exam-status',
       label: 'University Exam Status',
+      subtext: 'Centralized live oversight',
       icon: Calendar,
       color: 'text-purple-700',
       bg: 'bg-purple-50',
@@ -23,51 +32,68 @@ export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
       }
     },
     {
-      id: 'approve-requests',
-      label: 'Approve Requests',
-      icon: CheckSquare,
+      id: 'research-rnd',
+      label: 'R&D & Research Grants',
+      subtext: '48 ongoing • ₹16.42 Cr',
+      icon: Microscope,
       color: 'text-emerald-700',
       bg: 'bg-emerald-50',
       border: 'border-emerald-200',
       action: () => {
-        if (onNavigate) onNavigate('exceptional-cases');
-        else setActiveVcModal('approval');
+        if (onNavigate) onNavigate('performance-reports-vc');
+        else setToast('Navigating to University Research & Grants.');
       }
     },
     {
-      id: 'analytics',
-      label: 'Performance Analytics',
-      icon: BarChart2,
+      id: 'financial-reports',
+      label: 'Financial Statements',
+      subtext: 'FY 24–25 Audit & Outlay',
+      icon: Coins,
       color: 'text-blue-700',
       bg: 'bg-blue-50',
       border: 'border-blue-200',
       action: () => {
-        if (onNavigate) onNavigate('result-analysis-vc');
-        else setToast('Navigating to Detailed Faculty Analytics.');
-      }
-    },
-    {
-      id: 'annual-report',
-      label: 'Annual Exam Report',
-      icon: FileText,
-      color: 'text-pink-700',
-      bg: 'bg-pink-50',
-      border: 'border-pink-200',
-      action: () => {
         if (onNavigate) onNavigate('performance-reports-vc');
-        else setToast('Generating Annual Examination Audit Report.');
+        else setToast('Opening Institutional Financial Statements.');
       }
     },
     {
-      id: 'accreditation',
-      label: 'Accreditation Inputs (NAAC / NIRF)',
-      icon: Award,
+      id: 'feedback-analytics',
+      label: 'Feedback Analytics',
+      subtext: 'Students & Parents CSAT',
+      icon: MessageSquareHeart,
+      color: 'text-rose-700',
+      bg: 'bg-rose-50',
+      border: 'border-rose-200',
+      action: () => {
+        if (onNavigate) onNavigate('result-analysis-vc');
+        else setToast('Viewing Stakeholder Feedback Analytics.');
+      }
+    },
+    {
+      id: 'academic-calendar',
+      label: 'Academic Calendar',
+      subtext: 'Statutory meetings & terms',
+      icon: CalendarDays,
       color: 'text-amber-700',
       bg: 'bg-amber-50',
       border: 'border-amber-200',
       action: () => {
+        if (onNavigate) onNavigate('academic-calendar');
+        else setToast('Navigating to University Academic Calendar.');
+      }
+    },
+    {
+      id: 'accreditation',
+      label: 'Accreditation (NAAC/NIRF)',
+      subtext: 'Apex compliance & ranks',
+      icon: Award,
+      color: 'text-violet-700',
+      bg: 'bg-violet-50',
+      border: 'border-violet-200',
+      action: () => {
         if (onNavigate) onNavigate('accreditation-vc');
-        else setToast('Exporting NIRF Criterion 2.5 exam outcome records.');
+        else setToast('Exporting NAAC & NIRF Institutional Dossier.');
       }
     }
   ];
@@ -75,20 +101,20 @@ export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
   return (
     <div className="w-full bg-white rounded-2xl border border-purple-200/90 shadow-2xs overflow-hidden flex flex-col justify-between select-none">
       {/* Header Bar */}
-      <div className="bg-gradient-to-r from-[#440d75] to-[#2d0850] text-white px-4 sm:px-5 py-3 flex items-center justify-between">
+      <div className="bg-gradient-to-r from-[#440d75] to-[#2d0850] text-white px-4 sm:px-6 py-3 flex items-center justify-between">
         <div className="flex items-center gap-2">
           <LayoutGrid className="w-5 h-5 text-amber-300" />
           <h3 className="font-extrabold text-sm sm:text-base tracking-tight text-white">
-            Quick Access
+            Executive Quick Access
           </h3>
         </div>
         <span className="text-[11px] text-purple-200 font-medium bg-purple-900/60 px-2 py-0.5 rounded-full border border-purple-400/30">
-          Executive Dashboards
+          Statutory Dashboards
         </span>
       </div>
 
-      {/* Grid of 5 Cards */}
-      <div className="p-3 sm:p-4 grid grid-cols-2 sm:grid-cols-5 gap-3">
+      {/* Grid of 6 Cards */}
+      <div className="p-3 sm:p-5 grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
         {accessItems.map((item) => {
           const Icon = item.icon;
           return (
@@ -100,9 +126,14 @@ export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
               <div className="w-10 h-10 rounded-xl bg-white flex items-center justify-center shadow-2xs group-hover:scale-110 transition-transform">
                 <Icon className={`w-5 h-5 ${item.color} stroke-[2.2]`} />
               </div>
-              <span className="text-xs font-bold text-gray-800 leading-tight">
-                {item.label}
-              </span>
+              <div>
+                <span className="text-xs font-bold text-gray-900 leading-tight block">
+                  {item.label}
+                </span>
+                <span className="text-[10px] text-gray-500 font-medium hidden sm:block mt-0.5">
+                  {item.subtext}
+                </span>
+              </div>
             </button>
           );
         })}
@@ -110,4 +141,3 @@ export const VcQuickAccess: React.FC<VcQuickAccessProps> = ({ onNavigate }) => {
     </div>
   );
 };
-

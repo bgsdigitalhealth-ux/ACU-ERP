@@ -63,8 +63,8 @@ export const UniversityAdminLayout: React.FC<UniversityAdminLayoutProps> = ({ on
         </div>
       )}
 
-      {/* Top Apex Role Switcher Bar */}
-      <UniversityAdminRoleSwitcher />
+      {/* Top Apex Role Switcher Bar (Hidden on Vice-Chancellor portal as requested) */}
+      {activeRole !== 'vice-chancellor' && <UniversityAdminRoleSwitcher />}
 
       {/* Role 1: Chancellor */}
       {activeRole === 'chancellor' && (
