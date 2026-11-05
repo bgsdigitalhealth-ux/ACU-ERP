@@ -112,14 +112,14 @@ export const KARNATAKA_UNIVERSITIES: UniversityOption[] = [
 
 interface KarnatakaHomePageProps {
   onProceedToUniversity: (university: UniversityOption) => void;
+  onProceedToCollege: () => void;
   onNavigateToHed?: () => void;
-  onNavigateToCollege?: () => void;
 }
 
 export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   onProceedToUniversity,
-  onNavigateToHed,
-  onNavigateToCollege
+  onProceedToCollege,
+  onNavigateToHed
 }) => {
   const [selectedUniversity] = useState<UniversityOption>(KARNATAKA_UNIVERSITIES[0]);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
@@ -148,14 +148,10 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   };
 
   const handleCollegeClick = () => {
-    if (onNavigateToCollege) {
-      onNavigateToCollege();
-    } else {
-      showToast('Redirecting to Affiliated College Portal...');
-      setTimeout(() => {
-        onProceedToUniversity(selectedUniversity);
-      }, 350);
-    }
+    showToast('Redirecting to College Role Based Login...');
+    setTimeout(() => {
+      onProceedToCollege();
+    }, 300);
   };
 
   return (

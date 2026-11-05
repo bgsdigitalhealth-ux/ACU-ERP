@@ -216,3 +216,4 @@ export const KarnatakaRoleDial: React.FC<KarnatakaRoleDialProps> = ({
     </div>
   );
 };
+

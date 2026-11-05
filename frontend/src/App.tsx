@@ -13,6 +13,7 @@ import { StudentLayout } from './components/student/StudentLayout';
 import { FacultyProvider } from './context/FacultyContext';
 import { FacultyLayout } from './components/faculty/FacultyLayout';
 import { HomePage } from './components/HomePage';
+import { CollegeHomePage } from './components/CollegeHomePage';
 import { KarnatakaHomePage, KARNATAKA_UNIVERSITIES, UniversityOption } from './components/KarnatakaHomePage';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
@@ -42,11 +43,11 @@ export const App: React.FC = () => {
 
   const [loginPrefilledEmail, setLoginPrefilledEmail] = useState('hod.physiology@bgs.edu.in');
 
-  // Home Page Stage: 'state-portal' (First Home Page: Karnataka Higher Education ERP) | 'university-portal' (Second Home Page: ACU ERP Role Dial)
-  const [homeStage, setHomeStage] = useState<'state-portal' | 'university-portal'>(() => {
+  // Home Page Stage: 'state-portal' (First Home Page) | 'university-portal' (Univ Dial) | 'college-portal' (College Dial)
+  const [homeStage, setHomeStage] = useState<'state-portal' | 'university-portal' | 'college-portal'>(() => {
     try {
       const saved = localStorage.getItem('acu_erp_home_stage');
-      if (saved === 'state-portal' || saved === 'university-portal') {
+      if (saved === 'state-portal' || saved === 'university-portal' || saved === 'college-portal') {
         return saved;
       }
     } catch {
@@ -150,8 +151,6 @@ export const App: React.FC = () => {
       role.id === 'vice-chancellor' ||
       role.id === 'coe' ||
       role.id === 'registrar' ||
-      role.id === 'finance' ||
-      role.id === 'hr-manager' ||
       role.id === 'iqac' ||
       role.id === 'university-admin' ||
       role.id === 'hed'
@@ -162,13 +161,23 @@ export const App: React.FC = () => {
     } else if (role.id === 'hod') {
       setViewMode('hod-dashboard');
     } else if (
+      role.id === 'principal' ||
+      role.id === 'vice-principal' ||
+      role.id === 'exam-coordinator' ||
+      role.id === 'librarian' ||
       role.id === 'dean' ||
       role.id === 'deputy-superintendent' ||
       role.id === 'college-admin' ||
       role.id === 'college_admin'
     ) {
       setViewMode('college-admin');
-    } else if (role.id === 'student') {
+    } else if (role.id === 'finance' || role.id === 'hr-manager') {
+      if (homeStage === 'college-portal') {
+        setViewMode('college-admin');
+      } else {
+        setViewMode('university-admin');
+      }
+    } else if (role.id === 'student' || role.id === 'parent') {
       setViewMode('student');
     } else if (role.id === 'faculty' || role.id === 'faculty/staff') {
       setViewMode('faculty');
@@ -193,7 +202,6 @@ export const App: React.FC = () => {
     setSession(null);
     setSelectedRole(null);
     setViewMode('portal');
-    setHomeStage('university-portal');
   };
 
   return (
@@ -259,6 +267,16 @@ export const App: React.FC = () => {
                       setSelectedUniversity(univ);
                       setHomeStage('university-portal');
                     }}
+                    onProceedToCollege={() => {
+                      setHomeStage('college-portal');
+                    }}
+                  />
+                ) : homeStage === 'college-portal' ? (
+                  <CollegeHomePage
+                    selectedRole={selectedRole}
+                    setSelectedRole={setSelectedRole}
+                    onLoginSuccess={handlePortalLogin}
+                    onBackToStatePortal={() => setHomeStage('state-portal')}
                   />
                 ) : (
                   <HomePage
