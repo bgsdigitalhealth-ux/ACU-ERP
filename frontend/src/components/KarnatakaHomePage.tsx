@@ -251,13 +251,17 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
       </header>
 
       {/* Main Content Area - Positioned in the clear sky area */}
-      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2 pb-2 relative z-20 flex items-start">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start">
+      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-5 sm:pt-6 lg:pt-7 pb-2 relative z-20 flex items-start">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
           
           {/* Column 1 (Left): Headline & 2x2 Feature Grid */}
-          <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-start space-y-2.5 self-start">
+          <div
+            className={`flex flex-col justify-start space-y-3 self-start ${
+              selectedCard ? 'lg:col-span-3 xl:col-span-3' : 'lg:col-span-4 xl:col-span-4'
+            }`}
+          >
             <div>
-              <h2 className="text-base sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
+              <h2 className="text-base sm:text-xl xl:text-2xl font-black text-[#29084e] leading-snug tracking-tight drop-shadow-2xs">
                 University<br />
                 Management &amp;<br />
                 Institutional<br />
@@ -309,12 +313,12 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </div>
           </div>
 
-          {/* Column 2 (Center - EXACT Highlighted Orange Box): The 3 Selection Cards */}
+          {/* Column 2 (Center): The 3 Selection Cards - Proper alignment and clearance */}
           <div
             className={`transition-all duration-300 flex flex-col gap-3 justify-start self-start w-full ${
               selectedCard
                 ? 'lg:col-span-4 xl:col-span-4 max-w-sm xl:max-w-md'
-                : 'lg:col-span-8 xl:col-span-8 max-w-[620px] xl:max-w-[680px] 2xl:max-w-[720px] lg:ml-6 xl:ml-8'
+                : 'lg:col-span-7 xl:col-span-6 max-w-[500px] xl:max-w-[530px]'
             }`}
           >
             {/* Card 1: Higher Education Department */}
@@ -384,7 +388,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
 
                 <div className="border-l-2 border-blue-200/80 pl-3.5 min-w-0">
-                  <div className="flex items-center gap-2 flex-wrap">
+                  <div className="flex items-center gap-2 flex-nowrap">
                     <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight whitespace-nowrap">
                       University Login
                     </h3>
