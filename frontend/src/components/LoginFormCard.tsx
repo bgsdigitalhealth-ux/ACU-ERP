@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import {
-  User,
   Mail,
   Lock,
   Eye,
@@ -9,7 +8,6 @@ import {
   X,
   Users,
   GraduationCap,
-  KeyRound,
   Layers
 } from 'lucide-react';
 import { RoleInfo } from '../types/auth';
@@ -33,7 +31,6 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
   const [password, setPassword] = useState('password123');
   const [showPassword, setShowPassword] = useState(false);
   const [rememberMe, setRememberMe] = useState(true);
-  const [activeTab, setActiveTab] = useState<'login' | 'sso'>('login');
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [errorMsg, setErrorMsg] = useState<string | null>(null);
 
@@ -101,35 +98,6 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
 
       {/* Decorative Rose Wave Curve Divider matching Image 1 */}
       <div className="w-full h-1 bg-gradient-to-r from-rose-200 via-rose-300 to-rose-200 rounded-full mb-3.5 opacity-90" />
-
-      {/* Mode Toggle: Login vs SSO Login matching Image 1 */}
-      <div className="flex items-center gap-3 mb-4">
-        <button
-          type="button"
-          onClick={() => setActiveTab('login')}
-          className={`flex-1 py-2 px-4 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-            activeTab === 'login'
-              ? 'bg-[#8b0029] text-white shadow-md'
-              : 'text-[#8b0029] hover:bg-rose-50'
-          }`}
-        >
-          <User className="w-3.5 h-3.5" />
-          <span>Login</span>
-        </button>
-
-        <button
-          type="button"
-          onClick={() => setActiveTab('sso')}
-          className={`flex-1 py-2 px-4 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-            activeTab === 'sso'
-              ? 'bg-[#8b0029] text-white shadow-md'
-              : 'text-[#8b0029] hover:bg-rose-50'
-          }`}
-        >
-          <KeyRound className="w-3.5 h-3.5 text-[#8b0029]" />
-          <span>SSO Login</span>
-        </button>
-      </div>
 
       {errorMsg && (
         <div className="mb-3 px-3 py-1.5 rounded-xl bg-red-50 border border-red-200 text-[11px] font-semibold text-red-700 animate-in fade-in">

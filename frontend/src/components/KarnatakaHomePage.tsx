@@ -10,8 +10,6 @@ import {
   Lock,
   Eye,
   EyeOff,
-  User,
-  KeyRound,
   Users,
   GraduationCap,
   X,
@@ -151,7 +149,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   const [password, setPassword] = useState<string>('password123');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'login' | 'sso'>('login');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -253,16 +250,12 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
         </div>
       </header>
 
-      {/* Main Content Area - Shifted high in the sky so cards & form NEVER override Vidhana Soudha building */}
+      {/* Main Content Area - Positioned in the clear sky area */}
       <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2 pb-2 relative z-20 flex items-start">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-5 items-start">
           
           {/* Column 1 (Left): Headline & 2x2 Feature Grid */}
-          <div
-            className={`transition-all duration-300 flex flex-col justify-start space-y-2.5 self-start ${
-              selectedCard ? 'lg:col-span-3 xl:col-span-3' : 'lg:col-span-5 xl:col-span-5'
-            }`}
-          >
+          <div className="lg:col-span-3 xl:col-span-3 flex flex-col justify-start space-y-2.5 self-start">
             <div>
               <h2 className="text-base sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
                 University<br />
@@ -316,12 +309,12 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </div>
           </div>
 
-          {/* Column 2 (Center): The 3 Selection Cards */}
+          {/* Column 2 (Center - EXACT Highlighted Orange Box): The 3 Selection Cards */}
           <div
             className={`transition-all duration-300 flex flex-col gap-2.5 justify-start self-start w-full ${
               selectedCard
-                ? 'lg:col-span-4 xl:col-span-4'
-                : 'lg:col-span-7 xl:col-span-7 max-w-lg lg:ml-auto'
+                ? 'lg:col-span-4 xl:col-span-4 max-w-sm xl:max-w-md'
+                : 'lg:col-span-6 xl:col-span-5 max-w-md lg:ml-4'
             }`}
           >
             {/* Card 1: Higher Education Department */}
@@ -456,9 +449,9 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </button>
           </div>
 
-          {/* Column 3 (Right): Login Form Card (Rendered ONLY once a card is selected, styled like Image 1) */}
+          {/* Column 3 (Right): Login Form Card (Without SSO Login) */}
           {selectedCard && (
-            <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-end self-start animate-in fade-in slide-in-from-right-6 duration-300">
+            <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-start self-start animate-in fade-in slide-in-from-right-4 duration-200">
               <div className="w-full max-w-[390px] min-w-[320px] bg-white rounded-3xl p-5 border border-gray-200/90 shadow-2xl relative select-none">
                 
                 {/* Card Header matching Image 1 */}
@@ -500,41 +493,9 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
 
                 {/* Decorative Rose Wave Curve Divider */}
-                <div className="w-full h-1 bg-gradient-to-r from-rose-200 via-rose-300 to-rose-200 rounded-full mb-3.5 opacity-90" />
+                <div className="w-full h-1 bg-gradient-to-r from-rose-200 via-rose-300 to-rose-200 rounded-full mb-3 opacity-90" />
 
-                {/* Mode Toggle: Login vs SSO Login matching Image 1 */}
-                <div className="flex items-center gap-3 mb-3.5">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('login')}
-                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                      activeTab === 'login'
-                        ? 'bg-[#8b0029] text-white shadow-md'
-                        : 'text-[#8b0029] hover:bg-rose-50'
-                    }`}
-                  >
-                    <User className="w-3.5 h-3.5" />
-                    <span>Login</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab('sso');
-                      showToast('SSO Single Sign-On selected');
-                    }}
-                    className={`flex-1 py-1.5 px-3 rounded-full text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                      activeTab === 'sso'
-                        ? 'bg-[#8b0029] text-white shadow-md'
-                        : 'text-[#8b0029] hover:bg-rose-50'
-                    }`}
-                  >
-                    <KeyRound className="w-3.5 h-3.5 text-[#8b0029]" />
-                    <span>SSO Login</span>
-                  </button>
-                </div>
-
-                {/* Form Fields */}
+                {/* Form Fields - SSO Login completely removed as requested */}
                 <form onSubmit={handleLoginSubmit} className="space-y-2.5">
                   
                   {/* Field 1: List of Universities in Dropdown */}
@@ -686,7 +647,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   <button
                     type="submit"
                     disabled={isLoading}
-                    className="w-full py-2.5 px-5 bg-[#8b0029] hover:bg-[#a00030] text-white rounded-full text-xs font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 group mt-1"
+                    className="w-full py-2.5 px-5 bg-[#8b0029] hover:bg-[#a00030] text-white rounded-full text-xs font-bold shadow-md hover:shadow-lg transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 group mt-2"
                   >
                     {isLoading ? (
                       <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
