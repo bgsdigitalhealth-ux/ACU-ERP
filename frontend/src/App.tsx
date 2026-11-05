@@ -150,6 +150,9 @@ export const App: React.FC = () => {
       role.id === 'vice-chancellor' ||
       role.id === 'coe' ||
       role.id === 'registrar' ||
+      role.id === 'finance' ||
+      role.id === 'hr-manager' ||
+      role.id === 'iqac' ||
       role.id === 'university-admin' ||
       role.id === 'hed'
     ) {

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   Cpu,
   BarChart3,
@@ -8,9 +8,7 @@ import {
   Building2
 } from 'lucide-react';
 import { RoleInfo } from '../types/auth';
-import { ACU_ERP_ROLES } from '../data/roles';
-import { AcuLogo } from './AcuLogo';
-import { RoleDial } from './RoleDial';
+import { KarnatakaRoleDial, KARNATAKA_8_ROLES } from './KarnatakaRoleDial';
 import { LoginFormCard } from './LoginFormCard';
 
 interface HomePageProps {
@@ -28,33 +26,36 @@ export const HomePage: React.FC<HomePageProps> = ({
   onBackToStatePortal,
   selectedUniversityName = 'Adichunchanagiri University (ACU)'
 }) => {
+  // Ensure a role is selected by default so the Role Based Login card is visible as requested
+  useEffect(() => {
+    if (!selectedRole) {
+      // Default to Vice Chancellor
+      setSelectedRole(KARNATAKA_8_ROLES[1]);
+    }
+  }, [selectedRole, setSelectedRole]);
+
   return (
-    <div className="relative h-screen w-screen overflow-hidden select-none flex flex-col justify-between">
-      {/* 
-        2nd Campus Background Image (media_1793724891368_0893d982.jpg):
-        Displayed edge-to-edge with object-fill so the top-left leaves,
-        bottom-left campus building (ADICHUNCHANAGIRI UNIVERSITY) with dome and lawn,
-        and bottom purple-yellow waves are completely visible without any cropping.
-      */}
+    <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between">
+      {/* Official Karnataka Higher Education ERP Full Background Image */}
       <img
-        src="/background.jpg"
-        alt="Adichunchanagiri University Campus Background"
+        src="/karnataka-background.jpg"
+        alt="Karnataka Higher Education ERP Background"
         className="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10 select-none"
       />
 
       {/* Top Banner / Switch University Breadcrumb Bar */}
       <div className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2.5 pb-1 flex items-center justify-between relative z-30">
-        <div className="flex items-center gap-2 text-xs font-bold text-purple-950 bg-white/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-2xs">
-          <Building2 className="w-3.5 h-3.5 text-purple-700" />
+        <div className="flex items-center gap-2 text-xs font-bold text-purple-950 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-2xs">
+          <Building2 className="w-3.5 h-3.5 text-[#8b0029]" />
           <span className="hidden sm:inline text-gray-600">Karnataka Higher Education ERP</span>
           <span className="hidden sm:inline text-gray-400">&rsaquo;</span>
-          <span className="text-[#3b0866] font-extrabold">{selectedUniversityName}</span>
+          <span className="text-[#8b0029] font-extrabold">{selectedUniversityName}</span>
         </div>
 
         {onBackToStatePortal && (
           <button
             onClick={onBackToStatePortal}
-            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-purple-900 border border-purple-300 text-xs font-bold shadow-2xs hover:shadow-md transition-all cursor-pointer"
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/95 hover:bg-white text-[#8b0029] border border-rose-200 text-xs font-bold shadow-2xs hover:shadow-md transition-all cursor-pointer"
           >
             <ArrowLeft className="w-3.5 h-3.5" />
             <span>Switch University / State Portal</span>
@@ -63,17 +64,12 @@ export const HomePage: React.FC<HomePageProps> = ({
       </div>
 
       {/* Main Content Area */}
-      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 sm:py-3 flex items-center relative z-20">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start h-full">
+      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-1 sm:py-2 flex items-center relative z-20">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center">
           
-          {/* Left Column: Official ACU ERP Logo, Heading, and 2x2 Feature Grid - Pinned to TOP */}
-          <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-start space-y-2 sm:space-y-2.5 pt-1 self-start">
-            {/* 1. Official ACU Logo */}
-            <div>
-              <AcuLogo size="md" />
-            </div>
-
-            {/* 2. Platform Headline */}
+          {/* Left Column: Heading, and 2x2 Feature Grid - Pinned to TOP */}
+          <div className="lg:col-span-3.5 xl:col-span-3.5 flex flex-col justify-start space-y-2 sm:space-y-2.5 pt-1 self-start">
+            {/* Platform Headline */}
             <div>
               <h1 className="text-base sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
                 University<br />
@@ -83,10 +79,10 @@ export const HomePage: React.FC<HomePageProps> = ({
               </h1>
             </div>
 
-            {/* 3. 2x2 Feature Badges Grid matching reference image */}
+            {/* 2x2 Feature Badges Grid matching reference image */}
             <div className="grid grid-cols-2 gap-2 max-w-[280px] pt-0.5">
               {/* Feature 1 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <Cpu className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -96,7 +92,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <BarChart3 className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -106,7 +102,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <Sparkles className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -116,7 +112,7 @@ export const HomePage: React.FC<HomePageProps> = ({
               </div>
 
               {/* Feature 4 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <ShieldCheck className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -125,42 +121,42 @@ export const HomePage: React.FC<HomePageProps> = ({
                 </span>
               </div>
             </div>
-
-            {/* Note: The bottom half of this left column is completely clear so the entire campus building (ADICHUNCHANAGIRI UNIVERSITY) and front lawn in the 2nd background image are 100% visible and unobstructed! */}
           </div>
 
-          {/* Center Column: 11-Petal Flower Dial with Cropped Center Circle Logo */}
-          <div
-            className={`transition-all duration-300 flex flex-col items-center justify-center self-center ${
-              selectedRole ? 'lg:col-span-5 xl:col-span-5' : 'lg:col-span-8 xl:col-span-8'
-            }`}
-          >
-            <RoleDial
-              roles={ACU_ERP_ROLES}
+          {/* Center Column: 8-Petal Karnataka Higher Education ERP Role Dial (Image 3) */}
+          <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center justify-center self-center py-2">
+            <KarnatakaRoleDial
               selectedRoleId={selectedRole?.id || null}
-              onSelectRole={(role) => {
-                if (selectedRole?.id === role.id) {
-                  setSelectedRole(null);
-                } else {
-                  setSelectedRole(role);
-                }
-              }}
+              onSelectRole={(role) => setSelectedRole(role)}
             />
           </div>
 
-          {/* Right Column: Role-Wise Login Form Card (Rendered ONLY when a role is clicked) */}
-          {selectedRole && (
-            <div className="lg:col-span-3 xl:col-span-3 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
-              <LoginFormCard
-                role={selectedRole}
-                onClose={() => setSelectedRole(null)}
-                onLogin={onLoginSuccess}
-              />
-            </div>
-          )}
+          {/* Right Column: Role Based Login Card (Styled strictly like Image 1: Crimson & White) */}
+          <div className="lg:col-span-3.5 xl:col-span-3.5 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
+            <LoginFormCard
+              role={selectedRole}
+              availableRoles={KARNATAKA_8_ROLES}
+              onRoleChange={(role) => setSelectedRole(role)}
+              onLogin={onLoginSuccess}
+            />
+          </div>
 
         </div>
       </div>
+
+      {/* Footer copyright */}
+      <footer className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 relative z-20 flex flex-col sm:flex-row items-center justify-between text-[11px] text-purple-950/70 font-semibold gap-2">
+        <div>
+          &copy; {new Date().getFullYear()} Government of Karnataka &bull; Department of Higher Education ERP Platform
+        </div>
+        <div className="flex items-center gap-4 text-[10.5px]">
+          <span className="hover:text-purple-900 cursor-pointer">Security Policy</span>
+          <span>&bull;</span>
+          <span className="hover:text-purple-900 cursor-pointer">Terms of Use</span>
+          <span>&bull;</span>
+          <span className="hover:text-purple-900 cursor-pointer">Helpdesk</span>
+        </div>
+      </footer>
     </div>
   );
 };
