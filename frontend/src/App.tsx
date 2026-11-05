@@ -13,6 +13,7 @@ import { StudentLayout } from './components/student/StudentLayout';
 import { FacultyProvider } from './context/FacultyContext';
 import { FacultyLayout } from './components/faculty/FacultyLayout';
 import { HomePage } from './components/HomePage';
+import { KarnatakaHomePage, KARNATAKA_UNIVERSITIES, UniversityOption } from './components/KarnatakaHomePage';
 import { Sidebar } from './components/Sidebar';
 import { Header } from './components/Header';
 import { StatCards } from './components/StatCards';
@@ -40,6 +41,29 @@ export const App: React.FC = () => {
   });
 
   const [loginPrefilledEmail, setLoginPrefilledEmail] = useState('hod.physiology@bgs.edu.in');
+
+  // Home Page Stage: 'state-portal' (First Home Page: Karnataka Higher Education ERP) | 'university-portal' (Second Home Page: ACU ERP Role Dial)
+  const [homeStage, setHomeStage] = useState<'state-portal' | 'university-portal'>(() => {
+    try {
+      const saved = localStorage.getItem('acu_erp_home_stage');
+      if (saved === 'state-portal' || saved === 'university-portal') {
+        return saved;
+      }
+    } catch {
+      // fallback
+    }
+    return 'state-portal';
+  });
+
+  const [selectedUniversity, setSelectedUniversity] = useState<UniversityOption>(() => {
+    try {
+      const saved = localStorage.getItem('acu_erp_selected_univ');
+      if (saved) return JSON.parse(saved);
+    } catch {
+      // fallback
+    }
+    return KARNATAKA_UNIVERSITIES[0];
+  });
 
   // Portal session & navigation state (for public dial portal)
   const [session, setSession] = useState<UserSession | null>(() => {
@@ -91,6 +115,22 @@ export const App: React.FC = () => {
       console.warn('Could not save role to localStorage:', e);
     }
   }, [selectedRole]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('acu_erp_home_stage', homeStage);
+    } catch (e) {
+      console.warn('Could not save homeStage to localStorage:', e);
+    }
+  }, [homeStage]);
+
+  useEffect(() => {
+    try {
+      localStorage.setItem('acu_erp_selected_univ', JSON.stringify(selectedUniversity));
+    } catch (e) {
+      console.warn('Could not save selectedUniversity to localStorage:', e);
+    }
+  }, [selectedUniversity]);
 
   // ERP Dashboard state (when logged in via portal)
   const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -150,6 +190,7 @@ export const App: React.FC = () => {
     setSession(null);
     setSelectedRole(null);
     setViewMode('portal');
+    setHomeStage('university-portal');
   };
 
   return (
@@ -209,11 +250,22 @@ export const App: React.FC = () => {
           {viewMode === 'portal' && (
             <>
               {!session?.isAuthenticated ? (
-                <HomePage
-                  selectedRole={selectedRole}
-                  setSelectedRole={setSelectedRole}
-                  onLoginSuccess={handlePortalLogin}
-                />
+                homeStage === 'state-portal' ? (
+                  <KarnatakaHomePage
+                    onProceedToUniversity={(univ) => {
+                      setSelectedUniversity(univ);
+                      setHomeStage('university-portal');
+                    }}
+                  />
+                ) : (
+                  <HomePage
+                    selectedRole={selectedRole}
+                    setSelectedRole={setSelectedRole}
+                    onLoginSuccess={handlePortalLogin}
+                    onBackToStatePortal={() => setHomeStage('state-portal')}
+                    selectedUniversityName={selectedUniversity.name}
+                  />
+                )
               ) : (
                 <div className="min-h-screen bg-[#f4f6fc] text-[#1e293b] flex">
                   <Sidebar

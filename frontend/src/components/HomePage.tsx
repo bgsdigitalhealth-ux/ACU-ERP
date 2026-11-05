@@ -4,6 +4,8 @@ import {
   BarChart3,
   Sparkles,
   ShieldCheck,
+  ArrowLeft,
+  Building2
 } from 'lucide-react';
 import { RoleInfo } from '../types/auth';
 import { ACU_ERP_ROLES } from '../data/roles';
@@ -15,12 +17,16 @@ interface HomePageProps {
   onLoginSuccess: (role: RoleInfo, email: string) => void;
   selectedRole: RoleInfo | null;
   setSelectedRole: (role: RoleInfo | null) => void;
+  onBackToStatePortal?: () => void;
+  selectedUniversityName?: string;
 }
 
 export const HomePage: React.FC<HomePageProps> = ({
   onLoginSuccess,
   selectedRole,
   setSelectedRole,
+  onBackToStatePortal,
+  selectedUniversityName = 'Adichunchanagiri University (ACU)'
 }) => {
   return (
     <div className="relative h-screen w-screen overflow-hidden select-none flex flex-col justify-between">
@@ -36,12 +42,32 @@ export const HomePage: React.FC<HomePageProps> = ({
         className="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10 select-none"
       />
 
+      {/* Top Banner / Switch University Breadcrumb Bar */}
+      <div className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2.5 pb-1 flex items-center justify-between relative z-30">
+        <div className="flex items-center gap-2 text-xs font-bold text-purple-950 bg-white/85 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-2xs">
+          <Building2 className="w-3.5 h-3.5 text-purple-700" />
+          <span className="hidden sm:inline text-gray-600">Karnataka Higher Education ERP</span>
+          <span className="hidden sm:inline text-gray-400">&rsaquo;</span>
+          <span className="text-[#3b0866] font-extrabold">{selectedUniversityName}</span>
+        </div>
+
+        {onBackToStatePortal && (
+          <button
+            onClick={onBackToStatePortal}
+            className="flex items-center gap-1.5 px-3.5 py-1.5 rounded-full bg-white/90 hover:bg-white text-purple-900 border border-purple-300 text-xs font-bold shadow-2xs hover:shadow-md transition-all cursor-pointer"
+          >
+            <ArrowLeft className="w-3.5 h-3.5" />
+            <span>Switch University / State Portal</span>
+          </button>
+        )}
+      </div>
+
       {/* Main Content Area */}
-      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-3 sm:py-4 flex items-center relative z-20">
+      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 sm:py-3 flex items-center relative z-20">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start h-full">
           
           {/* Left Column: Official ACU ERP Logo, Heading, and 2x2 Feature Grid - Pinned to TOP */}
-          <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-start space-y-2.5 sm:space-y-3 pt-1 self-start">
+          <div className="lg:col-span-4 xl:col-span-4 flex flex-col justify-start space-y-2 sm:space-y-2.5 pt-1 self-start">
             {/* 1. Official ACU Logo */}
             <div>
               <AcuLogo size="md" />
