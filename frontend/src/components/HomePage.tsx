@@ -73,44 +73,44 @@ export const HomePage: React.FC<HomePageProps> = ({
               </h1>
             </div>
 
-            {/* 2x2 Feature Badges Grid */}
-            <div className="grid grid-cols-2 gap-2 max-w-[280px]">
+            {/* 2x2 Feature Badges Grid - Increased size */}
+            <div className="grid grid-cols-2 gap-2.5 sm:gap-3 max-w-[310px] sm:max-w-[340px]">
               {/* Feature 1 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
-                  <Cpu className="w-3.5 h-3.5 stroke-[2]" />
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-1.5 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
+                  <Cpu className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-800 leading-tight">
+                <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-snug">
                   Integrated<br />Operations
                 </span>
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
-                  <BarChart3 className="w-3.5 h-3.5 stroke-[2]" />
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-1.5 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
+                  <BarChart3 className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-800 leading-tight">
+                <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-snug">
                   Data-driven<br />Governance
                 </span>
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
-                  <Sparkles className="w-3.5 h-3.5 stroke-[2]" />
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-1.5 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
+                  <Sparkles className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-800 leading-tight">
+                <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-snug">
                   AI-powered<br />Insights
                 </span>
               </div>
 
               {/* Feature 4 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
-                <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
-                  <ShieldCheck className="w-3.5 h-3.5 stroke-[2]" />
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 sm:p-3 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+                <div className="w-8 h-8 sm:w-9 sm:h-9 rounded-xl bg-purple-50 text-purple-700 flex items-center justify-center mb-1.5 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
+                  <ShieldCheck className="w-4 h-4 sm:w-4.5 sm:h-4.5 stroke-[2.2]" />
                 </div>
-                <span className="text-[10px] font-bold text-gray-800 leading-tight">
+                <span className="text-[11px] sm:text-xs font-bold text-gray-800 leading-snug">
                   Accreditation<br />Ready
                 </span>
               </div>
