@@ -162,15 +162,16 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
   const [hoveredRoleId, setHoveredRoleId] = useState<string | null>(null);
 
   return (
-    <div className="relative w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] md:w-[520px] md:h-[520px] lg:w-[540px] lg:h-[540px] flex items-center justify-center select-none">
+    <div className="relative w-[340px] h-[340px] sm:w-[460px] sm:h-[460px] md:w-[520px] md:h-[520px] lg:w-[560px] lg:h-[560px] xl:w-[580px] xl:h-[580px] flex items-center justify-center select-none">
       {/* 
         High-Resolution College Role Dial Artwork (Karnataka Higher Education ERP - 10 Roles)
+        Crisp, transparent artwork without any clipping border or blur mask (matches Image 2)
       */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/85 bg-white/70 backdrop-blur-md">
+      <div className="absolute inset-0 flex items-center justify-center pointer-events-none">
         <img
           src="/karnataka-college-dial.png"
           alt="Karnataka Higher Education ERP - College Role Based Login"
-          className="w-full h-full object-contain pointer-events-none"
+          className="w-full h-full object-contain drop-shadow-xl"
         />
       </div>
 
