@@ -153,7 +153,7 @@ export const KarnatakaRoleDial: React.FC<KarnatakaRoleDialProps> = ({
         <img
           src="/karnataka-role-dial.png"
           alt="Karnataka Higher Education ERP Role Based Login"
-          className="w-full h-full object-contain drop-shadow-xl"
+          className="w-full h-full object-contain"
         />
       </div>
 
