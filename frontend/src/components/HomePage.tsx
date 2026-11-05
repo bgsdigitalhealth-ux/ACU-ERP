@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Cpu,
   BarChart3,
@@ -26,13 +26,7 @@ export const HomePage: React.FC<HomePageProps> = ({
   onBackToStatePortal,
   selectedUniversityName = 'Adichunchanagiri University (ACU)'
 }) => {
-  // Ensure a role is selected by default so the Role Based Login card is visible as requested
-  useEffect(() => {
-    if (!selectedRole) {
-      // Default to Vice Chancellor
-      setSelectedRole(KARNATAKA_8_ROLES[1]);
-    }
-  }, [selectedRole, setSelectedRole]);
+  // Do NOT auto-select: show login form only once user selects a role card from the dial
 
   return (
     <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between">
@@ -63,11 +57,11 @@ export const HomePage: React.FC<HomePageProps> = ({
         )}
       </div>
 
-      {/* Main Content Area - Balanced 3-column grid (3 + 5 + 4 = 12) */}
+      {/* Main Content Area */}
       <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 flex items-center relative z-20">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center">
           
-          {/* Left Column: Heading, and 2x2 Feature Grid - lg:col-span-3 (25% width) */}
+          {/* Left Column: Heading, and 2x2 Feature Grid */}
           <div className="lg:col-span-3 flex flex-col justify-start space-y-3 self-center">
             {/* Platform Headline */}
             <div>
@@ -123,23 +117,30 @@ export const HomePage: React.FC<HomePageProps> = ({
             </div>
           </div>
 
-          {/* Center Column: 8-Petal Karnataka Higher Education ERP Role Dial - lg:col-span-5 (41.6% width) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center self-center py-1">
+          {/* Center Column: 8-Petal Karnataka Higher Education ERP Role Dial */}
+          <div
+            className={`flex flex-col items-center justify-center self-center py-1 transition-all duration-300 ${
+              selectedRole ? 'lg:col-span-5' : 'lg:col-span-9'
+            }`}
+          >
             <KarnatakaRoleDial
               selectedRoleId={selectedRole?.id || null}
               onSelectRole={(role) => setSelectedRole(role)}
             />
           </div>
 
-          {/* Right Column: Role Based Login Card - lg:col-span-4 (33.3% width) */}
-          <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
-            <LoginFormCard
-              role={selectedRole}
-              availableRoles={KARNATAKA_8_ROLES}
-              onRoleChange={(role) => setSelectedRole(role)}
-              onLogin={onLoginSuccess}
-            />
-          </div>
+          {/* Right Column: Role Based Login Card - Shown ONLY when a role is selected */}
+          {selectedRole && (
+            <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
+              <LoginFormCard
+                role={selectedRole}
+                availableRoles={KARNATAKA_8_ROLES}
+                onRoleChange={(role) => setSelectedRole(role)}
+                onClose={() => setSelectedRole(null)}
+                onLogin={onLoginSuccess}
+              />
+            </div>
+          )}
 
         </div>
       </div>

@@ -7,98 +7,98 @@ export interface KarnatakaDialRole extends RoleInfo {
 
 export const KARNATAKA_8_ROLES: KarnatakaDialRole[] = [
   {
-    id: 'chancellor',
-    title: 'Chancellor',
-    subtitle: 'Apex university governance and statutory decrees',
-    iconName: 'GraduationCap',
+    id: 'principal',
+    title: 'Principal',
+    subtitle: 'Apex institutional governance & college leadership',
+    iconName: 'UserCheck',
     color: '#e11d48',
     bgLight: '#ffe4e6',
     borderColor: '#f43f5e',
-    defaultEmail: 'chancellor@acu.edu.in',
+    defaultEmail: 'principal@acu.edu.in',
     angle: 270,
     angleDeg: 270 // 12:00 Top
   },
   {
-    id: 'vice-chancellor',
-    title: 'Vice Chancellor',
-    subtitle: 'Approvals & Academic Oversight, Institutional Governance',
-    iconName: 'UserCheck',
+    id: 'vice-principal',
+    title: 'Vice Principal',
+    subtitle: 'Academic supervision & institutional management',
+    iconName: 'Award',
     color: '#ea580c',
     bgLight: '#ffedd5',
     borderColor: '#fb923c',
-    defaultEmail: 'vc.office@acu.edu.in',
+    defaultEmail: 'vp@acu.edu.in',
     angle: 315,
     angleDeg: 315 // 1:30 Top-Right
   },
   {
-    id: 'registrar',
-    title: 'Registrar',
-    subtitle: 'Evaluation, Valuation Centers & Result Processing',
-    iconName: 'FileEdit',
-    color: '#dc2626',
-    bgLight: '#fee2e2',
-    borderColor: '#f87171',
-    defaultEmail: 'registrar.eval@acu.edu.in',
+    id: 'hr-manager',
+    title: 'HR Manager',
+    subtitle: 'Personnel governance & staff administrative roster',
+    iconName: 'Users',
+    color: '#db2777',
+    bgLight: '#fce7f3',
+    borderColor: '#ec4899',
+    defaultEmail: 'hr.admin@acu.edu.in',
     angle: 0,
     angleDeg: 0 // 3:00 Right
-  },
-  {
-    id: 'coe',
-    title: 'Controller of Examinations',
-    subtitle: 'University examination schedules & QP generation',
-    iconName: 'ClipboardCheck',
-    color: '#ca8a04',
-    bgLight: '#fef9c3',
-    borderColor: '#facc15',
-    defaultEmail: 'coe@acu.edu.in',
-    angle: 45,
-    angleDeg: 45 // 4:30 Bottom-Right
   },
   {
     id: 'finance',
     title: 'Finance Officer',
     subtitle: 'Treasury funds, fee reconciliation & financial audits',
     iconName: 'Coins',
+    color: '#7c3aed',
+    bgLight: '#ede9fe',
+    borderColor: '#8b5cf6',
+    defaultEmail: 'finance@acu.edu.in',
+    angle: 45,
+    angleDeg: 45 // 4:30 Bottom-Right
+  },
+  {
+    id: 'hod',
+    title: 'HOD (Head of Department)',
+    subtitle: 'Curriculum delivery, faculty workload & student marks',
+    iconName: 'Network',
     color: '#16a34a',
     bgLight: '#dcfce7',
-    borderColor: '#4ade80',
-    defaultEmail: 'finance@acu.edu.in',
+    borderColor: '#22c55e',
+    defaultEmail: 'hod.physiology@acu.edu.in',
     angle: 90,
     angleDeg: 90 // 6:00 Bottom
   },
   {
-    id: 'hr-manager',
-    title: 'HR Manager',
-    subtitle: 'Faculty appointments, roster & personnel governance',
-    iconName: 'Users',
+    id: 'faculty',
+    title: 'Faculty / Teaching Staff',
+    subtitle: 'Assessments, attendance, internal marks & classes',
+    iconName: 'GraduationCap',
     color: '#0891b2',
     bgLight: '#cffafe',
     borderColor: '#22d3ee',
-    defaultEmail: 'hr.admin@acu.edu.in',
+    defaultEmail: 'faculty.medicine@acu.edu.in',
     angle: 135,
     angleDeg: 135 // 7:30 Bottom-Left
   },
   {
-    id: 'dean',
-    title: 'Dean',
-    subtitle: 'Faculty administration, departmental oversight & councils',
-    iconName: 'Building2',
+    id: 'exam-coordinator',
+    title: 'Examination Coordinator',
+    subtitle: 'Examination schedules, QP papers & room allocation',
+    iconName: 'FileCheck',
     color: '#2563eb',
     bgLight: '#dbeafe',
     borderColor: '#60a5fa',
-    defaultEmail: 'dean.medical@acu.edu.in',
+    defaultEmail: 'coe@acu.edu.in',
     angle: 180,
     angleDeg: 180 // 9:00 Left
   },
   {
-    id: 'iqac',
-    title: 'IQAC Coordinator',
-    subtitle: 'Internal Quality Assurance Cell, NAAC & NIRF Rankings',
-    iconName: 'Award',
-    color: '#7c3aed',
-    bgLight: '#ede9fe',
-    borderColor: '#a78bfa',
-    defaultEmail: 'iqac@acu.edu.in',
+    id: 'librarian',
+    title: 'Librarian',
+    subtitle: 'Digital catalog, textbook issuance & research access',
+    iconName: 'BookOpen',
+    color: '#4338ca',
+    bgLight: '#e0e7ff',
+    borderColor: '#6366f1',
+    defaultEmail: 'library@acu.edu.in',
     angle: 225,
     angleDeg: 225 // 10:30 Top-Left
   }
@@ -149,9 +149,9 @@ export const KarnatakaRoleDial: React.FC<KarnatakaRoleDialProps> = ({
         High-Resolution Image 3: Karnataka Higher Education ERP Role Dial Artwork 
         Rendered cleanly inside circular container with soft ambient glow
       */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/80 bg-white">
+      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/80 bg-white/60 backdrop-blur-md">
         <img
-          src="/karnataka-role-dial.jpg"
+          src="/karnataka-role-dial.png"
           alt="Karnataka Higher Education ERP Role Based Login"
           className="w-full h-full object-contain pointer-events-none"
         />

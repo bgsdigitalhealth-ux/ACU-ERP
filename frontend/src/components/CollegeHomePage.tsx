@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React from 'react';
 import {
   Cpu,
   BarChart3,
@@ -29,14 +29,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
   onBackToStatePortal,
   selectedCollegeName = 'BGS Medical College & Hospital'
 }) => {
-  // Ensure a college role is selected by default so the Role Based Login card is visible
-  useEffect(() => {
-    const isCollegeRole = selectedRole && KARNATAKA_COLLEGE_ROLES.some((r) => r.id === selectedRole.id);
-    if (!isCollegeRole) {
-      // Default to Principal
-      setSelectedRole(KARNATAKA_COLLEGE_ROLES[0]);
-    }
-  }, [selectedRole, setSelectedRole]);
+  // Do NOT auto-select: show login card only once user selects a role card from the dial
 
   return (
     <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between">
@@ -130,23 +123,30 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
             </div>
           </div>
 
-          {/* Center Column: 10-Role Karnataka College Dial - lg:col-span-5 (41.6% width) */}
-          <div className="lg:col-span-5 flex flex-col items-center justify-center self-center py-1">
+          {/* Center Column: 10-Role Karnataka College Dial */}
+          <div
+            className={`flex flex-col items-center justify-center self-center py-1 transition-all duration-300 ${
+              selectedRole ? 'lg:col-span-5' : 'lg:col-span-9'
+            }`}
+          >
             <KarnatakaCollegeRoleDial
               selectedRoleId={selectedRole?.id || null}
               onSelectRole={(role) => setSelectedRole(role)}
             />
           </div>
 
-          {/* Right Column: Role Based Login Card - lg:col-span-4 (33.3% width) */}
-          <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
-            <LoginFormCard
-              role={selectedRole}
-              availableRoles={KARNATAKA_COLLEGE_ROLES}
-              onRoleChange={(role) => setSelectedRole(role)}
-              onLogin={onLoginSuccess}
-            />
-          </div>
+          {/* Right Column: Role Based Login Card - Shown ONLY when a role is selected */}
+          {selectedRole && (
+            <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
+              <LoginFormCard
+                role={selectedRole}
+                availableRoles={KARNATAKA_COLLEGE_ROLES}
+                onRoleChange={(role) => setSelectedRole(role)}
+                onClose={() => setSelectedRole(null)}
+                onLogin={onLoginSuccess}
+              />
+            </div>
+          )}
 
         </div>
       </div>

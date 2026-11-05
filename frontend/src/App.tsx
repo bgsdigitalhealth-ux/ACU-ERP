@@ -265,9 +265,11 @@ export const App: React.FC = () => {
                   <KarnatakaHomePage
                     onProceedToUniversity={(univ) => {
                       setSelectedUniversity(univ);
+                      setSelectedRole(null);
                       setHomeStage('university-portal');
                     }}
                     onProceedToCollege={() => {
+                      setSelectedRole(null);
                       setHomeStage('college-portal');
                     }}
                   />

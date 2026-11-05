@@ -166,9 +166,9 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
       {/* 
         High-Resolution College Role Dial Artwork (Karnataka Higher Education ERP - 10 Roles)
       */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/85 bg-slate-950">
+      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/85 bg-white/70 backdrop-blur-md">
         <img
-          src="/karnataka-college-dial.jpg"
+          src="/karnataka-college-dial.png"
           alt="Karnataka Higher Education ERP - College Role Based Login"
           className="w-full h-full object-contain pointer-events-none"
         />
@@ -181,7 +181,7 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
       >
         <defs>
           <filter id="collegeCircleGlow" x="-25%" y="-25%" width="150%" height="150%">
-            <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#ffffff" floodOpacity="0.85" />
+            <feDropShadow dx="0" dy="0" stdDeviation="10" floodColor="#8b0029" floodOpacity="0.6" />
           </filter>
         </defs>
 
@@ -201,14 +201,14 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
               className="transition-all duration-200 cursor-pointer"
               fill={
                 isSelected
-                  ? 'rgba(255, 255, 255, 0.22)'
+                  ? 'rgba(139, 0, 41, 0.22)'
                   : isHovered
-                  ? 'rgba(255, 255, 255, 0.12)'
+                  ? 'rgba(139, 0, 41, 0.12)'
                   : 'rgba(0, 0, 0, 0.001)'
               }
               stroke={
                 isSelected
-                  ? '#ffffff'
+                  ? '#8b0029'
                   : isHovered
                   ? role.borderColor
                   : 'transparent'
