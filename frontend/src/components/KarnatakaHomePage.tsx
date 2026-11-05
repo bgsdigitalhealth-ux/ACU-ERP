@@ -8,12 +8,11 @@ import {
   Lock,
   Eye,
   EyeOff,
-  Headphones,
   ArrowRight,
   GraduationCap,
   Users,
-  KeyRound,
-  CheckCircle2
+  CheckCircle2,
+  X
 } from 'lucide-react';
 
 export interface UniversityOption {
@@ -125,8 +124,8 @@ interface KarnatakaHomePageProps {
 export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   onProceedToUniversity
 }) => {
-  // Selected Card: 'hed' (Higher Education Dept) | 'university' (University Login) | 'college' (College Login)
-  const [selectedCard, setSelectedCard] = useState<'hed' | 'university' | 'college'>('university');
+  // Selected Card: Initially null - only show login form once a login role card is clicked
+  const [selectedCard, setSelectedCard] = useState<'hed' | 'university' | 'college' | null>(null);
 
   // Form State
   const [selectedUniversityId, setSelectedUniversityId] = useState<string>('acu');
@@ -136,7 +135,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   const [password, setPassword] = useState<string>('••••••••');
   const [showPassword, setShowPassword] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(true);
-  const [activeTab, setActiveTab] = useState<'login' | 'sso'>('login');
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
@@ -189,7 +187,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
         }}
       />
 
-      {/* Bottom Full-Width Vidhana Soudha & Wave Banner */}
+      {/* Bottom Full-Width Vidhana Soudha & Wave Banner (Clean without card artifacts) */}
       <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none -z-0 select-none overflow-hidden h-[130px] sm:h-[160px] md:h-[185px]">
         <img
           src="/karnataka-bottom-banner.png"
@@ -211,7 +209,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               alt="Seal of Karnataka"
               className="w-full h-full object-contain"
               onError={(e) => {
-                // fallback to text if image fails
                 (e.target as HTMLElement).style.display = 'none';
               }}
             />
@@ -226,20 +223,18 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </p>
           </div>
         </div>
-
-        {/* State Govt Badge */}
-        <div className="hidden lg:flex items-center gap-2 bg-white/90 backdrop-blur-md px-3 py-1.5 rounded-full border border-purple-200 shadow-2xs text-xs font-bold text-purple-950">
-          <span className="w-2.5 h-2.5 rounded-full bg-emerald-500 animate-pulse" />
-          <span>Government of Karnataka &bull; Department of Higher Education</span>
-        </div>
       </header>
 
-      {/* Main Content Area: 3 Columns Grid */}
+      {/* Main Content Area */}
       <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 sm:py-3 relative z-20 flex items-center">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-6 items-center">
           
           {/* Column 1 (Left): Headline & 2x2 Feature Grid */}
-          <div className="lg:col-span-4 xl:col-span-3.5 flex flex-col justify-start space-y-3 sm:space-y-4">
+          <div
+            className={`transition-all duration-300 flex flex-col justify-start space-y-3 sm:space-y-4 ${
+              selectedCard ? 'lg:col-span-4 xl:col-span-3.5' : 'lg:col-span-5 xl:col-span-4'
+            }`}
+          >
             <div>
               <h2 className="text-lg sm:text-2xl xl:text-[27px] font-black text-[#29084e] leading-[1.15] tracking-tight drop-shadow-2xs">
                 University<br />
@@ -249,7 +244,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               </h2>
             </div>
 
-            {/* 2x2 Feature Badges Grid matching reference screenshot */}
+            {/* 2x2 Feature Badges Grid */}
             <div className="grid grid-cols-2 gap-2.5 max-w-[300px]">
               {/* Feature 1 */}
               <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
@@ -291,21 +286,26 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </span>
               </div>
             </div>
-
-            <div className="text-[11.5px] text-purple-900/80 font-medium max-w-[280px]">
-              Unified digital backbone connecting state universities, constituent colleges & administrative directorates.
-            </div>
           </div>
 
           {/* Column 2 (Center): 3 Interactive Large Selection Cards */}
-          <div className="lg:col-span-4 xl:col-span-4.5 flex flex-col gap-3.5 sm:gap-4 justify-center">
-            
+          <div
+            className={`transition-all duration-300 flex flex-col gap-3.5 sm:gap-4 justify-center w-full ${
+              selectedCard
+                ? 'lg:col-span-4 xl:col-span-4.5'
+                : 'lg:col-span-7 xl:col-span-7 max-w-xl mx-auto'
+            }`}
+          >
             {/* Card 1: Higher Education Department */}
             <button
               type="button"
               onClick={() => {
-                setSelectedCard('hed');
-                showToast('Selected Higher Education Department Login');
+                if (selectedCard === 'hed') {
+                  setSelectedCard(null);
+                } else {
+                  setSelectedCard('hed');
+                  showToast('Selected Higher Education Department');
+                }
               }}
               className={`relative overflow-hidden w-full text-left bg-white rounded-2xl sm:rounded-3xl border-2 transition-all duration-300 p-4 sm:p-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'hed'
@@ -314,7 +314,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               }`}
             >
               <div className="flex items-center gap-4 sm:gap-5 z-10">
-                {/* Red Building Icon */}
                 <div className="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center p-1 bg-red-50 border border-red-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/hed-icon.png"
@@ -336,18 +335,22 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Right Side Red Gradient Swoosh Accent matching Image 1 */}
+              {/* Right Side Red Gradient Swoosh Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-28 sm:w-36 pointer-events-none overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-l from-[#f43f5e] via-[#e11d48]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-10 group-hover:translate-x-6 transition-transform opacity-90" />
               </div>
             </button>
 
-            {/* Card 2: University Login (Highlighted / Recommended) */}
+            {/* Card 2: University Login */}
             <button
               type="button"
               onClick={() => {
-                setSelectedCard('university');
-                showToast('Selected University Login. Choose university in the right form.');
+                if (selectedCard === 'university') {
+                  setSelectedCard(null);
+                } else {
+                  setSelectedCard('university');
+                  showToast('Selected University Login. Enter credentials to proceed.');
+                }
               }}
               className={`relative overflow-hidden w-full text-left bg-white rounded-2xl sm:rounded-3xl border-2 transition-all duration-300 p-4 sm:p-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'university'
@@ -356,7 +359,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               }`}
             >
               <div className="flex items-center gap-4 sm:gap-5 z-10">
-                {/* Blue University Building Icon */}
                 <div className="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center p-1 bg-blue-50 border border-blue-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/univ-icon.png"
@@ -383,7 +385,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Right Side Blue/Cyan Gradient Swoosh Accent matching Image 1 */}
+              {/* Right Side Blue Gradient Swoosh Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-28 sm:w-36 pointer-events-none overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-l from-[#0284c7] via-[#0ea5e9]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-10 group-hover:translate-x-6 transition-transform opacity-90" />
               </div>
@@ -393,8 +395,12 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             <button
               type="button"
               onClick={() => {
-                setSelectedCard('college');
-                showToast('Selected College Login');
+                if (selectedCard === 'college') {
+                  setSelectedCard(null);
+                } else {
+                  setSelectedCard('college');
+                  showToast('Selected College Login');
+                }
               }}
               className={`relative overflow-hidden w-full text-left bg-white rounded-2xl sm:rounded-3xl border-2 transition-all duration-300 p-4 sm:p-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'college'
@@ -403,7 +409,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               }`}
             >
               <div className="flex items-center gap-4 sm:gap-5 z-10">
-                {/* Red/Orange School Icon */}
                 <div className="w-13 h-13 sm:w-15 sm:h-15 rounded-2xl flex items-center justify-center p-1 bg-amber-50 border border-amber-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/college-icon.png"
@@ -425,274 +430,230 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Right Side Orange/Amber Gradient Swoosh Accent matching Image 1 */}
+              {/* Right Side Orange Gradient Swoosh Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-28 sm:w-36 pointer-events-none overflow-hidden">
                 <div className="w-full h-full bg-gradient-to-l from-[#ea580c] via-[#f59e0b]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-10 group-hover:translate-x-6 transition-transform opacity-90" />
               </div>
             </button>
-
           </div>
 
-          {/* Column 3 (Right): Role Based / University Login Form Card */}
-          <div className="lg:col-span-4 xl:col-span-4 flex justify-center lg:justify-end">
-            <div className="w-full max-w-[420px] bg-white rounded-3xl border border-purple-200/80 shadow-2xl overflow-hidden select-none">
-              
-              {/* Card Header: Gradient Banner with Graduation Cap matching Image 1 */}
-              <div className="bg-gradient-to-r from-[#7a00c2] via-[#610499] to-[#3f0068] text-white p-4 sm:p-5 relative overflow-hidden">
-                <div className="flex items-center justify-between relative z-10">
-                  <div className="flex items-center gap-3">
-                    <div className="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20">
-                      <Users className="w-5 h-5 text-amber-300" />
-                    </div>
-                    <div>
-                      <h3 className="text-base sm:text-lg font-black tracking-tight text-white leading-tight">
-                        {selectedCard === 'university'
-                          ? 'University Login'
-                          : selectedCard === 'hed'
-                          ? 'Higher Education Portal'
-                          : 'College Administration'}
-                      </h3>
-                      <p className="text-[11px] text-purple-200 font-medium">
-                        Access Karnataka Higher Education ERP
-                      </p>
-                    </div>
-                  </div>
-
-                  {/* Graduation Cap Badge at top right */}
-                  <div className="w-10 h-10 rounded-2xl bg-white/20 flex items-center justify-center border border-white/30 shadow-xs">
-                    <GraduationCap className="w-5 h-5 text-white" />
-                  </div>
-                </div>
-              </div>
-
-              {/* Card Body */}
-              <div className="p-5 sm:p-6 space-y-4">
+          {/* Column 3 (Right): Role Based / University Login Form Card (Displayed ONLY when a role is clicked) */}
+          {selectedCard && (
+            <div className="lg:col-span-4 xl:col-span-4 flex justify-center lg:justify-end animate-in fade-in slide-in-from-right-6 duration-300">
+              <div className="w-full max-w-[420px] bg-white rounded-3xl border border-purple-200/80 shadow-2xl overflow-hidden select-none">
                 
-                {/* Mode Toggle: Login vs SSO Login */}
-                <div className="flex items-center gap-2 p-1 bg-purple-50 rounded-2xl border border-purple-100">
-                  <button
-                    type="button"
-                    onClick={() => setActiveTab('login')}
-                    className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                      activeTab === 'login'
-                        ? 'bg-[#5f099b] text-white shadow-md'
-                        : 'text-purple-900 hover:text-purple-950'
-                    }`}
-                  >
-                    <Users className="w-3.5 h-3.5" />
-                    <span>Login</span>
-                  </button>
-
-                  <button
-                    type="button"
-                    onClick={() => {
-                      setActiveTab('sso');
-                      showToast('SSO Single Sign-On selected. Select university to proceed.');
-                    }}
-                    className={`flex-1 py-1.5 rounded-xl text-xs font-bold transition-all flex items-center justify-center gap-1.5 cursor-pointer ${
-                      activeTab === 'sso'
-                        ? 'bg-[#5f099b] text-white shadow-md'
-                        : 'text-purple-900 hover:text-purple-950'
-                    }`}
-                  >
-                    <KeyRound className="w-3.5 h-3.5 text-amber-500" />
-                    <span>SSO Login</span>
-                  </button>
-                </div>
-
-                {/* Form Elements */}
-                <form onSubmit={handleLoginSubmit} className="space-y-3.5">
-                  
-                  {/* First Field: Registered University List in Dropdown (as requested by user) */}
-                  {selectedCard === 'university' && (
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-gray-800">
-                        Select Registered University <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <select
-                          value={selectedUniversityId}
-                          onChange={(e) => {
-                            setSelectedUniversityId(e.target.value);
-                            const u = KARNATAKA_UNIVERSITIES.find((item) => item.id === e.target.value);
-                            if (u) {
-                              if (u.id === 'acu') {
-                                setUsername('admin@acu.edu.in');
-                              } else {
-                                setUsername(`admin@${u.shortName.toLowerCase()}.karnataka.gov.in`);
-                              }
-                            }
-                          }}
-                          className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all cursor-pointer shadow-2xs"
-                        >
-                          <optgroup label="Recommended / Active Demo">
-                            <option value="acu">
-                              🌟 Adichunchanagiri University (ACU), B.G. Nagara
-                            </option>
-                          </optgroup>
-                          <optgroup label="Karnataka State Universities">
-                            {KARNATAKA_UNIVERSITIES.filter((u) => u.id !== 'acu').map((u) => (
-                              <option key={u.id} value={u.id}>
-                                {u.name} – {u.location}
-                              </option>
-                            ))}
-                          </optgroup>
-                        </select>
+                {/* Card Header: Gradient Banner with Graduation Cap and Dismiss Button */}
+                <div className="bg-gradient-to-r from-[#7a00c2] via-[#610499] to-[#3f0068] text-white p-4 sm:p-5 relative overflow-hidden">
+                  <div className="flex items-center justify-between relative z-10">
+                    <div className="flex items-center gap-3">
+                      <div className="w-10 h-10 rounded-2xl bg-white/15 backdrop-blur-md flex items-center justify-center border border-white/20">
+                        <Users className="w-5 h-5 text-amber-300" />
                       </div>
-                      <p className="text-[10px] text-purple-700 font-medium">
-                        Selecting university loads its executive role dial &amp; portals
-                      </p>
-                    </div>
-                  )}
-
-                  {/* Form for Higher Education Department */}
-                  {selectedCard === 'hed' && (
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-gray-800">
-                        Select Department Office <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        value={selectedDepartment}
-                        onChange={(e) => setSelectedDepartment(e.target.value)}
-                        className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-red-500 transition-all cursor-pointer shadow-2xs"
-                      >
-                        <option value="hed-sec">Department of Higher Education (Secretariat)</option>
-                        <option value="dte">Directorate of Technical Education (DTE)</option>
-                        <option value="dce">Department of Collegiate Education (DCE)</option>
-                        <option value="kshec">Karnataka State Higher Education Council (KSHEC)</option>
-                      </select>
-                    </div>
-                  )}
-
-                  {/* Form for College Login */}
-                  {selectedCard === 'college' && (
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-gray-800">
-                        Select College Category <span className="text-red-500">*</span>
-                      </label>
-                      <select
-                        value={selectedCollegeType}
-                        onChange={(e) => setSelectedCollegeType(e.target.value)}
-                        className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-amber-500 transition-all cursor-pointer shadow-2xs"
-                      >
-                        <option value="medical">BGS Medical College &amp; Hospital</option>
-                        <option value="pharmacy">BGS College of Pharmacy</option>
-                        <option value="engg">BGS Institute of Technology</option>
-                        <option value="nursing">Adichunchanagiri Nursing College</option>
-                        <option value="allied">Allied Health Sciences Institute</option>
-                      </select>
-                    </div>
-                  )}
-
-                  {/* Username / Email Field */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-gray-800">
-                      Username / Email <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-700">
-                        <Mail className="w-4 h-4" />
+                      <div>
+                        <h3 className="text-base sm:text-lg font-black tracking-tight text-white leading-tight">
+                          {selectedCard === 'university'
+                            ? 'University Login'
+                            : selectedCard === 'hed'
+                            ? 'Higher Education Portal'
+                            : 'College Administration'}
+                        </h3>
+                        <p className="text-[11px] text-purple-200 font-medium">
+                          Access Karnataka Higher Education ERP
+                        </p>
                       </div>
-                      <input
-                        type="text"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        placeholder="Enter username or email"
-                        required
-                        className="w-full pl-9 pr-3 py-2 bg-white border border-purple-200/90 rounded-xl text-xs font-medium text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-600 transition-all shadow-2xs"
-                      />
                     </div>
-                  </div>
 
-                  {/* Password Field with Eye Toggle */}
-                  <div className="space-y-1">
-                    <label className="block text-xs font-bold text-gray-800">
-                      Password <span className="text-red-500">*</span>
-                    </label>
-                    <div className="relative">
-                      <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-700">
-                        <Lock className="w-4 h-4" />
+                    <div className="flex items-center gap-1.5">
+                      <div className="w-9 h-9 rounded-xl bg-white/20 flex items-center justify-center border border-white/30 shadow-xs">
+                        <GraduationCap className="w-4 h-4 text-white" />
                       </div>
-                      <input
-                        type={showPassword ? 'text' : 'password'}
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        placeholder="Enter password"
-                        required
-                        className="w-full pl-9 pr-10 py-2 bg-white border border-purple-200/90 rounded-xl text-xs font-medium text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-600 transition-all shadow-2xs"
-                      />
                       <button
                         type="button"
-                        onClick={() => setShowPassword(!showPassword)}
-                        className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-700 cursor-pointer"
+                        onClick={() => setSelectedCard(null)}
+                        className="p-1 rounded-xl bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+                        title="Close Login Form"
                       >
-                        {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        <X className="w-4 h-4" />
                       </button>
                     </div>
                   </div>
+                </div>
 
-                  {/* Remember Me & Forgot Password */}
-                  <div className="flex items-center justify-between text-xs pt-0.5">
-                    <label className="flex items-center gap-1.5 cursor-pointer text-gray-700 font-medium">
-                      <input
-                        type="checkbox"
-                        checked={rememberMe}
-                        onChange={(e) => setRememberMe(e.target.checked)}
-                        className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 w-3.5 h-3.5 cursor-pointer"
-                      />
-                      <span>Remember Me</span>
-                    </label>
-                    <button
-                      type="button"
-                      onClick={() => showToast('Password recovery instructions dispatched to registered email.')}
-                      className="text-xs font-bold text-purple-700 hover:text-purple-900 hover:underline cursor-pointer"
-                    >
-                      Forgot Password?
-                    </button>
-                  </div>
-
-                  {/* Login Action Button */}
-                  <button
-                    type="submit"
-                    disabled={isLoading}
-                    className="w-full py-2.5 px-4 bg-gradient-to-r from-[#6b0f9c] via-[#520979] to-[#3b0257] hover:from-[#7e14b6] hover:to-[#49056c] text-white rounded-xl text-xs font-black shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 group"
-                  >
-                    {isLoading ? (
-                      <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    ) : (
-                      <>
-                        <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
-                        <span>Login to University ERP</span>
-                      </>
+                {/* Card Body */}
+                <div className="p-5 sm:p-6 space-y-4">
+                  {/* Form Elements */}
+                  <form onSubmit={handleLoginSubmit} className="space-y-3.5">
+                    
+                    {/* First Field: Registered University List in Dropdown */}
+                    {selectedCard === 'university' && (
+                      <div className="space-y-1">
+                        <label className="block text-xs font-bold text-gray-800">
+                          Select Registered University <span className="text-red-500">*</span>
+                        </label>
+                        <div className="relative">
+                          <select
+                            value={selectedUniversityId}
+                            onChange={(e) => {
+                              setSelectedUniversityId(e.target.value);
+                              const u = KARNATAKA_UNIVERSITIES.find((item) => item.id === e.target.value);
+                              if (u) {
+                                if (u.id === 'acu') {
+                                  setUsername('admin@acu.edu.in');
+                                } else {
+                                  setUsername(`admin@${u.shortName.toLowerCase()}.karnataka.gov.in`);
+                                }
+                              }
+                            }}
+                            className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-purple-600 focus:border-transparent transition-all cursor-pointer shadow-2xs"
+                          >
+                            <optgroup label="Recommended / Active Demo">
+                              <option value="acu">
+                                🌟 Adichunchanagiri University (ACU), B.G. Nagara
+                              </option>
+                            </optgroup>
+                            <optgroup label="Karnataka State Universities">
+                              {KARNATAKA_UNIVERSITIES.filter((u) => u.id !== 'acu').map((u) => (
+                                <option key={u.id} value={u.id}>
+                                  {u.name} – {u.location}
+                                </option>
+                              ))}
+                            </optgroup>
+                          </select>
+                        </div>
+                        <p className="text-[10px] text-purple-700 font-medium">
+                          Selecting university loads its executive role dial &amp; portals
+                        </p>
+                      </div>
                     )}
-                  </button>
 
-                </form>
+                    {/* Form for Higher Education Department */}
+                    {selectedCard === 'hed' && (
+                      <div className="space-y-1">
+                        <label className="block text-xs font-bold text-gray-800">
+                          Select Department Office <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          value={selectedDepartment}
+                          onChange={(e) => setSelectedDepartment(e.target.value)}
+                          className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-red-500 transition-all cursor-pointer shadow-2xs"
+                        >
+                          <option value="hed-sec">Department of Higher Education (Secretariat)</option>
+                          <option value="dte">Directorate of Technical Education (DTE)</option>
+                          <option value="dce">Department of Collegiate Education (DCE)</option>
+                          <option value="kshec">Karnataka State Higher Education Council (KSHEC)</option>
+                        </select>
+                      </div>
+                    )}
 
-                {/* Helpdesk Footer matching Image 1 */}
-                <div className="pt-3 border-t border-purple-100 flex items-start gap-2.5">
-                  <div className="w-8 h-8 rounded-full bg-purple-100 text-purple-800 flex items-center justify-center shrink-0 mt-0.5">
-                    <Headphones className="w-4 h-4" />
-                  </div>
-                  <div>
-                    <h5 className="text-[11px] font-black text-gray-800">
-                      Need Help?
-                    </h5>
-                    <p className="text-[10px] text-gray-500 font-medium">
-                      Contact Higher Education ERP Helpdesk
-                    </p>
-                    <div className="flex flex-wrap items-center gap-x-2 gap-y-0.5 text-[10px] font-bold text-purple-900 mt-0.5">
-                      <span>📞 +91 12345 67890</span>
-                      <span>|</span>
-                      <span>✉ erp@karnataka.gov.in</span>
+                    {/* Form for College Login */}
+                    {selectedCard === 'college' && (
+                      <div className="space-y-1">
+                        <label className="block text-xs font-bold text-gray-800">
+                          Select College Category <span className="text-red-500">*</span>
+                        </label>
+                        <select
+                          value={selectedCollegeType}
+                          onChange={(e) => setSelectedCollegeType(e.target.value)}
+                          className="w-full bg-white border border-purple-200/90 rounded-xl px-3 py-2 text-xs font-bold text-gray-800 focus:outline-hidden focus:ring-2 focus:ring-amber-500 transition-all cursor-pointer shadow-2xs"
+                        >
+                          <option value="medical">BGS Medical College &amp; Hospital</option>
+                          <option value="pharmacy">BGS College of Pharmacy</option>
+                          <option value="engg">BGS Institute of Technology</option>
+                          <option value="nursing">Adichunchanagiri Nursing College</option>
+                          <option value="allied">Allied Health Sciences Institute</option>
+                        </select>
+                      </div>
+                    )}
+
+                    {/* Username / Email Field */}
+                    <div className="space-y-1">
+                      <label className="block text-xs font-bold text-gray-800">
+                        Username / Email <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-700">
+                          <Mail className="w-4 h-4" />
+                        </div>
+                        <input
+                          type="text"
+                          value={username}
+                          onChange={(e) => setUsername(e.target.value)}
+                          placeholder="Enter username or email"
+                          required
+                          className="w-full pl-9 pr-3 py-2 bg-white border border-purple-200/90 rounded-xl text-xs font-medium text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-600 transition-all shadow-2xs"
+                        />
+                      </div>
                     </div>
-                  </div>
+
+                    {/* Password Field with Eye Toggle */}
+                    <div className="space-y-1">
+                      <label className="block text-xs font-bold text-gray-800">
+                        Password <span className="text-red-500">*</span>
+                      </label>
+                      <div className="relative">
+                        <div className="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none text-purple-700">
+                          <Lock className="w-4 h-4" />
+                        </div>
+                        <input
+                          type={showPassword ? 'text' : 'password'}
+                          value={password}
+                          onChange={(e) => setPassword(e.target.value)}
+                          placeholder="Enter password"
+                          required
+                          className="w-full pl-9 pr-10 py-2 bg-white border border-purple-200/90 rounded-xl text-xs font-medium text-gray-800 placeholder-gray-400 focus:outline-hidden focus:ring-2 focus:ring-purple-600 transition-all shadow-2xs"
+                        />
+                        <button
+                          type="button"
+                          onClick={() => setShowPassword(!showPassword)}
+                          className="absolute inset-y-0 right-0 pr-3 flex items-center text-gray-400 hover:text-purple-700 cursor-pointer"
+                        >
+                          {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
+                        </button>
+                      </div>
+                    </div>
+
+                    {/* Remember Me & Forgot Password */}
+                    <div className="flex items-center justify-between text-xs pt-0.5">
+                      <label className="flex items-center gap-1.5 cursor-pointer text-gray-700 font-medium">
+                        <input
+                          type="checkbox"
+                          checked={rememberMe}
+                          onChange={(e) => setRememberMe(e.target.checked)}
+                          className="rounded border-gray-300 text-purple-600 focus:ring-purple-500 w-3.5 h-3.5 cursor-pointer"
+                        />
+                        <span>Remember Me</span>
+                      </label>
+                      <button
+                        type="button"
+                        onClick={() => showToast('Password recovery instructions dispatched to registered email.')}
+                        className="text-xs font-bold text-purple-700 hover:text-purple-900 hover:underline cursor-pointer"
+                      >
+                        Forgot Password?
+                      </button>
+                    </div>
+
+                    {/* Login Action Button */}
+                    <button
+                      type="submit"
+                      disabled={isLoading}
+                      className="w-full py-2.5 px-4 bg-gradient-to-r from-[#6b0f9c] via-[#520979] to-[#3b0257] hover:from-[#7e14b6] hover:to-[#49056c] text-white rounded-xl text-xs font-black shadow-lg hover:shadow-xl transition-all duration-200 flex items-center justify-center gap-2 cursor-pointer disabled:opacity-70 group"
+                    >
+                      {isLoading ? (
+                        <div className="w-4 h-4 border-2 border-white/30 border-t-white rounded-full animate-spin" />
+                      ) : (
+                        <>
+                          <ArrowRight className="w-4 h-4 group-hover:translate-x-1 transition-transform" />
+                          <span>Login to University ERP</span>
+                        </>
+                      )}
+                    </button>
+
+                  </form>
                 </div>
 
               </div>
-
             </div>
-          </div>
+          )}
 
         </div>
       </main>
