@@ -135,16 +135,14 @@ interface KarnatakaHomePageProps {
 
 export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   onProceedToUniversity,
-  onProceedToCollege,
-  onNavigateToHed
+  onProceedToCollege
 }) => {
-  // Selected Card: 'hed' | 'university' | 'college' | null (initially null)
-  const [selectedCard, setSelectedCard] = useState<'hed' | 'university' | 'college' | null>(null);
+  // Selected Card: 'university' | 'college' | null (initially null)
+  const [selectedCard, setSelectedCard] = useState<'university' | 'college' | null>(null);
 
   // Form State
   const [selectedUniversityId, setSelectedUniversityId] = useState<string>('acu');
   const [selectedCollegeId, setSelectedCollegeId] = useState<string>('bgs-medical');
-  const [selectedDepartment, setSelectedDepartment] = useState<string>('dce');
   const [username, setUsername] = useState<string>('admin@acu.edu.in');
   const [password, setPassword] = useState<string>('password123');
   const [showPassword, setShowPassword] = useState<boolean>(false);
@@ -157,7 +155,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
     setTimeout(() => setToastMessage(null), 3500);
   };
 
-  const handleCardClick = (card: 'hed' | 'university' | 'college') => {
+  const handleCardClick = (card: 'university' | 'college') => {
     if (selectedCard === card) {
       setSelectedCard(null);
       return;
@@ -167,12 +165,9 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
       const u = KARNATAKA_UNIVERSITIES.find((item) => item.id === selectedUniversityId) || KARNATAKA_UNIVERSITIES[0];
       setUsername(u.id === 'acu' ? 'admin@acu.edu.in' : `admin@${u.shortName.toLowerCase()}.karnataka.gov.in`);
       showToast('Select University from dropdown, enter credentials, and login');
-    } else if (card === 'college') {
+    } else {
       setUsername('principal@bgs.edu.in');
       showToast('Select University & College from dropdown, enter credentials, and login');
-    } else {
-      setUsername('sec.hed@karnataka.gov.in');
-      showToast('Higher Education Department selected. Enter credentials to proceed');
     }
   };
 
@@ -187,22 +182,12 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
         setIsLoading(false);
         onProceedToUniversity(univ);
       }, 400);
-    } else if (selectedCard === 'college') {
+    } else {
       const college = AFFILIATED_COLLEGES.find((c) => c.id === selectedCollegeId) || AFFILIATED_COLLEGES[0];
       showToast(`Authenticated for ${college.name}. Redirecting to College Role Based Login...`);
       setTimeout(() => {
         setIsLoading(false);
         onProceedToCollege();
-      }, 400);
-    } else {
-      showToast('Authenticated for Higher Education Department. Redirecting to State Oversight Console...');
-      setTimeout(() => {
-        setIsLoading(false);
-        if (onNavigateToHed) {
-          onNavigateToHed();
-        } else {
-          onProceedToUniversity(KARNATAKA_UNIVERSITIES[0]);
-        }
       }, 400);
     }
   };
@@ -250,8 +235,8 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
         </div>
       </header>
 
-      {/* Main Content Area - Positioned lower in the sky directly above the building */}
-      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-20 sm:pt-28 lg:pt-36 pb-6 relative z-20 flex items-start">
+      {/* Main Content Area - Positioned in upper sky area matching headline and card alignment */}
+      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-8 sm:pt-11 lg:pt-14 pb-4 relative z-20 flex items-start">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
           
           {/* Column 1 (Left): Headline & 2x2 Feature Grid */}
@@ -313,65 +298,19 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </div>
           </div>
 
-          {/* Column 2 (Center): The 3 Selection Cards */}
+          {/* Column 2 (Center): The 2 Selection Cards (University Login & College Login) */}
           <div
-            className={`transition-all duration-300 flex flex-col gap-3 justify-start self-start w-full ${
+            className={`transition-all duration-300 flex flex-col gap-3.5 justify-start self-start w-full ${
               selectedCard
                 ? 'lg:col-span-4 xl:col-span-4 max-w-[420px] xl:max-w-[450px]'
                 : 'lg:col-span-7 xl:col-span-6 max-w-[500px] xl:max-w-[530px]'
             }`}
           >
-            {/* Card 1: Higher Education Department */}
-            <button
-              type="button"
-              onClick={() => handleCardClick('hed')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
-                selectedCard === 'hed'
-                  ? 'border-red-600 ring-4 ring-red-400/25 scale-[1.01]'
-                  : 'border-slate-200/90 hover:border-red-400'
-              }`}
-            >
-              <div className="flex items-center gap-3.5 z-10 min-w-0">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-red-50 border border-red-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
-                  <img
-                    src="/hed-icon.png"
-                    alt="Higher Education Department"
-                    className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-
-                <div className="border-l-2 border-red-200/80 pl-3.5 min-w-0">
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-red-700 transition-colors leading-tight whitespace-nowrap">
-                    Higher Education Department
-                  </h3>
-                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
-                    Apex Secretariat &amp; State Councils
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
-              {!selectedCard && (
-                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-red-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                  <span>Select &amp; Login</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              )}
-
-              {/* Right Side Red Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#f43f5e] via-[#e11d48]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
-              </div>
-            </button>
-
-            {/* Card 2: University Login - Clicking opens Login Form on the right */}
+            {/* Card 1: University Login - Clicking opens Login Form on the right */}
             <button
               type="button"
               onClick={() => handleCardClick('university')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
+              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3.5 px-4 sm:py-4 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'university'
                   ? 'border-blue-600 ring-4 ring-blue-400/25 scale-[1.01]'
                   : 'border-slate-200/90 hover:border-blue-500'
@@ -418,11 +357,11 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
               </div>
             </button>
 
-            {/* Card 3: College Login - Clicking opens Login Form on the right */}
+            {/* Card 2: College Login - Clicking opens Login Form on the right */}
             <button
               type="button"
               onClick={() => handleCardClick('college')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
+              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3.5 px-4 sm:py-4 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'college'
                   ? 'border-amber-600 ring-4 ring-amber-400/25 scale-[1.01]'
                   : 'border-slate-200/90 hover:border-amber-400'
@@ -481,11 +420,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
 
                     <div className="min-w-0">
                       <h3 className="text-base sm:text-lg font-black tracking-tight text-[#8b0029] leading-tight whitespace-nowrap">
-                        {selectedCard === 'university'
-                          ? 'University Login'
-                          : selectedCard === 'college'
-                          ? 'College Login'
-                          : 'State Secretariat Login'}
+                        {selectedCard === 'college' ? 'College Login' : 'University Login'}
                       </h3>
                       <p className="text-[10.5px] text-gray-500 font-semibold mt-0.5 whitespace-nowrap">
                         Access Karnataka Higher Education ERP
@@ -570,28 +505,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                               {col.name} ({col.location})
                             </option>
                           ))}
-                        </select>
-                      </div>
-                    </div>
-                  )}
-
-                  {/* HED-specific Field: Department Office */}
-                  {selectedCard === 'hed' && (
-                    <div className="space-y-1">
-                      <label className="block text-xs font-bold text-gray-800 whitespace-nowrap">
-                        Select Department Office <span className="text-red-500">*</span>
-                      </label>
-                      <div className="relative">
-                        <Building2 className="w-4 h-4 text-[#8b0029] absolute left-3 top-1/2 -translate-y-1/2 pointer-events-none" />
-                        <select
-                          value={selectedDepartment}
-                          onChange={(e) => setSelectedDepartment(e.target.value)}
-                          className="w-full pl-9 pr-7 py-2 bg-white text-xs font-semibold text-gray-900 border border-gray-300 rounded-xl outline-hidden focus:border-[#8b0029] focus:ring-2 focus:ring-[#8b0029]/20 transition-all cursor-pointer shadow-2xs"
-                        >
-                          <option value="hed-sec">Department of Higher Education (Secretariat)</option>
-                          <option value="dte">Directorate of Technical Education (DTE)</option>
-                          <option value="dce">Department of Collegiate Education (DCE)</option>
-                          <option value="kshec">Karnataka State Higher Education Council (KSHEC)</option>
                         </select>
                       </div>
                     </div>
