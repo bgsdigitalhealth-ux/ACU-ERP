@@ -166,7 +166,7 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
       {/* 
         High-Resolution College Role Dial Artwork (Karnataka Higher Education ERP - 10 Roles)
       */}
-      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/85 bg-white">
+      <div className="absolute inset-0 rounded-full overflow-hidden shadow-2xl border-4 border-white/85 bg-slate-950">
         <img
           src="/karnataka-college-dial.jpg"
           alt="Karnataka Higher Education ERP - College Role Based Login"
@@ -180,8 +180,8 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
         className="absolute inset-0 w-full h-full z-20 cursor-pointer pointer-events-auto"
       >
         <defs>
-          <filter id="collegeCircleGlow" x="-20%" y="-20%" width="140%" height="140%">
-            <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#8b0029" floodOpacity="0.55" />
+          <filter id="collegeCircleGlow" x="-25%" y="-25%" width="150%" height="150%">
+            <feDropShadow dx="0" dy="0" stdDeviation="12" floodColor="#ffffff" floodOpacity="0.85" />
           </filter>
         </defs>
 
@@ -201,16 +201,16 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
               className="transition-all duration-200 cursor-pointer"
               fill={
                 isSelected
-                  ? 'rgba(139, 0, 41, 0.22)'
+                  ? 'rgba(255, 255, 255, 0.22)'
                   : isHovered
-                  ? 'rgba(139, 0, 41, 0.12)'
+                  ? 'rgba(255, 255, 255, 0.12)'
                   : 'rgba(0, 0, 0, 0.001)'
               }
               stroke={
                 isSelected
-                  ? '#8b0029'
+                  ? '#ffffff'
                   : isHovered
-                  ? 'rgba(139, 0, 41, 0.7)'
+                  ? role.borderColor
                   : 'transparent'
               }
               strokeWidth={isSelected ? 6 : isHovered ? 4 : 0}
