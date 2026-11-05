@@ -56,7 +56,7 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
   };
 
   return (
-    <div className="w-[340px] sm:w-[380px] max-w-[400px] min-w-[320px] shrink-0 bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 select-none">
+    <div className="w-full max-w-[480px] sm:max-w-[500px] min-w-[340px] shrink-0 bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 select-none">
       
       {/* Card Header matching Image 1: Users Icon + Title + Graduation Cap */}
       <div className="flex items-center justify-between pb-2.5 relative">

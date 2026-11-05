@@ -250,8 +250,8 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
         </div>
       </header>
 
-      {/* Main Content Area - Positioned in the clear sky area */}
-      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-8 sm:pt-11 lg:pt-14 pb-2 relative z-20 flex items-start">
+      {/* Main Content Area - Positioned lower in the sky directly above the building */}
+      <main className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-20 sm:pt-28 lg:pt-36 pb-6 relative z-20 flex items-start">
         <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-5 lg:gap-8 items-start">
           
           {/* Column 1 (Left): Headline & 2x2 Feature Grid */}
@@ -313,11 +313,11 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </div>
           </div>
 
-          {/* Column 2 (Center): The 3 Selection Cards - Proper alignment and clearance */}
+          {/* Column 2 (Center): The 3 Selection Cards */}
           <div
             className={`transition-all duration-300 flex flex-col gap-3 justify-start self-start w-full ${
               selectedCard
-                ? 'lg:col-span-4 xl:col-span-4 max-w-sm xl:max-w-md'
+                ? 'lg:col-span-4 xl:col-span-4 max-w-[420px] xl:max-w-[450px]'
                 : 'lg:col-span-7 xl:col-span-6 max-w-[500px] xl:max-w-[530px]'
             }`}
           >
@@ -353,11 +353,13 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Action Prompt */}
-              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-red-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                <span>Select &amp; Login</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
+              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
+              {!selectedCard && (
+                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-red-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
+                  <span>Select &amp; Login</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+              )}
 
               {/* Right Side Red Gradient Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
@@ -402,11 +404,13 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Action Prompt */}
-              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-blue-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                <span>Select &amp; Login</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
+              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
+              {!selectedCard && (
+                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-blue-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
+                  <span>Select &amp; Login</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+              )}
 
               {/* Right Side Blue Gradient Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
@@ -446,11 +450,13 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 </div>
               </div>
 
-              {/* Action Prompt */}
-              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                <span>Select &amp; Login</span>
-                <ArrowRight className="w-3.5 h-3.5" />
-              </div>
+              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
+              {!selectedCard && (
+                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
+                  <span>Select &amp; Login</span>
+                  <ArrowRight className="w-3.5 h-3.5" />
+                </div>
+              )}
 
               {/* Right Side Orange Gradient Accent */}
               <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
@@ -459,10 +465,10 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </button>
           </div>
 
-          {/* Column 3 (Right): Login Form Card (Without SSO Login) */}
+          {/* Column 3 (Right): Login Form Card - Increased breadth to 480px-500px */}
           {selectedCard && (
             <div className="lg:col-span-5 xl:col-span-5 flex justify-center lg:justify-start self-start animate-in fade-in slide-in-from-right-4 duration-200">
-              <div className="w-full max-w-[390px] min-w-[320px] bg-white rounded-3xl p-5 border border-gray-200/90 shadow-2xl relative select-none">
+              <div className="w-full max-w-[480px] sm:max-w-[500px] min-w-[340px] bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-2xl relative select-none">
                 
                 {/* Card Header matching Image 1 */}
                 <div className="flex items-center justify-between pb-2.5 relative">
