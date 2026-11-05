@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import {
   Cpu,
   BarChart3,
@@ -14,7 +14,9 @@ import {
   GraduationCap,
   X,
   Building2,
-  School
+  School,
+  Move,
+  RotateCcw
 } from 'lucide-react';
 
 export interface UniversityOption {
@@ -150,6 +152,100 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [toastMessage, setToastMessage] = useState<string | null>(null);
 
+  // Moveable / Draggable Login Badges State (both cards moveable in different directions)
+  const [univOffset, setUnivOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [collegeOffset, setCollegeOffset] = useState<{ x: number; y: number }>({ x: 0, y: 0 });
+  const [draggingCard, setDraggingCard] = useState<'university' | 'college' | null>(null);
+
+  const dragDataRef = useRef<{
+    card: 'university' | 'college' | null;
+    startX: number;
+    startY: number;
+    initialX: number;
+    initialY: number;
+    hasMoved: boolean;
+  }>({
+    card: null,
+    startX: 0,
+    startY: 0,
+    initialX: 0,
+    initialY: 0,
+    hasMoved: false
+  });
+
+  const startDrag = (card: 'university' | 'college', clientX: number, clientY: number) => {
+    const currentOffset = card === 'university' ? univOffset : collegeOffset;
+    dragDataRef.current = {
+      card,
+      startX: clientX,
+      startY: clientY,
+      initialX: currentOffset.x,
+      initialY: currentOffset.y,
+      hasMoved: false
+    };
+    setDraggingCard(card);
+  };
+
+  useEffect(() => {
+    const handlePointerMove = (e: MouseEvent | TouchEvent) => {
+      if (!dragDataRef.current.card) return;
+      const clientX = 'touches' in e ? e.touches[0].clientX : e.clientX;
+      const clientY = 'touches' in e ? e.touches[0].clientY : e.clientY;
+      const dx = clientX - dragDataRef.current.startX;
+      const dy = clientY - dragDataRef.current.startY;
+
+      if (Math.hypot(dx, dy) > 6) {
+        dragDataRef.current.hasMoved = true;
+      }
+
+      if (dragDataRef.current.card === 'university') {
+        setUnivOffset({
+          x: dragDataRef.current.initialX + dx,
+          y: dragDataRef.current.initialY + dy
+        });
+      } else if (dragDataRef.current.card === 'college') {
+        setCollegeOffset({
+          x: dragDataRef.current.initialX + dx,
+          y: dragDataRef.current.initialY + dy
+        });
+      }
+    };
+
+    const handlePointerUp = () => {
+      if (!dragDataRef.current.card) return;
+      const { card, hasMoved } = dragDataRef.current;
+      dragDataRef.current.card = null;
+      setDraggingCard(null);
+
+      if (!hasMoved && card) {
+        handleCardClick(card);
+      }
+    };
+
+    window.addEventListener('mousemove', handlePointerMove);
+    window.addEventListener('mouseup', handlePointerUp);
+    window.addEventListener('touchmove', handlePointerMove, { passive: false });
+    window.addEventListener('touchend', handlePointerUp);
+
+    return () => {
+      window.removeEventListener('mousemove', handlePointerMove);
+      window.removeEventListener('mouseup', handlePointerUp);
+      window.removeEventListener('touchmove', handlePointerMove);
+      window.removeEventListener('touchend', handlePointerUp);
+    };
+  }, [univOffset, collegeOffset]);
+
+  const resetPositions = () => {
+    setUnivOffset({ x: 0, y: 0 });
+    setCollegeOffset({ x: 0, y: 0 });
+  };
+
+  const hasMovedEither =
+    Math.abs(univOffset.x) > 15 ||
+    Math.abs(univOffset.y) > 15 ||
+    Math.abs(collegeOffset.x) > 15 ||
+    Math.abs(collegeOffset.y) > 15;
+
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
@@ -194,6 +290,50 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
 
   return (
     <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between">
+      {/* Dynamic Keyframe Animations for Autonomous Movement in Different Directions */}
+      <style>{`
+        @keyframes floatDirectionA {
+          0% {
+            transform: translate(0px, 0px) rotate(0deg);
+          }
+          25% {
+            transform: translate(-7px, -12px) rotate(-1.5deg);
+          }
+          50% {
+            transform: translate(6px, -20px) rotate(1.2deg);
+          }
+          75% {
+            transform: translate(-4px, -8px) rotate(-0.8deg);
+          }
+          100% {
+            transform: translate(0px, 0px) rotate(0deg);
+          }
+        }
+        @keyframes floatDirectionB {
+          0% {
+            transform: translate(0px, 0px) rotate(0deg);
+          }
+          25% {
+            transform: translate(9px, 14px) rotate(1.8deg);
+          }
+          50% {
+            transform: translate(-7px, 20px) rotate(-1.4deg);
+          }
+          75% {
+            transform: translate(5px, 8px) rotate(0.9deg);
+          }
+          100% {
+            transform: translate(0px, 0px) rotate(0deg);
+          }
+        }
+        .animate-float-a {
+          animation: floatDirectionA 6s ease-in-out infinite;
+        }
+        .animate-float-b {
+          animation: floatDirectionB 6.5s ease-in-out infinite;
+        }
+      `}</style>
+
       {/* Official Karnataka Higher Education ERP Full Background Image */}
       <img
         src="/karnataka-background.jpg"
@@ -298,110 +438,189 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             </div>
           </div>
 
-          {/* Column 2 (Center): The 2 Selection Cards (University Login & College Login) */}
+          {/* Column 2 (Center): The 2 Moveable Circular Selection Cards (University Login & College Login) */}
           <div
-            className={`transition-all duration-300 flex flex-col gap-3.5 justify-start self-start w-full ${
+            className={`transition-all duration-300 flex flex-col items-center justify-start self-start w-full ${
               selectedCard
                 ? 'lg:col-span-4 xl:col-span-4 max-w-[420px] xl:max-w-[450px]'
-                : 'lg:col-span-7 xl:col-span-6 max-w-[500px] xl:max-w-[530px]'
+                : 'lg:col-span-8 xl:col-span-8'
             }`}
           >
-            {/* Card 1: University Login - Clicking opens Login Form on the right */}
-            <button
-              type="button"
-              onClick={() => handleCardClick('university')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3.5 px-4 sm:py-4 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
-                selectedCard === 'university'
-                  ? 'border-blue-600 ring-4 ring-blue-400/25 scale-[1.01]'
-                  : 'border-slate-200/90 hover:border-blue-500'
+            {/* Movement hint pill & reset button */}
+            <div className="mb-4 flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md rounded-full border border-purple-200/80 shadow-2xs text-[11px] font-semibold text-purple-950">
+              <Move className="w-3.5 h-3.5 text-purple-600 animate-pulse" />
+              <span>Drag cards freely in any direction &bull; Click to select portal</span>
+              {hasMovedEither && (
+                <button
+                  type="button"
+                  onClick={resetPositions}
+                  className="flex items-center gap-1 ml-1 px-2 py-0.5 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-800 text-[10.5px] font-bold transition-all cursor-pointer"
+                  title="Reset positions to default"
+                >
+                  <RotateCcw className="w-3 h-3" />
+                  <span>Reset</span>
+                </button>
+              )}
+            </div>
+
+            {/* The Two Moveable Cards Container */}
+            <div
+              className={`w-full flex ${
+                selectedCard
+                  ? 'flex-row sm:flex-col gap-4 items-center justify-center'
+                  : 'flex-col sm:flex-row items-center justify-center gap-8 lg:gap-10 xl:gap-14'
               }`}
             >
-              <div className="flex items-center gap-3.5 z-10 min-w-0">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-blue-50 border border-blue-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
-                  <img
-                    src="/univ-icon.png"
-                    alt="University Login"
-                    className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-
-                <div className="border-l-2 border-blue-200/80 pl-3.5 min-w-0">
-                  <div className="flex items-center gap-2 flex-nowrap">
-                    <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight whitespace-nowrap">
-                      University Login
-                    </h3>
-                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200 whitespace-nowrap">
-                      Multi-Campus
-                    </span>
+              {/* Card 1: University Login (Moveable in Direction A - Up & Left Ambient Drift) */}
+              <div
+                style={{
+                  transform: `translate3d(${univOffset.x}px, ${univOffset.y}px, 0px)`
+                }}
+                className={`relative flex flex-col items-center select-none ${
+                  draggingCard === 'university'
+                    ? 'z-50 cursor-grabbing'
+                    : 'cursor-grab group'
+                }`}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  startDrag('university', e.clientX, e.clientY);
+                }}
+                onTouchStart={(e) => {
+                  if (e.touches.length === 1) {
+                    startDrag('university', e.touches[0].clientX, e.touches[0].clientY);
+                  }
+                }}
+                onDoubleClick={() => setUnivOffset({ x: 0, y: 0 })}
+                title="Drag in any direction • Click to login"
+              >
+                <div
+                  className={`flex flex-col items-center transition-all duration-300 ${
+                    draggingCard === 'university' ? '' : 'animate-float-a'
+                  } ${
+                    selectedCard === 'university'
+                      ? 'scale-[1.04]'
+                      : selectedCard
+                      ? 'opacity-70 hover:opacity-100 scale-95 hover:scale-100'
+                      : 'hover:scale-[1.04]'
+                  }`}
+                >
+                  {/* Circular Badge Artwork */}
+                  <div
+                    className={`relative rounded-full transition-all duration-300 ${
+                      selectedCard
+                        ? 'w-[150px] h-[150px] sm:w-[170px] sm:h-[170px]'
+                        : 'w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[270px] md:h-[270px]'
+                    } ${
+                      selectedCard === 'university'
+                        ? 'ring-4 ring-cyan-400 ring-offset-4 ring-offset-white/90 drop-shadow-[0_20px_40px_rgba(2,132,199,0.7)]'
+                        : 'drop-shadow-[0_16px_32px_rgba(2,132,199,0.45)] group-hover:drop-shadow-[0_22px_44px_rgba(2,132,199,0.65)]'
+                    }`}
+                  >
+                    <img
+                      src="/university-login-badge.png"
+                      alt="University Login"
+                      className="w-full h-full object-contain pointer-events-none select-none"
+                    />
                   </div>
-                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
-                    State &amp; Autonomous University Portals
-                  </p>
+
+                  {/* Caption & Action Prompt Underneath */}
+                  <div className="mt-2.5 flex flex-col items-center text-center max-w-[260px]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-700 transition-colors">
+                        University Login
+                      </span>
+                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                        Multi-Campus
+                      </span>
+                    </div>
+                    <span className="text-[10.5px] text-gray-500 font-semibold mt-0.5">
+                      State &amp; Autonomous Portals
+                    </span>
+                    {!selectedCard && (
+                      <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-blue-200/80 shadow-2xs group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all">
+                        <span>Select &amp; Login</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                      </span>
+                    )}
+                  </div>
                 </div>
               </div>
 
-              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
-              {!selectedCard && (
-                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-blue-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                  <span>Select &amp; Login</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              )}
+              {/* Card 2: College Login (Moveable in Direction B - Down & Right Ambient Drift) */}
+              <div
+                style={{
+                  transform: `translate3d(${collegeOffset.x}px, ${collegeOffset.y}px, 0px)`
+                }}
+                className={`relative flex flex-col items-center select-none ${
+                  draggingCard === 'college'
+                    ? 'z-50 cursor-grabbing'
+                    : 'cursor-grab group'
+                }`}
+                onMouseDown={(e) => {
+                  e.preventDefault();
+                  startDrag('college', e.clientX, e.clientY);
+                }}
+                onTouchStart={(e) => {
+                  if (e.touches.length === 1) {
+                    startDrag('college', e.touches[0].clientX, e.touches[0].clientY);
+                  }
+                }}
+                onDoubleClick={() => setCollegeOffset({ x: 0, y: 0 })}
+                title="Drag in any direction • Click to login"
+              >
+                <div
+                  className={`flex flex-col items-center transition-all duration-300 ${
+                    draggingCard === 'college' ? '' : 'animate-float-b'
+                  } ${
+                    selectedCard === 'college'
+                      ? 'scale-[1.04]'
+                      : selectedCard
+                      ? 'opacity-70 hover:opacity-100 scale-95 hover:scale-100'
+                      : 'hover:scale-[1.04]'
+                  }`}
+                >
+                  {/* Circular Badge Artwork */}
+                  <div
+                    className={`relative rounded-full transition-all duration-300 ${
+                      selectedCard
+                        ? 'w-[150px] h-[150px] sm:w-[170px] sm:h-[170px]'
+                        : 'w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[270px] md:h-[270px]'
+                    } ${
+                      selectedCard === 'college'
+                        ? 'ring-4 ring-amber-400 ring-offset-4 ring-offset-white/90 drop-shadow-[0_20px_40px_rgba(234,88,12,0.7)]'
+                        : 'drop-shadow-[0_16px_32px_rgba(234,88,12,0.45)] group-hover:drop-shadow-[0_22px_44px_rgba(234,88,12,0.65)]'
+                    }`}
+                  >
+                    <img
+                      src="/college-login-badge.png"
+                      alt="College Login"
+                      className="w-full h-full object-contain pointer-events-none select-none"
+                    />
+                  </div>
 
-              {/* Right Side Blue Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#0284c7] via-[#0ea5e9]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
+                  {/* Caption & Action Prompt Underneath */}
+                  <div className="mt-2.5 flex flex-col items-center text-center max-w-[260px]">
+                    <div className="flex items-center gap-1.5">
+                      <span className="text-sm sm:text-base font-black text-gray-900 group-hover:text-amber-700 transition-colors">
+                        College Login
+                      </span>
+                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
+                        Affiliated
+                      </span>
+                    </div>
+                    <span className="text-[10.5px] text-gray-500 font-semibold mt-0.5">
+                      Constituent &amp; Autonomous Colleges
+                    </span>
+                    {!selectedCard && (
+                      <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-amber-200/80 shadow-2xs group-hover:shadow-md group-hover:bg-amber-600 group-hover:text-white transition-all">
+                        <span>Select &amp; Login</span>
+                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
+                      </span>
+                    )}
+                  </div>
+                </div>
               </div>
-            </button>
-
-            {/* Card 2: College Login - Clicking opens Login Form on the right */}
-            <button
-              type="button"
-              onClick={() => handleCardClick('college')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3.5 px-4 sm:py-4 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
-                selectedCard === 'college'
-                  ? 'border-amber-600 ring-4 ring-amber-400/25 scale-[1.01]'
-                  : 'border-slate-200/90 hover:border-amber-400'
-              }`}
-            >
-              <div className="flex items-center gap-3.5 z-10 min-w-0">
-                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-amber-50 border border-amber-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
-                  <img
-                    src="/college-icon.png"
-                    alt="College Login"
-                    className="w-7 h-7 sm:w-8 sm:h-8 object-contain"
-                    onError={(e) => {
-                      (e.target as HTMLElement).style.display = 'none';
-                    }}
-                  />
-                </div>
-
-                <div className="border-l-2 border-amber-200/80 pl-3.5 min-w-0">
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-amber-700 transition-colors leading-tight whitespace-nowrap">
-                    College Login
-                  </h3>
-                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
-                    Affiliated, Constituent &amp; Autonomous
-                  </p>
-                </div>
-              </div>
-
-              {/* Action Prompt - Shown only when no card is selected to prevent collision */}
-              {!selectedCard && (
-                <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-700 pr-6 sm:pr-8 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
-                  <span>Select &amp; Login</span>
-                  <ArrowRight className="w-3.5 h-3.5" />
-                </div>
-              )}
-
-              {/* Right Side Orange Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#ea580c] via-[#f59e0b]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
-              </div>
-            </button>
+            </div>
           </div>
 
           {/* Column 3 (Right): Login Form Card - Increased breadth to 480px-500px */}
