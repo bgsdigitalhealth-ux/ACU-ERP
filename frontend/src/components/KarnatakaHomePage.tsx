@@ -168,7 +168,14 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
   };
 
   return (
-    <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between bg-gradient-to-br from-[#f8f6ff] via-[#edf4ff] to-[#f4eeff]">
+    <div className="relative min-h-screen w-screen overflow-x-hidden overflow-y-auto select-none flex flex-col justify-between">
+      {/* Official Karnataka Higher Education ERP Full Background Image */}
+      <img
+        src="/karnataka-background.jpg"
+        alt="Karnataka Higher Education ERP Background"
+        className="absolute inset-0 w-full h-full object-fill pointer-events-none -z-10 select-none"
+      />
+
       {/* Toast Notification */}
       {toastMessage && (
         <div className="fixed top-4 right-4 z-50 flex items-center gap-2.5 bg-[#2a084e] text-white px-4 py-3 rounded-2xl shadow-2xl border border-purple-400/40 text-xs animate-in slide-in-from-top-4 duration-200">
@@ -176,28 +183,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
           <span className="font-semibold">{toastMessage}</span>
         </div>
       )}
-
-      {/* Top Right Purple Wave Accent */}
-      <img
-        src="/karnataka-top-wave.png"
-        alt="Wave Ribbon Accent"
-        className="absolute top-0 right-0 w-[240px] sm:w-[320px] pointer-events-none -z-0 select-none opacity-90 hidden sm:block"
-        onError={(e) => {
-          (e.target as HTMLElement).style.display = 'none';
-        }}
-      />
-
-      {/* Bottom Full-Width Vidhana Soudha & Wave Banner (Clean without card artifacts) */}
-      <div className="absolute bottom-0 left-0 right-0 w-full pointer-events-none -z-0 select-none overflow-hidden h-[130px] sm:h-[160px] md:h-[185px]">
-        <img
-          src="/karnataka-bottom-banner.png"
-          alt="Vidhana Soudha & Karnataka Higher Education Ribbons"
-          className="w-full h-full object-cover sm:object-fill object-bottom"
-          onError={(e) => {
-            (e.target as HTMLElement).style.display = 'none';
-          }}
-        />
-      </div>
 
       {/* Top Header Bar: Karnataka Seal & Title */}
       <header className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-3 sm:pt-4 pb-2 relative z-20 flex items-center justify-between">
