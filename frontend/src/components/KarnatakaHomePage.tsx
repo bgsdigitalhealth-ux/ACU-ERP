@@ -14,9 +14,7 @@ import {
   GraduationCap,
   X,
   Building2,
-  School,
-  Move,
-  RotateCcw
+  School
 } from 'lucide-react';
 
 export interface UniversityOption {
@@ -235,17 +233,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
     };
   }, [univOffset, collegeOffset]);
 
-  const resetPositions = () => {
-    setUnivOffset({ x: 0, y: 0 });
-    setCollegeOffset({ x: 0, y: 0 });
-  };
-
-  const hasMovedEither =
-    Math.abs(univOffset.x) > 15 ||
-    Math.abs(univOffset.y) > 15 ||
-    Math.abs(collegeOffset.x) > 15 ||
-    Math.abs(collegeOffset.y) > 15;
-
   const showToast = (msg: string) => {
     setToastMessage(msg);
     setTimeout(() => setToastMessage(null), 3500);
@@ -446,23 +433,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                 : 'lg:col-span-8 xl:col-span-8'
             }`}
           >
-            {/* Movement hint pill & reset button */}
-            <div className="mb-4 flex items-center gap-2.5 px-3.5 py-1.5 bg-white/90 backdrop-blur-md rounded-full border border-purple-200/80 shadow-2xs text-[11px] font-semibold text-purple-950">
-              <Move className="w-3.5 h-3.5 text-purple-600 animate-pulse" />
-              <span>Drag cards freely in any direction &bull; Click to select portal</span>
-              {hasMovedEither && (
-                <button
-                  type="button"
-                  onClick={resetPositions}
-                  className="flex items-center gap-1 ml-1 px-2 py-0.5 rounded-full bg-purple-100 hover:bg-purple-200 text-purple-800 text-[10.5px] font-bold transition-all cursor-pointer"
-                  title="Reset positions to default"
-                >
-                  <RotateCcw className="w-3 h-3" />
-                  <span>Reset</span>
-                </button>
-              )}
-            </div>
-
             {/* The Two Moveable Cards Container */}
             <div
               className={`w-full flex ${
@@ -491,7 +461,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   }
                 }}
                 onDoubleClick={() => setUnivOffset({ x: 0, y: 0 })}
-                title="Drag in any direction • Click to login"
+                title="University Login – Click to login or drag freely"
               >
                 <div
                   className={`flex flex-col items-center transition-all duration-300 ${
@@ -509,7 +479,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                     className={`relative rounded-full transition-all duration-300 ${
                       selectedCard
                         ? 'w-[150px] h-[150px] sm:w-[170px] sm:h-[170px]'
-                        : 'w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[270px] md:h-[270px]'
+                        : 'w-[230px] h-[230px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]'
                     } ${
                       selectedCard === 'university'
                         ? 'ring-4 ring-cyan-400 ring-offset-4 ring-offset-white/90 drop-shadow-[0_20px_40px_rgba(2,132,199,0.7)]'
@@ -521,27 +491,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                       alt="University Login"
                       className="w-full h-full object-contain pointer-events-none select-none"
                     />
-                  </div>
-
-                  {/* Caption & Action Prompt Underneath */}
-                  <div className="mt-2.5 flex flex-col items-center text-center max-w-[260px]">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm sm:text-base font-black text-gray-900 group-hover:text-blue-700 transition-colors">
-                        University Login
-                      </span>
-                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
-                        Multi-Campus
-                      </span>
-                    </div>
-                    <span className="text-[10.5px] text-gray-500 font-semibold mt-0.5">
-                      State &amp; Autonomous Portals
-                    </span>
-                    {!selectedCard && (
-                      <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-blue-600 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-blue-200/80 shadow-2xs group-hover:shadow-md group-hover:bg-blue-600 group-hover:text-white transition-all">
-                        <span>Select &amp; Login</span>
-                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                      </span>
-                    )}
                   </div>
                 </div>
               </div>
@@ -566,7 +515,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   }
                 }}
                 onDoubleClick={() => setCollegeOffset({ x: 0, y: 0 })}
-                title="Drag in any direction • Click to login"
+                title="College Login – Click to login or drag freely"
               >
                 <div
                   className={`flex flex-col items-center transition-all duration-300 ${
@@ -584,7 +533,7 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                     className={`relative rounded-full transition-all duration-300 ${
                       selectedCard
                         ? 'w-[150px] h-[150px] sm:w-[170px] sm:h-[170px]'
-                        : 'w-[220px] h-[220px] sm:w-[250px] sm:h-[250px] md:w-[270px] md:h-[270px]'
+                        : 'w-[230px] h-[230px] sm:w-[260px] sm:h-[260px] md:w-[280px] md:h-[280px]'
                     } ${
                       selectedCard === 'college'
                         ? 'ring-4 ring-amber-400 ring-offset-4 ring-offset-white/90 drop-shadow-[0_20px_40px_rgba(234,88,12,0.7)]'
@@ -596,27 +545,6 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                       alt="College Login"
                       className="w-full h-full object-contain pointer-events-none select-none"
                     />
-                  </div>
-
-                  {/* Caption & Action Prompt Underneath */}
-                  <div className="mt-2.5 flex flex-col items-center text-center max-w-[260px]">
-                    <div className="flex items-center gap-1.5">
-                      <span className="text-sm sm:text-base font-black text-gray-900 group-hover:text-amber-700 transition-colors">
-                        College Login
-                      </span>
-                      <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-amber-100 text-amber-800 border border-amber-200">
-                        Affiliated
-                      </span>
-                    </div>
-                    <span className="text-[10.5px] text-gray-500 font-semibold mt-0.5">
-                      Constituent &amp; Autonomous Colleges
-                    </span>
-                    {!selectedCard && (
-                      <span className="mt-1.5 inline-flex items-center gap-1 text-[11px] font-bold text-amber-700 bg-white/90 backdrop-blur-md px-3 py-1 rounded-full border border-amber-200/80 shadow-2xs group-hover:shadow-md group-hover:bg-amber-600 group-hover:text-white transition-all">
-                        <span>Select &amp; Login</span>
-                        <ArrowRight className="w-3 h-3 group-hover:translate-x-0.5 transition-transform" />
-                      </span>
-                    )}
                   </div>
                 </div>
               </div>
