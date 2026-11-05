@@ -64,11 +64,11 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
       </div>
 
       {/* Main Content Area - Balanced 3-column grid (3 + 5 + 4 = 12) */}
-      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 flex items-center relative z-20">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center">
+      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-3 sm:pt-4 lg:pt-6 pb-2 flex items-start relative z-20">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-start">
           
           {/* Left Column: Heading, and 2x2 Feature Grid - lg:col-span-3 (25% width) */}
-          <div className="lg:col-span-3 flex flex-col justify-start space-y-3 self-center">
+          <div className="lg:col-span-3 flex flex-col justify-start space-y-3.5 self-start">
             {/* Platform Headline */}
             <div>
               <h1 className="text-lg sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
@@ -125,7 +125,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
 
           {/* Center Column: 10-Role Karnataka College Dial */}
           <div
-            className={`flex flex-col items-center justify-center self-center py-1 transition-all duration-300 ${
+            className={`flex flex-col items-center justify-center self-start py-1 transition-all duration-300 ${
               selectedRole ? 'lg:col-span-5' : 'lg:col-span-9'
             }`}
           >
@@ -137,7 +137,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
 
           {/* Right Column: Role Based Login Card - Shown ONLY when a role is selected */}
           {selectedRole && (
-            <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
+            <div className="lg:col-span-4 flex justify-center lg:justify-end self-start animate-in fade-in slide-in-from-right-6 duration-300">
               <LoginFormCard
                 role={selectedRole}
                 availableRoles={KARNATAKA_COLLEGE_ROLES}
