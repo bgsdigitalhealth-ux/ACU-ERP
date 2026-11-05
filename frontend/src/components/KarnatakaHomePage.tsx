@@ -311,24 +311,24 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
 
           {/* Column 2 (Center - EXACT Highlighted Orange Box): The 3 Selection Cards */}
           <div
-            className={`transition-all duration-300 flex flex-col gap-2.5 justify-start self-start w-full ${
+            className={`transition-all duration-300 flex flex-col gap-3 justify-start self-start w-full ${
               selectedCard
                 ? 'lg:col-span-4 xl:col-span-4 max-w-sm xl:max-w-md'
-                : 'lg:col-span-6 xl:col-span-5 max-w-md lg:ml-4'
+                : 'lg:col-span-8 xl:col-span-8 max-w-[620px] xl:max-w-[680px] 2xl:max-w-[720px] lg:ml-6 xl:ml-8'
             }`}
           >
             {/* Card 1: Higher Education Department */}
             <button
               type="button"
               onClick={() => handleCardClick('hed')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl border-2 transition-all duration-200 py-2.5 px-3.5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
+              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'hed'
                   ? 'border-red-600 ring-4 ring-red-400/25 scale-[1.01]'
                   : 'border-slate-200/90 hover:border-red-400'
               }`}
             >
-              <div className="flex items-center gap-3 z-10">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center p-1 bg-red-50 border border-red-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
+              <div className="flex items-center gap-3.5 z-10 min-w-0">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-red-50 border border-red-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/hed-icon.png"
                     alt="Higher Education Department"
@@ -339,19 +339,25 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   />
                 </div>
 
-                <div className="border-l-2 border-red-200/80 pl-3">
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-red-700 transition-colors leading-tight">
+                <div className="border-l-2 border-red-200/80 pl-3.5 min-w-0">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-red-700 transition-colors leading-tight whitespace-nowrap">
                     Higher Education Department
                   </h3>
-                  <p className="text-[10px] text-gray-500 font-medium mt-0.5">
+                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
                     Apex Secretariat &amp; State Councils
                   </p>
                 </div>
               </div>
 
+              {/* Action Prompt */}
+              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-red-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
+                <span>Select &amp; Login</span>
+                <ArrowRight className="w-3.5 h-3.5" />
+              </div>
+
               {/* Right Side Red Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#f43f5e] via-[#e11d48]/80 to-transparent rounded-r-2xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
+              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
+                <div className="w-full h-full bg-gradient-to-l from-[#f43f5e] via-[#e11d48]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
               </div>
             </button>
 
@@ -359,14 +365,14 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             <button
               type="button"
               onClick={() => handleCardClick('university')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl border-2 transition-all duration-200 py-2.5 px-3.5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
+              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'university'
                   ? 'border-blue-600 ring-4 ring-blue-400/25 scale-[1.01]'
                   : 'border-slate-200/90 hover:border-blue-500'
               }`}
             >
-              <div className="flex items-center gap-3 z-10">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center p-1 bg-blue-50 border border-blue-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
+              <div className="flex items-center gap-3.5 z-10 min-w-0">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-blue-50 border border-blue-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/univ-icon.png"
                     alt="University Login"
@@ -377,30 +383,30 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   />
                 </div>
 
-                <div className="border-l-2 border-blue-200/80 pl-3">
-                  <div className="flex items-center gap-2">
-                    <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight">
+                <div className="border-l-2 border-blue-200/80 pl-3.5 min-w-0">
+                  <div className="flex items-center gap-2 flex-wrap">
+                    <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-blue-700 transition-colors leading-tight whitespace-nowrap">
                       University Login
                     </h3>
-                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200">
+                    <span className="text-[9px] font-extrabold uppercase px-1.5 py-0.5 rounded-full bg-blue-100 text-blue-800 border border-blue-200 whitespace-nowrap">
                       Multi-Campus
                     </span>
                   </div>
-                  <p className="text-[10px] text-gray-500 font-medium mt-0.5">
+                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
                     State &amp; Autonomous University Portals
                   </p>
                 </div>
               </div>
 
               {/* Action Prompt */}
-              <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-blue-700 pr-8 z-10 group-hover:translate-x-1 transition-transform">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-blue-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
                 <span>Select &amp; Login</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
 
               {/* Right Side Blue Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#0284c7] via-[#0ea5e9]/80 to-transparent rounded-r-2xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
+              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
+                <div className="w-full h-full bg-gradient-to-l from-[#0284c7] via-[#0ea5e9]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
               </div>
             </button>
 
@@ -408,14 +414,14 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
             <button
               type="button"
               onClick={() => handleCardClick('college')}
-              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl border-2 transition-all duration-200 py-2.5 px-3.5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
+              className={`relative overflow-hidden w-full text-left bg-white/95 backdrop-blur-md rounded-2xl sm:rounded-3xl border-2 transition-all duration-200 py-3 px-4 sm:py-3.5 sm:px-5 flex items-center justify-between group cursor-pointer shadow-md hover:shadow-xl ${
                 selectedCard === 'college'
                   ? 'border-amber-600 ring-4 ring-amber-400/25 scale-[1.01]'
                   : 'border-slate-200/90 hover:border-amber-400'
               }`}
             >
-              <div className="flex items-center gap-3 z-10">
-                <div className="w-9 h-9 sm:w-10 sm:h-10 rounded-xl flex items-center justify-center p-1 bg-amber-50 border border-amber-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
+              <div className="flex items-center gap-3.5 z-10 min-w-0">
+                <div className="w-10 h-10 sm:w-11 sm:h-11 rounded-2xl flex items-center justify-center p-1.5 bg-amber-50 border border-amber-200 group-hover:scale-105 transition-transform shrink-0 shadow-2xs">
                   <img
                     src="/college-icon.png"
                     alt="College Login"
@@ -426,25 +432,25 @@ export const KarnatakaHomePage: React.FC<KarnatakaHomePageProps> = ({
                   />
                 </div>
 
-                <div className="border-l-2 border-amber-200/80 pl-3">
-                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-amber-700 transition-colors leading-tight">
+                <div className="border-l-2 border-amber-200/80 pl-3.5 min-w-0">
+                  <h3 className="text-sm sm:text-base font-bold text-gray-900 group-hover:text-amber-700 transition-colors leading-tight whitespace-nowrap">
                     College Login
                   </h3>
-                  <p className="text-[10px] text-gray-500 font-medium mt-0.5">
+                  <p className="text-[10.5px] text-gray-500 font-medium mt-0.5 whitespace-nowrap">
                     Affiliated, Constituent &amp; Autonomous
                   </p>
                 </div>
               </div>
 
               {/* Action Prompt */}
-              <div className="hidden sm:flex items-center gap-1 text-xs font-bold text-amber-700 pr-8 z-10 group-hover:translate-x-1 transition-transform">
+              <div className="hidden sm:flex items-center gap-1.5 text-xs font-bold text-amber-700 pr-12 z-10 group-hover:translate-x-1 transition-transform shrink-0 whitespace-nowrap">
                 <span>Select &amp; Login</span>
                 <ArrowRight className="w-3.5 h-3.5" />
               </div>
 
               {/* Right Side Orange Gradient Accent */}
-              <div className="absolute top-0 right-0 bottom-0 w-24 pointer-events-none overflow-hidden">
-                <div className="w-full h-full bg-gradient-to-l from-[#ea580c] via-[#f59e0b]/80 to-transparent rounded-r-2xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
+              <div className="absolute top-0 right-0 bottom-0 w-24 sm:w-28 pointer-events-none overflow-hidden">
+                <div className="w-full h-full bg-gradient-to-l from-[#ea580c] via-[#f59e0b]/80 to-transparent rounded-r-2xl sm:rounded-r-3xl transform skew-x-[-12deg] translate-x-6 group-hover:translate-x-4 transition-transform opacity-90" />
               </div>
             </button>
           </div>
