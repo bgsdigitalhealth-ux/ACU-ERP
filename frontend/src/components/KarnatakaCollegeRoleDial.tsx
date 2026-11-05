@@ -224,3 +224,4 @@ export const KarnatakaCollegeRoleDial: React.FC<KarnatakaCollegeRoleDialProps> =
     </div>
   );
 };
+

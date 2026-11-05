@@ -48,7 +48,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
       />
 
       {/* Top Banner / Switch Portal Breadcrumb Bar */}
-      <div className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2.5 pb-1 flex items-center justify-between relative z-30">
+      <div className="w-full max-w-[1780px] mx-auto px-4 sm:px-8 pt-2 pb-1 flex items-center justify-between relative z-30">
         <div className="flex items-center gap-2 text-xs font-bold text-purple-950 bg-white/90 backdrop-blur-md px-3.5 py-1.5 rounded-full border border-purple-200/80 shadow-2xs">
           <GraduationCap className="w-3.5 h-3.5 text-[#8b0029]" />
           <span className="hidden sm:inline text-gray-600">Karnataka Higher Education ERP</span>
@@ -70,15 +70,15 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
         )}
       </div>
 
-      {/* Main Content Area */}
-      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-1 sm:py-2 flex items-center relative z-20">
-        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-3 lg:gap-5 items-center">
+      {/* Main Content Area - Balanced 3-column grid (3 + 5 + 4 = 12) */}
+      <div className="flex-1 w-full max-w-[1780px] mx-auto px-4 sm:px-8 py-2 flex items-center relative z-20">
+        <div className="w-full grid grid-cols-1 lg:grid-cols-12 gap-4 lg:gap-6 items-center">
           
-          {/* Left Column: Heading, and 2x2 Feature Grid - Pinned to TOP */}
-          <div className="lg:col-span-3.5 xl:col-span-3.5 flex flex-col justify-start space-y-2 sm:space-y-2.5 pt-1 self-start">
+          {/* Left Column: Heading, and 2x2 Feature Grid - lg:col-span-3 (25% width) */}
+          <div className="lg:col-span-3 flex flex-col justify-start space-y-3 self-center">
             {/* Platform Headline */}
             <div>
-              <h1 className="text-base sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
+              <h1 className="text-lg sm:text-xl xl:text-2xl font-black text-[#29084e] leading-tight tracking-tight drop-shadow-2xs">
                 College<br />
                 Management &amp;<br />
                 Institutional<br />
@@ -87,9 +87,9 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
             </div>
 
             {/* 2x2 Feature Badges Grid */}
-            <div className="grid grid-cols-2 gap-2 max-w-[280px] pt-0.5">
+            <div className="grid grid-cols-2 gap-2 max-w-[280px]">
               {/* Feature 1 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <Cpu className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -99,7 +99,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
               </div>
 
               {/* Feature 2 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <BarChart3 className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -109,7 +109,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
               </div>
 
               {/* Feature 3 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <Sparkles className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -119,7 +119,7 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
               </div>
 
               {/* Feature 4 */}
-              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
+              <div className="bg-white/95 backdrop-blur-md rounded-2xl p-2.5 border border-purple-200/80 shadow-2xs hover:shadow-md transition-all flex flex-col items-center text-center group cursor-default">
                 <div className="w-7 h-7 rounded-lg bg-purple-50 text-purple-700 flex items-center justify-center mb-1 border border-purple-200 shadow-2xs group-hover:scale-105 transition-transform">
                   <ShieldCheck className="w-3.5 h-3.5 stroke-[2]" />
                 </div>
@@ -130,16 +130,16 @@ export const CollegeHomePage: React.FC<CollegeHomePageProps> = ({
             </div>
           </div>
 
-          {/* Center Column: 10-Role Karnataka College Dial */}
-          <div className="lg:col-span-5 xl:col-span-5 flex flex-col items-center justify-center self-center py-2">
+          {/* Center Column: 10-Role Karnataka College Dial - lg:col-span-5 (41.6% width) */}
+          <div className="lg:col-span-5 flex flex-col items-center justify-center self-center py-1">
             <KarnatakaCollegeRoleDial
               selectedRoleId={selectedRole?.id || null}
               onSelectRole={(role) => setSelectedRole(role)}
             />
           </div>
 
-          {/* Right Column: Role Based Login Card (Styled strictly like Image 1: Crimson & White) */}
-          <div className="lg:col-span-3.5 xl:col-span-3.5 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
+          {/* Right Column: Role Based Login Card - lg:col-span-4 (33.3% width) */}
+          <div className="lg:col-span-4 flex justify-center lg:justify-end self-center animate-in fade-in slide-in-from-right-6 duration-300">
             <LoginFormCard
               role={selectedRole}
               availableRoles={KARNATAKA_COLLEGE_ROLES}

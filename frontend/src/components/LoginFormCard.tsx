@@ -59,33 +59,33 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
   };
 
   return (
-    <div className="w-full max-w-[360px] sm:max-w-[390px] bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 select-none">
+    <div className="w-[340px] sm:w-[380px] max-w-[400px] min-w-[320px] shrink-0 bg-white rounded-3xl p-5 sm:p-6 border border-gray-200/90 shadow-2xl relative animate-in fade-in zoom-in-95 duration-200 select-none">
       
       {/* Card Header matching Image 1: Users Icon + Title + Graduation Cap */}
       <div className="flex items-center justify-between pb-2.5 relative">
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-2.5 min-w-0">
           {/* Crimson Users Icon */}
           <div className="w-9 h-9 rounded-xl flex items-center justify-center shrink-0">
-            <Users className="w-7 h-7 text-[#8b0029] stroke-[2.2]" />
+            <Users className="w-6 h-6 text-[#8b0029] stroke-[2.2]" />
           </div>
 
           {/* Vertical Divider */}
-          <div className="w-px h-8 bg-gray-200" />
+          <div className="w-px h-8 bg-gray-200 shrink-0" />
 
-          <div>
-            <h3 className="text-lg sm:text-xl font-black tracking-tight text-[#8b0029] leading-tight">
+          <div className="min-w-0">
+            <h3 className="text-base sm:text-lg font-black tracking-tight text-[#8b0029] leading-tight whitespace-nowrap">
               Role Based Login
             </h3>
-            <p className="text-[11px] text-gray-500 font-semibold mt-0.5">
+            <p className="text-[10.5px] text-gray-500 font-semibold mt-0.5 whitespace-nowrap">
               Access Karnataka Higher Education ERP
             </p>
           </div>
         </div>
 
-        <div className="flex items-center gap-1.5">
+        <div className="flex items-center gap-1.5 shrink-0">
           {/* Graduation Cap in Crimson */}
-          <div className="w-9 h-9 rounded-xl flex items-center justify-center">
-            <GraduationCap className="w-7 h-7 text-[#8b0029]" />
+          <div className="w-8 h-8 rounded-xl flex items-center justify-center">
+            <GraduationCap className="w-6 h-6 text-[#8b0029]" />
           </div>
           {onClose && (
             <button
@@ -141,7 +141,7 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
       <form onSubmit={handleSubmit} className="space-y-3">
         {/* Field 1: Select Your Role * */}
         <div className="space-y-1">
-          <label className="block text-xs font-bold text-gray-800">
+          <label className="block text-xs font-bold text-gray-800 whitespace-nowrap">
             Select Your Role <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -174,7 +174,7 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
 
         {/* Field 2: Username / Email * */}
         <div className="space-y-1">
-          <label className="block text-xs font-bold text-gray-800">
+          <label className="block text-xs font-bold text-gray-800 whitespace-nowrap">
             Username / Email <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -192,7 +192,7 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
 
         {/* Field 3: Password * */}
         <div className="space-y-1">
-          <label className="block text-xs font-bold text-gray-800">
+          <label className="block text-xs font-bold text-gray-800 whitespace-nowrap">
             Password <span className="text-red-500">*</span>
           </label>
           <div className="relative">
@@ -216,8 +216,8 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
         </div>
 
         {/* Field 4: Remember Me & Forgot Password? */}
-        <div className="flex items-center justify-between text-xs pt-0.5">
-          <label className="flex items-center gap-1.5 cursor-pointer text-gray-700 font-medium">
+        <div className="flex items-center justify-between text-xs pt-0.5 gap-2">
+          <label className="flex items-center gap-1.5 cursor-pointer text-gray-700 font-medium whitespace-nowrap">
             <input
               type="checkbox"
               checked={rememberMe}
@@ -228,7 +228,7 @@ export const LoginFormCard: React.FC<LoginFormCardProps> = ({
           </label>
           <button
             type="button"
-            className="text-xs font-bold text-[#8b0029] hover:underline cursor-pointer"
+            className="text-xs font-bold text-[#8b0029] hover:underline cursor-pointer whitespace-nowrap shrink-0"
           >
             Forgot Password?
           </button>
