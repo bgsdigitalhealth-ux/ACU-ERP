@@ -7,13 +7,12 @@ import { UniversityAdminLayout } from './components/universityAdmin/UniversityAd
 import { HodDashboardLayout } from './components/hod/HodDashboardLayout';
 import { HodLoginPage } from './components/hodAuth/HodLoginPage';
 import { CollegeAdminLayout } from './components/collegeAdmin/CollegeAdminLayout';
+import { CollegeFinanceDashboardLayout } from './components/collegeFinance/CollegeFinanceDashboardLayout';
 import { ChancellorDashboardLayout } from './components/chancellor/ChancellorDashboardLayout';
 import { StudentProvider } from './context/StudentContext';
 import { StudentLayout } from './components/student/StudentLayout';
 import { FacultyProvider } from './context/FacultyContext';
 import { FacultyLayout } from './components/faculty/FacultyLayout';
-import { FinanceProvider } from './context/FinanceContext';
-import { FinanceDashboardLayout } from './components/finance/FinanceDashboardLayout';
 import { HomePage } from './components/HomePage';
 import { CollegeHomePage } from './components/CollegeHomePage';
 import { KarnatakaHomePage, KARNATAKA_UNIVERSITIES, UniversityOption } from './components/KarnatakaHomePage';
@@ -28,13 +27,13 @@ import { fetchDashboardData, fallbackData } from './services/api';
 import { RoleInfo, UserSession } from './types/auth';
 
 export const App: React.FC = () => {
-  // Primary view mode: 'portal' (Home Page with Dial) | 'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'chancellor' | 'student' | 'faculty' | 'finance'
+  // Primary view mode: 'portal' (Home Page with Dial) | 'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'student' | 'faculty'
   const [viewMode, setViewMode] = useState<
-    'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'chancellor' | 'portal' | 'student' | 'faculty' | 'finance'
+    'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'portal' | 'student' | 'faculty'
   >(() => {
     try {
       const saved = localStorage.getItem('acu_erp_view_mode');
-      if (saved && ['university-admin', 'hod-dashboard', 'hod-login', 'college-admin', 'chancellor', 'portal', 'student', 'faculty', 'finance'].includes(saved)) {
+      if (saved && ['university-admin', 'hod-dashboard', 'hod-login', 'college-admin', 'college-finance', 'chancellor', 'portal', 'student', 'faculty'].includes(saved)) {
         return saved as any;
       }
     } catch {
@@ -174,7 +173,11 @@ export const App: React.FC = () => {
     ) {
       setViewMode('college-admin');
     } else if (role.id === 'finance') {
-      setViewMode('finance');
+      if (homeStage === 'college-portal') {
+        setViewMode('college-finance');
+      } else {
+        setViewMode('university-admin');
+      }
     } else if (role.id === 'hr-manager') {
       if (homeStage === 'college-portal') {
         setViewMode('college-admin');
@@ -232,6 +235,13 @@ export const App: React.FC = () => {
             />
           )}
 
+          {viewMode === 'college-finance' && (
+            <CollegeFinanceDashboardLayout
+              onLogout={handleLogout}
+              collegeName="City College of Engineering"
+            />
+          )}
+
           {viewMode === 'college-admin' && (
             <CollegeAdminProvider>
               <CollegeAdminLayout
@@ -260,15 +270,6 @@ export const App: React.FC = () => {
             <FacultyProvider>
               <FacultyLayout onLogout={handleLogout} />
             </FacultyProvider>
-          )}
-
-          {viewMode === 'finance' && (
-            <FinanceProvider>
-              <FinanceDashboardLayout
-                onLogout={handleLogout}
-                collegeName="City College of Engineering"
-              />
-            </FinanceProvider>
           )}
 
           {viewMode === 'portal' && (

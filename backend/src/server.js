@@ -10,10 +10,12 @@ import {
   seedDatabase,
 } from './controllers/medicalErpController.js';
 import {
-  getFinanceDashboard,
-  getFinanceTransactions,
-  createFinanceTransaction,
-} from './controllers/financeController.js';
+  getCollegeFinanceDashboard,
+  getTransactions,
+  createTransaction,
+  collectStudentFee,
+  recordExpense,
+} from './controllers/collegeFinanceController.js';
 
 dotenv.config();
 
@@ -61,10 +63,17 @@ app.post('/api/assessments', createAssessment);
 app.get('/api/academic-calendar', getAcademicCalendar);
 app.post('/api/seed', seedDatabase);
 
-// College Finance ERP Routes
-app.get('/api/finance/dashboard', getFinanceDashboard);
-app.get('/api/finance/transactions', getFinanceTransactions);
-app.post('/api/finance/transactions', createFinanceTransaction);
+// College Finance ERP Routes (Dynamic Mockup Architecture)
+app.get('/api/college-finance/dashboard', getCollegeFinanceDashboard);
+app.get('/api/college-finance/transactions', getTransactions);
+app.post('/api/college-finance/transactions', createTransaction);
+app.post('/api/college-finance/collect-fee', collectStudentFee);
+app.post('/api/college-finance/record-expense', recordExpense);
+
+// Backward compatibility routes
+app.get('/api/finance/dashboard', getCollegeFinanceDashboard);
+app.get('/api/finance/transactions', getTransactions);
+app.post('/api/finance/transactions', createTransaction);
 
 app.listen(PORT, () => {
   console.log(`[ACU ERP Backend] Server listening on http://localhost:${PORT}`);
