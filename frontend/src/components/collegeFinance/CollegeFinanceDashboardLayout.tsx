@@ -23,12 +23,7 @@ import {
   INITIAL_COLLEGE_FINANCE_DATA,
 } from '../../services/collegeFinanceApi';
 import { CollegeFinanceDashboard } from './CollegeFinanceDashboard';
-import { CollectFeeModal } from './modals/CollectFeeModal';
-import { GenerateReceiptModal } from './modals/GenerateReceiptModal';
-import { RecordExpenseModal } from './modals/RecordExpenseModal';
-import { ManageBudgetModal } from './modals/ManageBudgetModal';
-import { GenerateReportModal } from './modals/GenerateReportModal';
-import { AllTransactionsModal } from './modals/AllTransactionsModal';
+import { CollegeFinanceSubPages } from './pages/CollegeFinanceSubPages';
 
 interface CollegeFinanceDashboardLayoutProps {
   onLogout: () => void;
@@ -68,18 +63,14 @@ export const CollegeFinanceDashboardLayout: React.FC<CollegeFinanceDashboardLayo
   const [sidebarOpen, setSidebarOpen] = useState(true);
   const [userDropdownOpen, setUserDropdownOpen] = useState(false);
 
-  // Modals for sub-items
-  const [isCollectFeeOpen, setIsCollectFeeOpen] = useState(false);
-  const [isGenerateReceiptOpen, setIsGenerateReceiptOpen] = useState(false);
-  const [isRecordExpenseOpen, setIsRecordExpenseOpen] = useState(false);
-  const [isManageBudgetOpen, setIsManageBudgetOpen] = useState(false);
-  const [isGenerateReportOpen, setIsGenerateReportOpen] = useState(false);
-  const [isAllTransactionsOpen, setIsAllTransactionsOpen] = useState(false);
-
-  useEffect(() => {
-    fetchCollegeFinanceDashboard().then((res) => {
+  const loadData = (year?: string) => {
+    fetchCollegeFinanceDashboard(year).then((res) => {
       if (res) setData(res);
     });
+  };
+
+  useEffect(() => {
+    loadData();
   }, []);
 
   const toggleSection = (sectionId: string) => {
@@ -193,14 +184,9 @@ export const CollegeFinanceDashboardLayout: React.FC<CollegeFinanceDashboardLayo
   ];
 
   const handleSubItemClick = (sub: NavSubItem) => {
-    if (sub.action === 'collect-fee') setIsCollectFeeOpen(true);
-    else if (sub.action === 'generate-receipt') setIsGenerateReceiptOpen(true);
-    else if (sub.action === 'record-expense') setIsRecordExpenseOpen(true);
-    else if (sub.action === 'manage-budget') setIsManageBudgetOpen(true);
-    else if (sub.action === 'generate-report') setIsGenerateReportOpen(true);
-    else if (sub.action === 'all-txns') setIsAllTransactionsOpen(true);
-    else {
-      setActiveTab(sub.name);
+    setActiveTab(sub.name);
+    if (window.innerWidth < 1024) {
+      setSidebarOpen(false);
     }
   };
 
@@ -262,9 +248,9 @@ export const CollegeFinanceDashboardLayout: React.FC<CollegeFinanceDashboardLayo
 
           {/* Notification Bell with Badge */}
           <button
-            onClick={() => setIsAllTransactionsOpen(true)}
+            onClick={() => setActiveTab('Receipt History')}
             className="relative p-2 rounded-full bg-white/10 hover:bg-white/20 transition-colors cursor-pointer"
-            title="Notifications"
+            title="Notifications & Ledger"
           >
             <Bell className="w-4 h-4 text-white" />
             <span className="absolute top-1 right-1 w-2.5 h-2.5 rounded-full bg-red-500 ring-2 ring-[#0052cc]" />
@@ -393,123 +379,68 @@ export const CollegeFinanceDashboardLayout: React.FC<CollegeFinanceDashboardLayo
             <CollegeFinanceDashboard
               data={data}
               collegeName={collegeName}
-              onSelectYear={(yr) => {
-                fetchCollegeFinanceDashboard(yr).then((res) => {
-                  if (res) setData(res);
-                });
-              }}
+              onNavigate={(tab) => setActiveTab(tab)}
+              onRefresh={() => loadData(data.academicYear)}
+              onSelectYear={(yr) => loadData(yr)}
             />
           ) : (
-            <div className="p-6 space-y-4">
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs flex items-center justify-between">
-                <div>
-                  <h2 className="text-xl font-black text-slate-900">{activeTab}</h2>
-                  <p className="text-xs text-slate-500 font-medium mt-1">
-                    Manage college records for {activeTab} &bull; Academic Year: {data.academicYear}
-                  </p>
-                </div>
-                <button
-                  onClick={() => setActiveTab('dashboard')}
-                  className="px-4 py-2 bg-blue-600 hover:bg-blue-700 text-white rounded-xl text-xs font-bold transition-all shadow-md cursor-pointer"
-                >
-                  Back to Dashboard
-                </button>
-              </div>
-
-              {/* Sub-view Content Card */}
-              <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-xs">
-                <AllTransactionsModal
-                  isOpen={true}
-                  onClose={() => setActiveTab('dashboard')}
-                  transactions={data.transactions}
-                />
-              </div>
-            </div>
+            <CollegeFinanceSubPages
+              activeTab={activeTab}
+              onBack={() => setActiveTab('dashboard')}
+              data={data}
+              collegeName={collegeName}
+              onRefresh={() => loadData(data.academicYear)}
+              onFeeCollected={(amt, part) => {
+                setData((prev) => ({
+                  ...prev,
+                  overview: {
+                    ...prev.overview,
+                    totalFeeCollected: prev.overview.totalFeeCollected + amt,
+                    pendingFees: Math.max(0, prev.overview.pendingFees - amt),
+                  },
+                  transactions: [
+                    {
+                      id: 'txn-' + Date.now(),
+                      transactionId: 'TXN-' + Date.now().toString().slice(-6),
+                      date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                      particulars: part,
+                      type: 'Income',
+                      amount: amt,
+                      category: 'Tuition Fee',
+                      referenceNo: 'REC-' + Date.now().toString().slice(-4),
+                      academicYear: data.academicYear,
+                    },
+                    ...prev.transactions,
+                  ],
+                }));
+              }}
+              onExpenseRecorded={(amt, part) => {
+                setData((prev) => ({
+                  ...prev,
+                  overview: {
+                    ...prev.overview,
+                    totalExpenses: prev.overview.totalExpenses + amt,
+                  },
+                  transactions: [
+                    {
+                      id: 'txn-' + Date.now(),
+                      transactionId: 'TXN-' + Date.now().toString().slice(-6),
+                      date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
+                      particulars: part,
+                      type: 'Expense',
+                      amount: amt,
+                      category: 'Operations',
+                      referenceNo: 'PO-' + Date.now().toString().slice(-4),
+                      academicYear: data.academicYear,
+                    },
+                    ...prev.transactions,
+                  ],
+                }));
+              }}
+            />
           )}
         </main>
       </div>
-
-      {/* Global Modals */}
-      <CollectFeeModal
-        isOpen={isCollectFeeOpen}
-        onClose={() => setIsCollectFeeOpen(false)}
-        onSuccess={(amt, part) => {
-          setData((prev) => ({
-            ...prev,
-            overview: {
-              ...prev.overview,
-              totalFeeCollected: prev.overview.totalFeeCollected + amt,
-              pendingFees: Math.max(0, prev.overview.pendingFees - amt),
-            },
-            transactions: [
-              {
-                id: 'txn-' + Date.now(),
-                transactionId: 'TXN-' + Date.now().toString().slice(-6),
-                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                particulars: part,
-                type: 'Income',
-                amount: amt,
-                category: 'Tuition Fee',
-                referenceNo: 'REC-' + Date.now().toString().slice(-4),
-                academicYear: data.academicYear,
-              },
-              ...prev.transactions,
-            ],
-          }));
-        }}
-      />
-      <GenerateReceiptModal
-        isOpen={isGenerateReceiptOpen}
-        onClose={() => setIsGenerateReceiptOpen(false)}
-        collegeName={collegeName}
-      />
-      <RecordExpenseModal
-        isOpen={isRecordExpenseOpen}
-        onClose={() => setIsRecordExpenseOpen(false)}
-        onSuccess={(amt, part) => {
-          setData((prev) => ({
-            ...prev,
-            overview: {
-              ...prev.overview,
-              totalExpenses: prev.overview.totalExpenses + amt,
-            },
-            transactions: [
-              {
-                id: 'txn-' + Date.now(),
-                transactionId: 'TXN-' + Date.now().toString().slice(-6),
-                date: new Date().toLocaleDateString('en-GB', { day: '2-digit', month: 'short', year: 'numeric' }),
-                particulars: part,
-                type: 'Expense',
-                amount: amt,
-                category: 'Operations',
-                referenceNo: 'PO-' + Date.now().toString().slice(-4),
-                academicYear: data.academicYear,
-              },
-              ...prev.transactions,
-            ],
-          }));
-        }}
-      />
-      <ManageBudgetModal
-        isOpen={isManageBudgetOpen}
-        onClose={() => setIsManageBudgetOpen(false)}
-        onUpdateUtilization={(util) => {
-          setData((prev) => ({
-            ...prev,
-            overview: { ...prev.overview, budgetUtilization: util },
-          }));
-        }}
-      />
-      <GenerateReportModal
-        isOpen={isGenerateReportOpen}
-        onClose={() => setIsGenerateReportOpen(false)}
-        collegeName={collegeName}
-      />
-      <AllTransactionsModal
-        isOpen={isAllTransactionsOpen}
-        onClose={() => setIsAllTransactionsOpen(false)}
-        transactions={data.transactions}
-      />
     </div>
   );
 };

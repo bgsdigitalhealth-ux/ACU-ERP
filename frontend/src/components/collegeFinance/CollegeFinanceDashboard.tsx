@@ -52,6 +52,7 @@ interface CollegeFinanceDashboardProps {
   collegeName?: string;
   onRefresh?: () => void;
   onSelectYear?: (year: string) => void;
+  onNavigate?: (tabName: string) => void;
 }
 
 export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = ({
@@ -59,6 +60,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
   collegeName = 'City College of Engineering',
   onRefresh,
   onSelectYear,
+  onNavigate,
 }) => {
   const [selectedAcademicYear, setSelectedAcademicYear] = useState(data.academicYear || '2026 – 2027');
 
@@ -419,7 +421,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h3 className="text-sm font-black text-slate-900">Recent Transactions</h3>
             <button
-              onClick={() => setIsAllTransactionsOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Receipt History') : setIsAllTransactionsOpen(true))}
               className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors cursor-pointer"
             >
               <span>View All</span>
@@ -465,7 +467,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
           <div className="pt-1 flex items-center justify-between text-[11px] text-slate-500 font-semibold border-t border-slate-100">
             <span>Showing recent 5 ledger entries</span>
             <button
-              onClick={() => setIsCollectFeeOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Collect Fee') : setIsCollectFeeOpen(true))}
               className="text-blue-600 font-bold hover:underline cursor-pointer"
             >
               + Collect Fee
@@ -480,7 +482,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
           <div className="grid grid-cols-2 gap-2.5 my-2 flex-1">
             {/* 1. Collect Fee */}
             <button
-              onClick={() => setIsCollectFeeOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Collect Fee') : setIsCollectFeeOpen(true))}
               className="p-3 bg-purple-50/60 hover:bg-purple-100/70 border border-purple-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center border border-purple-200 shadow-2xs group-hover:scale-110 transition-transform">
@@ -491,7 +493,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
 
             {/* 2. Generate Receipt */}
             <button
-              onClick={() => setIsGenerateReceiptOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Generate Receipt') : setIsGenerateReceiptOpen(true))}
               className="p-3 bg-sky-50/60 hover:bg-sky-100/70 border border-sky-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-700 flex items-center justify-center border border-sky-200 shadow-2xs group-hover:scale-110 transition-transform">
@@ -502,7 +504,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
 
             {/* 3. Record Expense */}
             <button
-              onClick={() => setIsRecordExpenseOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Create Expense') : setIsRecordExpenseOpen(true))}
               className="p-3 bg-amber-50/60 hover:bg-amber-100/70 border border-amber-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-700 flex items-center justify-center border border-amber-200 shadow-2xs group-hover:scale-110 transition-transform">
@@ -513,7 +515,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
 
             {/* 4. Manage Budget */}
             <button
-              onClick={() => setIsManageBudgetOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Annual Budget') : setIsManageBudgetOpen(true))}
               className="p-3 bg-emerald-50/60 hover:bg-emerald-100/70 border border-emerald-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-emerald-100 text-emerald-700 flex items-center justify-center border border-emerald-200 shadow-2xs group-hover:scale-110 transition-transform">
@@ -524,7 +526,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
 
             {/* 5. Upload Invoice */}
             <button
-              onClick={() => setIsUploadInvoiceOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Create Expense') : setIsUploadInvoiceOpen(true))}
               className="p-3 bg-blue-50/60 hover:bg-blue-100/70 border border-blue-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-blue-100 text-blue-700 flex items-center justify-center border border-blue-200 shadow-2xs group-hover:scale-110 transition-transform">
@@ -535,7 +537,7 @@ export const CollegeFinanceDashboard: React.FC<CollegeFinanceDashboardProps> = (
 
             {/* 6. Generate Report */}
             <button
-              onClick={() => setIsGenerateReportOpen(true)}
+              onClick={() => (onNavigate ? onNavigate('Financial Reports') : setIsGenerateReportOpen(true))}
               className="p-3 bg-indigo-50/60 hover:bg-indigo-100/70 border border-indigo-200/80 rounded-2xl flex flex-col items-center text-center justify-center gap-1.5 transition-all group cursor-pointer shadow-2xs hover:scale-[1.02]"
             >
               <div className="w-9 h-9 rounded-xl bg-indigo-100 text-indigo-700 flex items-center justify-center border border-indigo-200 shadow-2xs group-hover:scale-110 transition-transform">
