@@ -9,6 +9,11 @@ import {
   getAcademicCalendar,
   seedDatabase,
 } from './controllers/medicalErpController.js';
+import {
+  getFinanceDashboard,
+  getFinanceTransactions,
+  createFinanceTransaction,
+} from './controllers/financeController.js';
 
 dotenv.config();
 
@@ -55,6 +60,11 @@ app.get('/api/assessments', getAssessments);
 app.post('/api/assessments', createAssessment);
 app.get('/api/academic-calendar', getAcademicCalendar);
 app.post('/api/seed', seedDatabase);
+
+// College Finance ERP Routes
+app.get('/api/finance/dashboard', getFinanceDashboard);
+app.get('/api/finance/transactions', getFinanceTransactions);
+app.post('/api/finance/transactions', createFinanceTransaction);
 
 app.listen(PORT, () => {
   console.log(`[ACU ERP Backend] Server listening on http://localhost:${PORT}`);
