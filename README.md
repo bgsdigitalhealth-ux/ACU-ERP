@@ -1,95 +1,186 @@
-# ACU ERP — Adichunchanagiri University Enterprise Platform
+# University-ERP (ACU ERP) — Enterprise Modular Architecture
 
-A comprehensive, role-based University Management & Institutional Intelligence Platform for **Adichunchanagiri University (ACU)**. Built with React 18, TypeScript, Tailwind CSS, Node.js / Express, and MongoDB Atlas.
-
----
-
-## 🏛️ Architecture & Modules
-
-The platform features tailored portals and governance suites:
-- **Chancellor Suite**: Statutory approvals, executive decrees, university examination audit.
-- **Vice-Chancellor Dashboard**: Academic oversight, examination workflows, university KPIs.
-- **Controller of Examination (CoE)**: Exam schedules, centre allocation, confidential operations.
-- **Registrar (Evaluation)**: Valuation centres, result processing, revaluation.
-- **Dean / Chief Superintendent**: Centre conduction, invigilation management, hall supervision.
-- **Deputy Superintendent**: Hall assignments, duty rosters, exam sessions.
-- **Department HOD**: Departmental QP scrutiny, examiner nomination, internal marks.
-- **Faculty / Staff Portal**: CBME lesson planning, attendance marking, assessment creation, OBE CO-PO mapping, timetable.
-- **Student Portal**: Course registrations, hall tickets, attendance tracking, internal assessment marks, fee management, academic calendar.
+A state-of-the-art, modular, role-based University Management & Institutional Intelligence Platform for **Adichunchanagiri University (ACU)** and affiliated colleges. Built with React 18, TypeScript, Tailwind CSS, Node.js / Express, and MongoDB Atlas.
 
 ---
 
-## 🚀 Deployment Guide
+## 🏛️ Project Directory Structure
 
-### 1. MongoDB Atlas (Database)
-1. In your **MongoDB Atlas** console, create or select your cluster.
-2. Under **Security > Network Access**, click **Add IP Address**:
-   - Add `0.0.0.0/0` (Allow Access from Anywhere) so Render web services can connect dynamically.
-3. Under **Security > Database Access**, verify your user credentials.
-4. Copy your MongoDB SRV Connection String:
-   ```
-   mongodb+srv://<username>:<password>@cluster0.cpxf4ss.mongodb.net/acu_erp?retryWrites=true&w=majority&compressors=zlib
-   ```
+```
+University-ERP/
+│
+├── backend/
+│   │
+│   ├── University/
+│   │   ├── Chancellor/
+│   │   │   ├── controllers/
+│   │   │   ├── models/
+│   │   │   ├── routes/
+│   │   │   ├── services/
+│   │   │   └── validations/
+│   │   │
+│   │   ├── ViceChancellor/
+│   │   ├── Registrar/
+│   │   ├── Finance/
+│   │   ├── HR/
+│   │   ├── LeaveAdmin/
+│   │   ├── Examination/
+│   │   ├── Academic/
+│   │   ├── Admission/
+│   │   ├── Research/
+│   │   ├── StudentAffairs/
+│   │   └── UniversityAdmin/
+│   │
+│   ├── College/
+│   │   ├── Principal/
+│   │   ├── VicePrincipal/
+│   │   ├── HOD/
+│   │   ├── Faculty/
+│   │   ├── CollegeHR/
+│   │   ├── LeaveAdmin/
+│   │   ├── Accounts/
+│   │   ├── Admission/
+│   │   ├── Examination/
+│   │   ├── Library/
+│   │   ├── StudentSection/
+│   │   └── CollegeAdmin/
+│   │
+│   ├── Shared/
+│   │   ├── middleware/
+│   │   ├── database/
+│   │   ├── authentication/
+│   │   ├── authorization/
+│   │   ├── notifications/
+│   │   ├── uploads/
+│   │   ├── utils/
+│   │   └── config/
+│   │
+│   ├── routes/
+│   │   └── index.js
+│   │
+│   ├── app.js
+│   ├── server.js
+│   ├── package.json
+│   └── .env
+│
+├── frontend/
+│   │
+│   ├── src/
+│   │   │
+│   │   ├── University/
+│   │   │   ├── Chancellor/
+│   │   │   │   ├── components/
+│   │   │   │   ├── pages/
+│   │   │   │   ├── layouts/
+│   │   │   │   ├── services/
+│   │   │   │   └── routes/
+│   │   │   │
+│   │   │   ├── ViceChancellor/
+│   │   │   ├── Registrar/
+│   │   │   ├── Finance/
+│   │   │   ├── HR/
+│   │   │   ├── LeaveAdmin/
+│   │   │   ├── Examination/
+│   │   │   ├── Academic/
+│   │   │   ├── Admission/
+│   │   │   ├── Research/
+│   │   │   ├── StudentAffairs/
+│   │   │   └── UniversityAdmin/
+│   │   │
+│   │   ├── College/
+│   │   │   ├── Principal/
+│   │   │   ├── VicePrincipal/
+│   │   │   ├── HOD/
+│   │   │   ├── Faculty/
+│   │   │   ├── CollegeHR/
+│   │   │   ├── LeaveAdmin/
+│   │   │   ├── Accounts/
+│   │   │   ├── Admission/
+│   │   │   ├── Examination/
+│   │   │   ├── Library/
+│   │   │   ├── StudentSection/
+│   │   │   └── CollegeAdmin/
+│   │   │
+│   │   ├── Shared/
+│   │   │   ├── components/
+│   │   │   ├── layouts/
+│   │   │   ├── hooks/
+│   │   │   ├── context/
+│   │   │   ├── services/
+│   │   │   ├── utils/
+│   │   │   └── assets/
+│   │   │
+│   │   ├── authentication/
+│   │   ├── config/
+│   │   ├── App.tsx
+│   │   └── main.tsx
+│   │
+│   ├── public/
+│   ├── package.json
+│   └── .env
+│
+└── README.md
+```
 
 ---
 
-### 2. Backend Deployment on Render
-1. Sign in to [Render](https://render.com).
-2. Click **New + > Web Service** and connect your GitHub repository:
-   `https://github.com/bgsdigitalhealth-ux/ACU-ERP.git`
-3. Configure the service:
-   - **Name**: `acu-erp-backend`
-   - **Root Directory**: `backend`
-   - **Runtime**: `Node`
-   - **Build Command**: `npm install`
-   - **Start Command**: `npm start`
-4. In **Environment Variables**, add:
-   - `NODE_ENV`: `production`
-   - `PORT`: `10000`
-   - `MONGODB_URI`: `<Your MongoDB Atlas connection URI>`
-5. Click **Deploy Web Service**.
-6. Copy your deployed backend URL (e.g. `https://acu-erp-backend.onrender.com`).
+## 👥 Role Modules Breakdown
+
+### University Directorate Modules
+1. **Chancellor**: Statutory decrees, apex governance, executive decrees, and university exam audits.
+2. **Vice Chancellor**: Academic oversight, examination workflows, university KPIs, and quality benchmarking.
+3. **Registrar**: Examination valuation centres, official gazette notifications, and degree endorsements.
+4. **Finance**: Consolidated university treasury, government grants, UGC allocations, and audits.
+5. **HR**: Centralized university faculty roster, recruitment requisitions, payroll registers, and biometric sync.
+6. **LeaveAdmin**: Centralized statutory leave approvals for university officers and faculty.
+7. **Examination**: Controller of Examinations Directorate, QP generation, room allocations, and schedules.
+8. **Academic**: Academic calendar, NMC CBME assessments, curriculum logs, and course registries.
+9. **Admission**: University-wide counseling, seat matrix allocation, and quota management.
+10. **Research**: Funded grants, doctoral thesis approvals, research journals, and patent records.
+11. **StudentAffairs**: Student welfare, anti-ragging cell, and grievance redressal board.
+12. **UniversityAdmin**: System metrics, module access, institutional telemetry, and security policies.
+
+### College Institutional Modules
+1. **Principal**: Apex college leadership, executive authorizations, and institutional oversight.
+2. **Vice Principal**: Academic coordination, lecture schedules, and timetable management.
+3. **HOD**: Department curriculum delivery, QP scrutiny, and internal assessment marks.
+4. **Faculty**: Attendance marking, lesson planning, student marks logs, and clinical logs.
+5. **CollegeHR**: College staff biometric records, duty rosters, and localized salary slips.
+6. **LeaveAdmin**: College faculty and non-teaching staff casual and medical leave workflow.
+7. **Accounts (College Finance)**: Live college ledger, fee collection, receipt generation, and expense tracking.
+8. **Admission**: College document verification, seat confirmations, and applicant verification.
+9. **Examination**: Internal assessment seating charts, invigilation rosters, and hall supervision.
+10. **Library**: Central cataloging, book issuance, digital OPAC, and return logs.
+11. **StudentSection**: Student enrollment dossiers, transfer certificates, and bonafide records.
+12. **CollegeAdmin**: Master college configuration, branch creation, and lab allocations.
 
 ---
 
-### 3. Frontend Deployment on Vercel
-1. Sign in to [Vercel](https://vercel.com).
-2. Click **Add New... > Project** and import the `ACU-ERP` GitHub repository.
-3. In **Project Configuration**:
-   - **Framework Preset**: `Vite`
-   - **Root Directory**: Click *Edit* and select `frontend` (or keep root — `vercel.json` will auto-route to `frontend`).
-   - **Build Command**: `npm run build`
-   - **Output Directory**: `dist`
-4. In **Environment Variables**, add:
-   - `VITE_API_URL`: Your Render backend URL (e.g. `https://acu-erp-backend.onrender.com`)
-5. Click **Deploy**.
-6. Vercel will build and deploy your application with single-page application routing configured.
+## ⚡ Getting Started
 
----
+### 1. Prerequisites
+- **Node.js**: v18+ or v20+
+- **MongoDB Atlas**: Cluster running with accessible connection string
 
-## 💻 Local Development
-
-### Prerequisites
-- Node.js (v18+)
-- npm
-
-### 1. Backend
+### 2. Backend Setup
 ```bash
 cd backend
 npm install
 npm start
 ```
-Runs at `http://localhost:5000`
+The backend server runs on `http://localhost:5000` with modular routing mounted under `/api`.
 
-### 2. Frontend
+### 3. Frontend Setup
 ```bash
 cd frontend
 npm install
 npm run dev
 ```
-Runs at `http://localhost:5173`
+The frontend Vite server runs on `http://localhost:5173`.
 
----
-
-## 🛡️ License
-Copyright © 2026 Adichunchanagiri University (ACU). All rights reserved.
+### 4. Build Verification
+```bash
+cd frontend
+npm run build
+```
+Compiled with TypeScript and Vite into optimized production assets.
