@@ -173,67 +173,34 @@ export const KarnatakaRoleDial: React.FC<KarnatakaRoleDialProps> = ({
           const isHovered = hoveredRoleId === role.id;
           const pathD = getSectorPath(role.angleDeg);
 
-          // Center coordinate for role badge
-          const midRad = (role.angleDeg * Math.PI) / 180;
-          const labelR = 195;
-          const labelX = cx + labelR * Math.cos(midRad);
-          const labelY = cy + labelR * Math.sin(midRad);
-
           return (
-            <g
+            <path
               key={role.id}
+              d={pathD}
               onClick={() => onSelectRole(role)}
               onMouseEnter={() => setHoveredRoleId(role.id)}
               onMouseLeave={() => setHoveredRoleId(null)}
-              className="cursor-pointer group"
+              className="transition-all duration-200 cursor-pointer"
+              fill={
+                isSelected
+                  ? 'rgba(139, 0, 41, 0.22)'
+                  : isHovered
+                  ? 'rgba(139, 0, 41, 0.12)'
+                  : 'rgba(0, 0, 0, 0.001)'
+              }
+              stroke={
+                isSelected
+                  ? '#8b0029'
+                  : isHovered
+                  ? 'rgba(139, 0, 41, 0.6)'
+                  : 'transparent'
+              }
+              strokeWidth={isSelected ? 4 : isHovered ? 2.5 : 0}
+              strokeDasharray={isSelected ? 'none' : 'none'}
+              filter={isSelected ? 'url(#petalGlow)' : undefined}
             >
-              <path
-                d={pathD}
-                className="transition-all duration-200 cursor-pointer"
-                fill={
-                  isSelected
-                    ? 'rgba(139, 0, 41, 0.22)'
-                    : isHovered
-                    ? 'rgba(139, 0, 41, 0.12)'
-                    : 'rgba(0, 0, 0, 0.001)'
-                }
-                stroke={
-                  isSelected
-                    ? '#8b0029'
-                    : isHovered
-                    ? 'rgba(139, 0, 41, 0.6)'
-                    : 'transparent'
-                }
-                strokeWidth={isSelected ? 4 : isHovered ? 2.5 : 0}
-                strokeDasharray={isSelected ? 'none' : 'none'}
-                filter={isSelected ? 'url(#petalGlow)' : undefined}
-              >
-                <title>{role.title} – Click to login</title>
-              </path>
-
-              {/* Clean University Role Title Badge matching requested roles */}
-              <foreignObject
-                x={labelX - 65}
-                y={labelY - 18}
-                width="130"
-                height="36"
-                className="pointer-events-none"
-              >
-                <div className="w-full h-full flex items-center justify-center text-center">
-                  <span
-                    className={`px-2.5 py-1 rounded-full text-[10.5px] sm:text-[11px] font-black leading-tight tracking-tight shadow-md transition-all duration-200 ${
-                      isSelected
-                        ? 'bg-[#8b0029] text-white ring-2 ring-white scale-105'
-                        : isHovered
-                        ? 'bg-white text-[#8b0029] ring-2 ring-[#8b0029]/40 scale-105'
-                        : 'bg-white/95 text-slate-900 border border-slate-200/90 backdrop-blur-md'
-                    }`}
-                  >
-                    {role.title}
-                  </span>
-                </div>
-              </foreignObject>
-            </g>
+              <title>{role.title} – Click to login</title>
+            </path>
           );
         })}
 
