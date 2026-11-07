@@ -1,16 +1,13 @@
 import React from 'react';
 import { ChancellorLayout } from '../layouts/ChancellorLayout';
-import { ChancellorDashboard } from '../pages/ChancellorDashboard';
 
 interface ChancellorRoutesProps {
   onBackToPortal?: () => void;
+  onLogout?: () => void;
 }
 
-export const ChancellorRoutes: React.FC<ChancellorRoutesProps> = ({ onBackToPortal }) => {
-  return (
-    <ChancellorLayout onBackToPortal={onBackToPortal}>
-      <ChancellorDashboard />
-    </ChancellorLayout>
-  );
+export const ChancellorRoutes: React.FC<ChancellorRoutesProps> = ({ onBackToPortal, onLogout }) => {
+  return <ChancellorLayout onLogout={onLogout || onBackToPortal} />;
 };
+
 export default ChancellorRoutes;
