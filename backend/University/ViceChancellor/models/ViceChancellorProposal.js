@@ -7,6 +7,7 @@ const AuditTrailSchema = new mongoose.Schema({
   action: { type: String, required: true },
   timestamp: { type: Date, default: Date.now },
   remarks: { type: String, default: '' },
+  digitalSignatureId: { type: String, default: '' },
 });
 
 const ViceChancellorProposalSchema = new mongoose.Schema(
@@ -17,11 +18,18 @@ const ViceChancellorProposalSchema = new mongoose.Schema(
       type: String,
       required: true,
       enum: [
+        'Program / Curriculum Proposals',
+        'College Affiliation / Renewal',
+        'Recruitment / Appointments',
+        'Research & MoU Proposals',
+        'Budget / Major Expenditure',
+        'Policy / Regulation Amendments',
         'New Program Proposals',
         'Faculty Appointments',
         'Budget Proposals',
-        'Policy / Regulation Amendments',
         'MoU / Collaboration Requests',
+        'Statutory Appeal / Grievance',
+        'General Statutory Proposal',
       ],
     },
     department: { type: String, required: true },
@@ -32,10 +40,11 @@ const ViceChancellorProposalSchema = new mongoose.Schema(
     description: { type: String, required: true },
     supportingDocs: [{ type: String }],
 
+    // Statutory Delegated Authority Check
     delegatedAuthority: {
       type: String,
-      enum: ['VC Final Authority', 'Requires Chancellor Assent', 'Board of Governors / Syndicate'],
-      default: 'Requires Chancellor Assent',
+      enum: ['VC Final Authority', 'Requires Chancellor Assent', 'Board of Governors / Syndicate', 'Syndicate & Academic Council'],
+      default: 'VC Final Authority',
     },
 
     status: {
@@ -49,6 +58,7 @@ const ViceChancellorProposalSchema = new mongoose.Schema(
       remarks: { type: String, default: '' },
       decidedAt: { type: Date, default: null },
       digitalSignatureId: { type: String, default: null },
+      delegatedClause: { type: String, default: 'Statute 14(2) of University Act' },
     },
 
     auditTrail: [AuditTrailSchema],

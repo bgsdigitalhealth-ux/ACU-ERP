@@ -10,11 +10,15 @@ import {
   UserCheck,
   Handshake,
   FlaskConical,
-  Award,
   ArrowRight,
   Send,
   Stamp,
-  Landmark
+  Landmark,
+  Coins,
+  CheckSquare,
+  FileSpreadsheet,
+  TrendingUp,
+  Target
 } from 'lucide-react';
 import {
   ViceChancellorOverviewData,
@@ -55,135 +59,230 @@ export const ViceChancellorDashboardPage: React.FC<VcDashboardPageProps> = ({
   const phdOffset = -(ugDash + pgDash);
   const otherOffset = -(ugDash + pgDash + phdDash);
 
+  const finance = overview.financeOverview || {
+    fiscalYear: 'FY 2026–27',
+    annualBudget: '₹ 520.00 Cr',
+    expenditureYtd: '₹ 286.40 Cr (55.1%)',
+    committed: '₹ 112.30 Cr (21.6%)',
+    balance: '₹ 121.30 Cr (23.3%)',
+  };
+
   return (
-    <div className="space-y-4 sm:space-y-5 select-none text-slate-800">
-      
-      {/* 1. Welcome Greeting Banner */}
-      <div className="relative overflow-hidden bg-gradient-to-r from-[#eff6ff] via-white to-[#f0f9ff] rounded-2xl p-4 sm:p-5 border border-blue-200/80 shadow-xs flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-        <div className="z-10">
-          <div className="flex items-center gap-2">
-            <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight">
-              Welcome, {overview.viceChancellorName || 'Dr. R. Sharma'}
-            </h1>
-          </div>
-          <div className="text-xs font-bold text-blue-700 mt-0.5">
-            Vice Chancellor
-          </div>
-          <p className="text-xs sm:text-[13px] italic font-semibold text-slate-600 mt-1 max-w-2xl">
-            &ldquo;{overview.motto || 'Committed to Academic Excellence, Research, Innovation and Holistic Development'}&rdquo;
+    <div className="space-y-5 select-none font-sans">
+      {/* 1. Welcome Banner */}
+      <div className="bg-white rounded-2xl border border-slate-200/90 shadow-xs p-4 sm:p-5 flex flex-col md:flex-row md:items-center justify-between gap-4">
+        <div>
+          <h1 className="text-xl sm:text-2xl font-black text-slate-900 tracking-tight flex items-center gap-2">
+            <span>Welcome, Vice Chancellor</span>
+            <span>👏</span>
+          </h1>
+          <p className="text-xs sm:text-sm font-semibold text-slate-600 mt-0.5">
+            {overview.motto || 'Oversee • Lead • Approve • Monitor • Develop'}
           </p>
         </div>
 
-        {/* Academic Year Selector & Palace Graphic */}
-        <div className="flex items-center gap-3 self-start sm:self-center z-10">
-          <div className="flex items-center gap-2 px-3 py-1.5 rounded-xl bg-white border border-slate-200 text-xs font-bold text-slate-700 shadow-2xs">
-            <Calendar className="w-3.5 h-3.5 text-blue-600" />
-            <span>Academic Year :</span>
-            <select
-              value={academicYear}
-              onChange={(e) => onAcademicYearChange(e.target.value)}
-              className="bg-transparent font-black text-blue-900 focus:outline-none cursor-pointer"
-            >
-              <option value="2024 - 2025">2024 – 2025</option>
-              <option value="2025 - 2026">2025 – 2026</option>
-              <option value="2026 - 2027">2026 – 2027</option>
-            </select>
-          </div>
-        </div>
-
-        {/* Soft Background Silhouette */}
-        <div className="absolute right-4 top-1/2 -translate-y-1/2 text-blue-100/60 pointer-events-none hidden md:block">
-          <Landmark className="w-28 h-28 stroke-[0.8]" />
+        {/* Academic Year Selection */}
+        <div className="flex items-center gap-2 bg-slate-50 border border-slate-200 px-3.5 py-1.5 rounded-xl shadow-2xs self-start md:self-auto">
+          <Calendar className="w-4 h-4 text-purple-700 shrink-0" />
+          <span className="text-xs font-bold text-slate-600">Academic Year:</span>
+          <select
+            value={academicYear}
+            onChange={(e) => onAcademicYearChange(e.target.value)}
+            className="text-xs font-extrabold text-slate-900 bg-transparent border-none focus:outline-hidden cursor-pointer"
+          >
+            <option value="2026 – 2027">2026 – 2027</option>
+            <option value="2025 – 2026">2025 – 2026</option>
+            <option value="2024 – 2025">2024 – 2025</option>
+          </select>
         </div>
       </div>
 
-      {/* 2. Four KPI Metric Cards */}
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 sm:gap-4">
-        
+      {/* 2. Grid of 8 KPI Summary Cards matching Mockup */}
+      <div className="grid grid-cols-2 sm:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4">
         {/* KPI 1: Total Students */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-purple-50 border border-purple-200 flex items-center justify-center text-purple-700 shrink-0 shadow-2xs">
-            <GraduationCap className="w-6 h-6 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-500">Total Students</div>
-            <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-              {totalStudents.toLocaleString()}
+        <div
+          onClick={() => onNavigate('academic-affairs')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-purple-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <GraduationCap className="w-5 h-5 stroke-[2.2]" />
             </div>
-            <div className="text-[11px] font-extrabold text-emerald-600 mt-0.5">
-              {overview.totalStudentsGrowth || '↑ 6.2%'}
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Total Students</div>
+              <div className="flex items-baseline gap-1.5 mt-0.5">
+                <span className="text-base sm:text-lg font-black text-slate-900">
+                  {overview.totalStudents?.toLocaleString() || '24,560'}
+                </span>
+                <span className="text-[10px] font-extrabold text-emerald-600">
+                  {overview.totalStudentsGrowth || '↑ 6.2%'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
         {/* KPI 2: Total Faculty */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 shrink-0 shadow-2xs">
-            <Users className="w-6 h-6 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-500">Total Faculty</div>
-            <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-              {(overview.totalFaculty || 1820).toLocaleString()}
+        <div
+          onClick={() => onNavigate('human-resources')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-cyan-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-cyan-100 text-cyan-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Users className="w-5 h-5 stroke-[2.2]" />
             </div>
-            <div className="text-[11px] font-extrabold text-emerald-600 mt-0.5">
-              {overview.totalFacultyGrowth || '↑ 3.8%'}
-            </div>
-          </div>
-        </div>
-
-        {/* KPI 3: Departments */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-amber-50 border border-amber-200 flex items-center justify-center text-amber-700 shrink-0 shadow-2xs">
-            <Building2 className="w-6 h-6 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-500">Departments</div>
-            <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-              {overview.departments || 52}
-            </div>
-            <div className="text-[11px] font-extrabold text-emerald-600 mt-0.5">
-              {overview.departmentsGrowth || '↑ 2.0%'}
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Total Faculty</div>
+              <div className="flex items-baseline gap-1.5 mt-0.5">
+                <span className="text-base sm:text-lg font-black text-slate-900">
+                  {overview.totalFaculty?.toLocaleString() || '1,820'}
+                </span>
+                <span className="text-[10px] font-extrabold text-emerald-600">
+                  {overview.totalFacultyGrowth || '↑ 3.8%'}
+                </span>
+              </div>
             </div>
           </div>
         </div>
 
-        {/* KPI 4: Academic Programs */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex items-center gap-3">
-          <div className="w-12 h-12 rounded-xl bg-pink-50 border border-pink-200 flex items-center justify-center text-pink-700 shrink-0 shadow-2xs">
-            <BookOpen className="w-6 h-6 stroke-[2.2]" />
-          </div>
-          <div>
-            <div className="text-xs font-bold text-slate-500">Academic Programs</div>
-            <div className="text-xl sm:text-2xl font-black text-slate-900 leading-tight">
-              {overview.academicPrograms || 320}
+        {/* KPI 3: Total Departments */}
+        <div
+          onClick={() => onNavigate('academic-affairs')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-amber-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-amber-100 text-amber-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Building2 className="w-5 h-5 stroke-[2.2]" />
             </div>
-            <div className="text-[11px] font-extrabold text-emerald-600 mt-0.5">
-              {overview.academicProgramsGrowth || '↑ 4.5%'}
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Total Departments</div>
+              <div className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                {overview.departments || 52}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI 4: Programs */}
+        <div
+          onClick={() => onNavigate('academic-affairs')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-purple-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <BookOpen className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Programs</div>
+              <div className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                {overview.academicPrograms || 320}
+              </div>
+              <div className="text-[9px] font-bold text-slate-400">
+                {overview.academicProgramsBreakdown || '(UG 198 | PG 92 | PhD 30)'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI 5: Affiliated Colleges */}
+        <div
+          onClick={() => onNavigate('college-affiliation')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-pink-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-pink-100 text-pink-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Landmark className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Affiliated Colleges</div>
+              <div className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                {overview.affiliatedColleges || 186}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI 6: Research Projects */}
+        <div
+          onClick={() => onNavigate('research-innovation')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-purple-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-purple-100 text-purple-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <FlaskConical className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Research Projects</div>
+              <div className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                {overview.researchProjects || 420}
+              </div>
+              <div className="text-[9px] font-bold text-slate-400">
+                {overview.researchFunding || '(₹ 86.4 Cr)'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI 7: Active MoUs */}
+        <div
+          onClick={() => onNavigate('research-innovation')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-slate-200/80 shadow-xs hover:border-blue-300 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-sky-100 text-sky-800 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <Handshake className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Active MoUs</div>
+              <div className="text-base sm:text-lg font-black text-slate-900 mt-0.5">
+                {overview.activeMous || 68}
+              </div>
+              <div className="text-[9px] font-bold text-slate-400">
+                {overview.mousBreakdown || '(National 42 | International 26)'}
+              </div>
+            </div>
+          </div>
+        </div>
+
+        {/* KPI 8: Pending Approvals */}
+        <div
+          onClick={() => onNavigate('approvals-workflow')}
+          className="bg-white p-3.5 sm:p-4 rounded-2xl border border-rose-200 shadow-xs hover:border-rose-400 hover:shadow-sm transition-all cursor-pointer group"
+        >
+          <div className="flex items-center gap-3">
+            <div className="w-9 h-9 rounded-xl bg-rose-100 text-rose-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
+              <CheckSquare className="w-5 h-5 stroke-[2.2]" />
+            </div>
+            <div>
+              <div className="text-[11px] font-bold text-slate-500">Pending Approvals</div>
+              <div className="text-base sm:text-lg font-black text-rose-600 mt-0.5">
+                {overview.pendingApprovalsCount || 37}
+              </div>
             </div>
           </div>
         </div>
       </div>
 
-      {/* 3. Row 2: University Overview Donut (Left) + Pending Approvals (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        
-        {/* Left: University Overview */}
+      {/* 3. Second Row: University Academic Overview & Finance Overview */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left: University Academic Overview (SVG Donut) */}
         <div className="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
-              University Overview
+              University Academic Overview
             </h2>
-            <span className="text-[11px] font-semibold text-slate-500">
-              Student Demographics
-            </span>
+            <button
+              onClick={() => onNavigate('academic-affairs')}
+              className="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
+            >
+              <span>View Details</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
           </div>
 
-          <div className="py-4 flex flex-col sm:flex-row items-center justify-center gap-6 sm:gap-8">
-            {/* SVG Donut */}
-            <div className="relative w-44 h-44 shrink-0 flex items-center justify-center">
-              <svg className="w-full h-full -rotate-90" viewBox="0 0 180 180">
-                <circle cx="90" cy="90" r="70" fill="transparent" stroke="#f1f5f9" strokeWidth="24" />
+          <div className="py-3 flex flex-col sm:flex-row items-center justify-center gap-8">
+            <div className="relative w-40 h-40 shrink-0">
+              <svg viewBox="0 0 180 180" className="w-full h-full -rotate-90">
                 <circle
                   cx="90"
                   cy="90"
@@ -229,7 +328,6 @@ export const ViceChancellorDashboardPage: React.FC<VcDashboardPageProps> = ({
                   className="transition-all duration-500"
                 />
               </svg>
-
               <div className="absolute inset-0 flex flex-col items-center justify-center text-center pointer-events-none">
                 <span className="text-lg sm:text-xl font-black text-slate-900 leading-tight">
                   {totalStudents.toLocaleString()}
@@ -260,15 +358,81 @@ export const ViceChancellorDashboardPage: React.FC<VcDashboardPageProps> = ({
           </div>
         </div>
 
-        {/* Right: Pending Approvals */}
+        {/* Right: Finance Overview (FY 2026–27) */}
+        <div className="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
+            <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight flex items-center gap-2">
+              <Coins className="w-4 h-4 text-purple-700" />
+              <span>Finance Overview ({finance.fiscalYear})</span>
+            </h2>
+            <button
+              onClick={() => onNavigate('finance-budget')}
+              className="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
+            >
+              <span>Full Ledger</span>
+              <ArrowRight className="w-3.5 h-3.5" />
+            </button>
+          </div>
+
+          <div className="py-2 space-y-2.5">
+            {/* Annual Budget */}
+            <div className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-800 flex items-center justify-center font-bold text-xs">
+                  ₹
+                </div>
+                <span className="text-xs font-bold text-slate-700">Annual Budget</span>
+              </div>
+              <span className="text-sm font-black text-slate-900">{finance.annualBudget}</span>
+            </div>
+
+            {/* Expenditure (YTD) */}
+            <div className="p-2.5 rounded-xl bg-amber-50/60 border border-amber-100 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-amber-100 text-amber-800 flex items-center justify-center font-bold text-xs">
+                  <FileSpreadsheet className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-700">Expenditure (YTD)</span>
+              </div>
+              <span className="text-sm font-black text-amber-900">{finance.expenditureYtd}</span>
+            </div>
+
+            {/* Committed */}
+            <div className="p-2.5 rounded-xl bg-purple-50/60 border border-purple-100 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center font-bold text-xs">
+                  <TrendingUp className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-700">Committed</span>
+              </div>
+              <span className="text-sm font-black text-purple-900">{finance.committed}</span>
+            </div>
+
+            {/* Balance */}
+            <div className="p-2.5 rounded-xl bg-emerald-50/60 border border-emerald-100 flex items-center justify-between">
+              <div className="flex items-center gap-2.5">
+                <div className="w-7 h-7 rounded-lg bg-emerald-100 text-emerald-800 flex items-center justify-center font-bold text-xs">
+                  <Target className="w-4 h-4" />
+                </div>
+                <span className="text-xs font-bold text-slate-700">Balance</span>
+              </div>
+              <span className="text-sm font-black text-emerald-900">{finance.balance}</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 4. Third Row: Key Approvals & Pending Actions & Upcoming Meetings */}
+      <div className="grid grid-cols-1 lg:grid-cols-12 gap-5">
+        {/* Left: Key Approvals & Pending Actions */}
         <div className="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
             <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
-              Pending Approvals
+              Key Approvals &amp; Pending Actions
             </h2>
             <button
               onClick={() => onNavigate('approvals-workflow')}
-              className="text-xs font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 transition-colors cursor-pointer"
+              className="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
             >
               <span>View All</span>
               <ArrowRight className="w-3.5 h-3.5" />
@@ -280,201 +444,69 @@ export const ViceChancellorDashboardPage: React.FC<VcDashboardPageProps> = ({
               <div
                 key={idx}
                 onClick={() => onSelectCategory(item.category)}
-                className="p-2.5 rounded-xl hover:bg-slate-50 border border-slate-100 hover:border-slate-200 transition-all flex items-center justify-between group cursor-pointer"
+                className="p-2.5 rounded-xl hover:bg-purple-50/50 border border-slate-100 hover:border-purple-200 transition-all flex items-center justify-between group cursor-pointer"
               >
                 <div className="flex items-center gap-3">
-                  <div className="w-8 h-8 rounded-lg bg-blue-50 border border-blue-200 flex items-center justify-center text-blue-700 shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
+                  <div className="w-8 h-8 rounded-lg bg-purple-50 border border-purple-200 text-purple-700 flex items-center justify-center shrink-0 group-hover:scale-105 transition-transform">
                     {item.category.includes('Program') ? (
-                      <BookOpen className="w-4 h-4 text-blue-600" />
-                    ) : item.category.includes('Faculty') ? (
-                      <UserCheck className="w-4 h-4 text-purple-600" />
+                      <BookOpen className="w-4 h-4 text-purple-700" />
+                    ) : item.category.includes('Affiliation') ? (
+                      <Landmark className="w-4 h-4 text-amber-700" />
+                    ) : item.category.includes('Recruitment') ? (
+                      <UserCheck className="w-4 h-4 text-cyan-700" />
+                    ) : item.category.includes('Research') ? (
+                      <Handshake className="w-4 h-4 text-blue-700" />
                     ) : item.category.includes('Budget') ? (
-                      <Building2 className="w-4 h-4 text-amber-600" />
-                    ) : item.category.includes('Policy') ? (
-                      <FileCheck className="w-4 h-4 text-emerald-600" />
+                      <Coins className="w-4 h-4 text-emerald-700" />
                     ) : (
-                      <Handshake className="w-4 h-4 text-sky-600" />
+                      <FileCheck className="w-4 h-4 text-pink-700" />
                     )}
                   </div>
-                  <span className="text-xs sm:text-[13px] font-bold text-slate-800 group-hover:text-blue-900 transition-colors">
+                  <span className="text-xs font-bold text-slate-800 group-hover:text-purple-900 transition-colors">
                     {item.category}
                   </span>
                 </div>
-
-                <div className="px-2.5 py-0.5 rounded-full bg-rose-50 text-rose-700 border border-rose-200 text-xs font-black group-hover:bg-rose-100 transition-colors">
+                <span className="px-2.5 py-0.5 rounded-full text-xs font-black bg-purple-100 text-purple-900">
                   {item.count}
-                </div>
+                </span>
               </div>
             ))}
           </div>
         </div>
-      </div>
 
-      {/* 4. Row 3: Academic Performance + Research & Innovation + Upcoming Meetings */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        
-        {/* Card 1: Academic Performance */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
+        {/* Right: Upcoming Meetings */}
+        <div className="lg:col-span-6 bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight">
-              Academic Performance
-            </h2>
-            <button
-              onClick={() => onNavigate('academic-affairs')}
-              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-            >
-              <span>View Details</span>
-              <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
-
-          <div className="flex items-center gap-3 text-[10.5px] font-bold text-slate-500 py-1.5 justify-center">
-            <div className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-blue-600" />
-              <span>Current Year</span>
-            </div>
-            <div className="flex items-center gap-1">
-              <span className="w-2.5 h-2.5 rounded-sm bg-purple-500" />
-              <span>Previous Year</span>
-            </div>
-          </div>
-
-          {/* Grouped Bar Chart */}
-          <div className="py-2 flex items-end justify-around h-32 border-b border-slate-100 px-2">
-            {/* UG */}
-            <div className="flex flex-col items-center gap-1 h-full justify-end">
-              <div className="flex items-end gap-1.5 h-24">
-                <div className="w-5 bg-blue-600 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[87%]">
-                  87
-                </div>
-                <div className="w-5 bg-purple-400 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[83%]">
-                  83
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-600">UG Pass %</span>
-            </div>
-
-            {/* PG */}
-            <div className="flex flex-col items-center gap-1 h-full justify-end">
-              <div className="flex items-end gap-1.5 h-24">
-                <div className="w-5 bg-blue-600 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[92%]">
-                  92
-                </div>
-                <div className="w-5 bg-purple-400 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[88%]">
-                  88
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-600">PG Pass %</span>
-            </div>
-
-            {/* PhD */}
-            <div className="flex flex-col items-center gap-1 h-full justify-end">
-              <div className="flex items-end gap-1.5 h-24">
-                <div className="w-5 bg-blue-600 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[76%]">
-                  76
-                </div>
-                <div className="w-5 bg-purple-400 rounded-t-sm flex items-center justify-center text-[9px] text-white font-bold h-[70%]">
-                  70
-                </div>
-              </div>
-              <span className="text-[10px] font-bold text-slate-600">PhD Comp</span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 2: Research & Innovation Overview */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight">
-              Research &amp; Innovation
-            </h2>
-            <button
-              onClick={() => onNavigate('research-innovation')}
-              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-            >
-              <span>View All</span>
-              <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
-
-          <div className="py-1 space-y-2.5">
-            <div className="flex items-center justify-between p-2 rounded-xl bg-purple-50/60 border border-purple-100">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <FlaskConical className="w-4 h-4 text-purple-600" />
-                <span>Active Research Projects</span>
-              </div>
-              <span className="text-xs font-black text-purple-950">
-                {overview.researchInnovation?.activeProjects || 120}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-2 rounded-xl bg-blue-50/60 border border-blue-100">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <Award className="w-4 h-4 text-blue-600" />
-                <span>Grants Received</span>
-              </div>
-              <span className="text-xs font-black text-blue-950">
-                {overview.researchInnovation?.grantsReceived || 48}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-2 rounded-xl bg-cyan-50/60 border border-cyan-100">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <Handshake className="w-4 h-4 text-cyan-600" />
-                <span>MoUs / Collaborations</span>
-              </div>
-              <span className="text-xs font-black text-cyan-950">
-                {overview.researchInnovation?.mousCollaborations || 36}
-              </span>
-            </div>
-
-            <div className="flex items-center justify-between p-2 rounded-xl bg-slate-50 border border-slate-100">
-              <div className="flex items-center gap-2 text-xs font-bold text-slate-700">
-                <FileText className="w-4 h-4 text-slate-600" />
-                <span>Publications (Last 1 Year)</span>
-              </div>
-              <span className="text-xs font-black text-slate-950">
-                {overview.researchInnovation?.publicationsLastYear || 245}
-              </span>
-            </div>
-          </div>
-        </div>
-
-        {/* Card 3: Upcoming Meetings */}
-        <div className="bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight">
+            <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight">
               Upcoming Meetings
             </h2>
             <button
               onClick={() => onNavigate('statutory-meetings')}
-              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
+              className="text-xs font-bold text-purple-700 hover:text-purple-900 flex items-center gap-1 cursor-pointer"
             >
               <span>View Calendar</span>
-              <ArrowRight className="w-3 h-3" />
+              <ArrowRight className="w-3.5 h-3.5" />
             </button>
           </div>
 
           <div className="py-1 space-y-2.5">
-            {(overview.upcomingMeetings || []).slice(0, 3).map((m, idx) => (
+            {(overview.upcomingMeetings || []).map((m, idx) => (
               <div
                 key={m.id || idx}
-                onClick={() => onNavigate('statutory-meetings')}
-                className="p-2.5 rounded-xl bg-slate-50 hover:bg-blue-50/60 border border-slate-200/70 transition-all flex items-center justify-between group cursor-pointer"
+                className="p-3 rounded-xl bg-slate-50 border border-slate-100 flex items-center justify-between text-xs"
               >
-                <div className="flex items-center gap-2.5">
-                  <div className="w-7 h-7 rounded-lg bg-blue-100 text-blue-700 flex items-center justify-center shrink-0 shadow-2xs group-hover:scale-105 transition-transform">
-                    <Calendar className="w-3.5 h-3.5 stroke-[2.2]" />
+                <div className="flex items-center gap-3">
+                  <div className="w-8 h-8 rounded-lg bg-purple-100 text-purple-800 flex items-center justify-center shrink-0">
+                    <Users className="w-4 h-4" />
                   </div>
                   <div>
-                    <div className="text-xs font-bold text-slate-900 line-clamp-1 group-hover:text-blue-900">
-                      {m.title}
-                    </div>
-                    <div className="text-[10px] text-slate-500">{m.venue || 'Council Hall'}</div>
+                    <div className="font-black text-slate-900">{m.title}</div>
+                    <div className="text-[10px] text-slate-500 font-medium">{m.type || 'Statutory Body'}</div>
                   </div>
                 </div>
-                <div className="text-[11px] font-black text-blue-700 whitespace-nowrap">
-                  {m.date}
+                <div className="text-right">
+                  <div className="font-extrabold text-purple-950">{m.date}</div>
+                  <div className="text-[10px] text-slate-400">{m.time || '11:00 AM'}</div>
                 </div>
               </div>
             ))}
@@ -482,122 +514,105 @@ export const ViceChancellorDashboardPage: React.FC<VcDashboardPageProps> = ({
         </div>
       </div>
 
-      {/* 5. Row 4: Quick Actions (Left) + Notifications & Alerts (Right) */}
-      <div className="grid grid-cols-1 lg:grid-cols-12 gap-4">
-        
-        {/* Left: Quick Actions */}
-        <div className="lg:col-span-7 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
-          <div className="pb-2 border-b border-slate-100">
-            <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight">
-              Quick Actions
-            </h2>
-          </div>
+      {/* 5. Fourth Row: Quick Actions */}
+      <div className="bg-white p-4 sm:p-5 rounded-2xl border border-slate-200/80 shadow-xs">
+        <h2 className="text-sm sm:text-base font-extrabold text-slate-900 tracking-tight mb-3">
+          Quick Actions
+        </h2>
+        <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-3">
+          {/* Action 1: Approve Requests */}
+          <button
+            onClick={() => onNavigate('approvals-workflow')}
+            className="p-3 bg-emerald-50/70 hover:bg-emerald-100 border border-emerald-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-emerald-200/80 text-emerald-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <FileCheck className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              Approve Requests
+            </span>
+          </button>
 
-          <div className="grid grid-cols-2 sm:grid-cols-5 gap-2.5 py-2">
-            {/* 1. Approve Proposals */}
-            <button
-              onClick={() => onNavigate('approvals-workflow')}
-              className="p-3 bg-purple-50/70 hover:bg-purple-100 border border-purple-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-purple-200/80 text-purple-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
-                <FileCheck className="w-4 h-4 stroke-[2.2]" />
-              </div>
-              <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                Approve Proposals
-              </span>
-            </button>
+          {/* Action 2: Review Proposals */}
+          <button
+            onClick={() => onNavigate('approvals-workflow')}
+            className="p-3 bg-purple-50/70 hover:bg-purple-100 border border-purple-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-purple-200/80 text-purple-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <FileText className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              Review Proposals
+            </span>
+          </button>
 
-            {/* 2. View Reports */}
-            <button
-              onClick={() => onNavigate('reports-analytics')}
-              className="p-3 bg-blue-50/70 hover:bg-blue-100 border border-blue-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-blue-200/80 text-blue-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
-                <FileText className="w-4 h-4 stroke-[2.2]" />
-              </div>
-              <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                View Reports
-              </span>
-            </button>
+          {/* Action 3: View Reports */}
+          <button
+            onClick={() => onNavigate('reports-analytics')}
+            className="p-3 bg-blue-50/70 hover:bg-blue-100 border border-blue-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-blue-200/80 text-blue-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <FileSpreadsheet className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              View Reports
+            </span>
+          </button>
 
-            {/* 3. Sign Documents */}
-            <button
-              onClick={() => onNavigate('approvals-workflow')}
-              className="p-3 bg-emerald-50/70 hover:bg-emerald-100 border border-emerald-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-emerald-200/80 text-emerald-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
-                <Stamp className="w-4 h-4 stroke-[2.2]" />
-              </div>
-              <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                Sign Documents
-              </span>
-            </button>
+          {/* Action 4: Sign Documents */}
+          <button
+            onClick={() => onNavigate('approvals-workflow')}
+            className="p-3 bg-pink-50/70 hover:bg-pink-100 border border-pink-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-pink-200/80 text-pink-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <Stamp className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              Sign Documents
+            </span>
+          </button>
 
-            {/* 4. Meeting Management */}
-            <button
-              onClick={() => onNavigate('statutory-meetings')}
-              className="p-3 bg-amber-50/70 hover:bg-amber-100 border border-amber-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-amber-200/80 text-amber-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
-                <Calendar className="w-4 h-4 stroke-[2.2]" />
-              </div>
-              <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                Meeting Management
-              </span>
-            </button>
+          {/* Action 5: Schedule Meeting */}
+          <button
+            onClick={() => onNavigate('statutory-meetings')}
+            className="p-3 bg-amber-50/70 hover:bg-amber-100 border border-amber-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-amber-200/80 text-amber-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <Calendar className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              Schedule Meeting
+            </span>
+          </button>
 
-            {/* 5. Send Notification */}
-            <button
-              onClick={() => onNavigate('communication')}
-              className="p-3 bg-cyan-50/70 hover:bg-cyan-100 border border-cyan-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
-            >
-              <div className="w-8 h-8 rounded-lg bg-cyan-200/80 text-cyan-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
-                <Send className="w-4 h-4 stroke-[2.2]" />
-              </div>
-              <span className="text-[11px] font-bold text-slate-800 leading-tight">
-                Send Notification
-              </span>
-            </button>
-          </div>
+          {/* Action 6: Issue Circular */}
+          <button
+            onClick={() => onNavigate('communication')}
+            className="p-3 bg-cyan-50/70 hover:bg-cyan-100 border border-cyan-200/80 rounded-xl text-center flex flex-col items-center justify-center group transition-all shadow-2xs cursor-pointer"
+          >
+            <div className="w-8 h-8 rounded-lg bg-cyan-200/80 text-cyan-800 flex items-center justify-center mb-1 group-hover:scale-105 transition-transform">
+              <Send className="w-4 h-4 stroke-[2.2]" />
+            </div>
+            <span className="text-[11px] font-bold text-slate-800 leading-tight">
+              Issue Circular
+            </span>
+          </button>
         </div>
-
-        {/* Right: Notifications & Alerts */}
-        <div className="lg:col-span-5 bg-white p-4 rounded-2xl border border-slate-200/80 shadow-xs flex flex-col justify-between">
-          <div className="flex items-center justify-between pb-2 border-b border-slate-100">
-            <h2 className="text-xs sm:text-sm font-extrabold text-slate-900 tracking-tight">
-              Notifications &amp; Alerts
-            </h2>
-            <button
-              onClick={() => onNavigate('communication')}
-              className="text-[11px] font-bold text-blue-600 hover:text-blue-800 flex items-center gap-1 cursor-pointer"
-            >
-              <span>View All</span>
-              <ArrowRight className="w-3 h-3" />
-            </button>
-          </div>
-
-          <div className="py-1 space-y-2">
-            {(overview.notifications || []).slice(0, 3).map((n, idx) => (
-              <div
-                key={n.id || idx}
-                className="p-2.5 rounded-xl bg-slate-50 border border-slate-100 flex items-center gap-3 text-xs"
-              >
-                <div
-                  className={`w-2.5 h-2.5 rounded-full shrink-0 ${
-                    idx === 0 ? 'bg-amber-500' : idx === 1 ? 'bg-blue-500' : 'bg-emerald-500'
-                  }`}
-                />
-                <div className="flex-1 min-w-0">
-                  <div className="font-bold text-slate-900 truncate">{n.message}</div>
-                  <div className="text-[10px] text-slate-500">{n.timeAgo}</div>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-
       </div>
 
+      {/* 6. VC Goal Banner */}
+      <div className="bg-gradient-to-r from-purple-900 via-indigo-900 to-purple-950 rounded-2xl p-4 text-white flex items-center justify-between shadow-sm">
+        <div className="flex items-center gap-3">
+          <div className="px-3 py-1 rounded-full bg-white/10 text-amber-300 text-xs font-black tracking-wider uppercase border border-white/10">
+            VC Goal
+          </div>
+          <p className="text-xs sm:text-sm font-semibold text-purple-100 max-w-4xl leading-relaxed">
+            {overview.goal ||
+              'Ensure academic excellence, research innovation, good governance, financial sustainability, regulatory compliance and holistic development of the university.'}
+          </p>
+        </div>
+        <Landmark className="w-6 h-6 text-purple-300/40 hidden md:block shrink-0" />
+      </div>
     </div>
   );
 };

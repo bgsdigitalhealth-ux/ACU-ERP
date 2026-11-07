@@ -26,3 +26,4 @@ export const ViceChancellorGovernance =
   mongoose.model('ViceChancellorGovernance', ViceChancellorGovernanceSchema);
 
 export default ViceChancellorGovernance;
+

@@ -31,43 +31,52 @@ export interface ViceChancellorModuleAccess {
   iconType?: string;
 }
 
+export interface ViceChancellorFinanceOverview {
+  fiscalYear: string;
+  annualBudget: string;
+  expenditureYtd: string;
+  committed: string;
+  balance: string;
+}
+
 export interface ViceChancellorOverviewData {
   academicYear: string;
   viceChancellorName: string;
+  roleTitle?: string;
   motto: string;
+
+  // 8 KPI Summary Cards
   totalStudents: number;
   totalStudentsGrowth: string;
   totalFaculty: number;
   totalFacultyGrowth: string;
   departments: number;
-  departmentsGrowth: string;
   academicPrograms: number;
-  academicProgramsGrowth: string;
+  academicProgramsBreakdown?: string;
+  affiliatedColleges?: number;
+  researchProjects?: number;
+  researchFunding?: string;
+  activeMous?: number;
+  mousBreakdown?: string;
+  pendingApprovalsCount?: number;
+
   studentDistribution: {
     ug: number;
     pg: number;
     phd: number;
     others: number;
   };
-  academicPerformance: {
-    ugPassCurrent: number;
-    ugPassPrevious: number;
-    pgPassCurrent: number;
-    pgPassPrevious: number;
-    phdCompletionCurrent: number;
-    phdCompletionPrevious: number;
-  };
-  researchInnovation: {
-    activeProjects: number;
-    grantsReceived: number;
-    mousCollaborations: number;
-    publicationsLastYear: number;
-  };
+
+  financeOverview?: ViceChancellorFinanceOverview;
+
   upcomingMeetings: ViceChancellorMeeting[];
   notifications: ViceChancellorNotification[];
   responsibilities: ViceChancellorResponsibility[];
   erpModulesAccess: ViceChancellorModuleAccess[];
+  reportsList?: string[];
+  importantComponents?: string[];
   goal: string;
+
   pendingApprovals: {
     total: number;
     breakdown: {
@@ -83,12 +92,7 @@ export interface ViceChancellorProposalItem {
   id?: string;
   proposalCode: string;
   title: string;
-  category:
-    | 'New Program Proposals'
-    | 'Faculty Appointments'
-    | 'Budget Proposals'
-    | 'Policy / Regulation Amendments'
-    | 'MoU / Collaboration Requests';
+  category: string;
   department: string;
   submittedBy: string;
   submissionDate: string;
@@ -96,13 +100,14 @@ export interface ViceChancellorProposalItem {
   budgetInvolved: string;
   description: string;
   supportingDocs?: string[];
-  delegatedAuthority: 'VC Final Authority' | 'Requires Chancellor Assent' | 'Board of Governors / Syndicate';
+  delegatedAuthority: 'VC Final Authority' | 'Requires Chancellor Assent' | 'Board of Governors / Syndicate' | 'Syndicate & Academic Council';
   status: 'Pending VC Action' | 'Approved' | 'Endorsed for Chancellor Assent' | 'Rejected' | 'Returned for Correction';
   vcDecision?: {
     decision: 'Approve' | 'Endorse for Chancellor' | 'Reject' | 'Return' | null;
     remarks: string;
     decidedAt: string | null;
     digitalSignatureId: string | null;
+    delegatedClause?: string;
   };
   auditTrail: {
     stage: string;
@@ -111,6 +116,7 @@ export interface ViceChancellorProposalItem {
     action: string;
     timestamp: string;
     remarks?: string;
+    digitalSignatureId?: string;
   }[];
 }
 
@@ -147,130 +153,265 @@ const API_BASE = (import.meta as any).env?.VITE_API_URL
   ? `${(import.meta as any).env.VITE_API_URL.replace(/\/$/, '')}/api/university/vice-chancellor`
   : '/api/university/vice-chancellor';
 
-// Fallback dataset matching Image 1
+// Fallback dataset matching Image 1 & updated mockup
 export const FALLBACK_VC_OVERVIEW: ViceChancellorOverviewData = {
-  academicYear: '2024 - 2025',
-  viceChancellorName: 'Dr. R. Sharma',
-  motto: 'Committed to Academic Excellence, Research, Innovation and Holistic Development',
+  academicYear: '2026 – 2027',
+  viceChancellorName: 'Prof. (Dr.) Ramesh K.',
+  roleTitle: 'Vice Chancellor',
+  motto: 'Oversee • Lead • Approve • Monitor • Develop',
+
   totalStudents: 24560,
   totalStudentsGrowth: '↑ 6.2%',
   totalFaculty: 1820,
   totalFacultyGrowth: '↑ 3.8%',
   departments: 52,
-  departmentsGrowth: '↑ 2.0%',
   academicPrograms: 320,
-  academicProgramsGrowth: '↑ 4.5%',
+  academicProgramsBreakdown: '(UG 198 | PG 92 | PhD 30)',
+  affiliatedColleges: 186,
+  researchProjects: 420,
+  researchFunding: '(₹ 86.4 Cr)',
+  activeMous: 68,
+  mousBreakdown: '(National 42 | International 26)',
+  pendingApprovalsCount: 37,
+
   studentDistribution: { ug: 55, pg: 32, phd: 8, others: 5 },
-  academicPerformance: {
-    ugPassCurrent: 87,
-    ugPassPrevious: 83,
-    pgPassCurrent: 92,
-    pgPassPrevious: 88,
-    phdCompletionCurrent: 76,
-    phdCompletionPrevious: 70,
+
+  financeOverview: {
+    fiscalYear: 'FY 2026–27',
+    annualBudget: '₹ 520.00 Cr',
+    expenditureYtd: '₹ 286.40 Cr (55.1%)',
+    committed: '₹ 112.30 Cr (21.6%)',
+    balance: '₹ 121.30 Cr (23.3%)',
   },
-  researchInnovation: {
-    activeProjects: 120,
-    grantsReceived: 48,
-    mousCollaborations: 36,
-    publicationsLastYear: 245,
-  },
+
   upcomingMeetings: [
-    { id: 'm-1', title: 'Executive Council', date: '24 Apr 2025', type: 'Executive Council' },
-    { id: 'm-2', title: 'Academic Council', date: '28 Apr 2025', type: 'Academic Council' },
-    { id: 'm-3', title: 'Syndicate Meeting', date: '05 May 2025', type: 'Syndicate Meeting' },
+    { id: 'm-1', title: 'Executive Council Meeting', date: '15 Nov 2026', type: 'Executive Council' },
+    { id: 'm-2', title: 'Academic Council Meeting', date: '20 Nov 2026', type: 'Academic Council' },
+    { id: 'm-3', title: 'Syndicate Meeting', date: '28 Nov 2026', type: 'Syndicate' },
+    { id: 'm-4', title: 'Planning & Development Committee', date: '05 Dec 2026', type: 'Planning & Development' },
   ],
+
   notifications: [
-    { id: 'n-1', message: 'New research grant proposal submitted', timeAgo: '2 hours ago', category: 'research' },
-    { id: 'n-2', message: 'Faculty appointment pending approval', timeAgo: '4 hours ago', category: 'faculty' },
-    { id: 'n-3', message: 'NAAC compliance report uploaded', timeAgo: '6 hours ago', category: 'accreditation' },
+    { id: 'n-1', message: 'Board of Governors meeting scheduled for 15 Nov 2026.', timeAgo: '1 hour ago', category: 'statutory' },
+    { id: 'n-2', message: '7 Faculty appointment selection files submitted for VC sanction.', timeAgo: '3 hours ago', category: 'recruitment' },
+    { id: 'n-3', message: 'Annual College Affiliation Inspection Reports ready for review.', timeAgo: '5 hours ago', category: 'affiliation' },
   ],
+
   responsibilities: [
     {
       id: 'r-1',
       number: 1,
-      title: 'Academic Leadership & Quality',
-      bullets: ['Ensure academic excellence and innovation', 'Monitor program effectiveness', 'Promote research and interdisciplinary studies'],
+      title: 'Academic Leadership',
+      bullets: [
+        'Lead academic planning and policy implementation.',
+        'Ensure quality of teaching, learning and evaluation.',
+        'Approve new programs and curriculum changes.',
+      ],
       iconType: 'academic',
     },
     {
       id: 'r-2',
       number: 2,
-      title: 'Policy Implementation & Compliance',
-      bullets: ['Implement university policies and decisions', 'Ensure regulatory compliance (UGC/NAAC/NIRF)', 'Monitor risk and legal matters'],
-      iconType: 'policy',
+      title: 'Administration & Governance',
+      bullets: [
+        'Overall administration and day-to-day management.',
+        'Implement decisions of Executive Council, Academic Council & Syndicate.',
+        'Ensure efficient and transparent governance.',
+      ],
+      iconType: 'governance',
     },
     {
       id: 'r-3',
       number: 3,
-      title: 'Administration & Governance',
-      bullets: ['Oversee university administration', 'Implement statutes and regulations', 'Coordinate with Registrar and other authorities'],
-      iconType: 'admin',
+      title: 'Research & Innovation',
+      bullets: [
+        'Promote research culture and innovation.',
+        'Approve major research projects and MoUs.',
+        'Facilitate funding, industry and international collaborations.',
+      ],
+      iconType: 'research',
     },
     {
       id: 'r-4',
       number: 4,
-      title: 'Faculty & Staff Management',
-      bullets: ['Oversee faculty recruitment and development', 'Ensure HR policies implementation', 'Promote faculty performance and well-being'],
-      iconType: 'faculty',
+      title: 'Finance & Resource Management',
+      bullets: [
+        'Prepare and present the annual budget.',
+        'Approve major expenditures and resource allocations.',
+        'Ensure financial discipline and audit compliance.',
+      ],
+      iconType: 'finance',
     },
     {
       id: 'r-5',
       number: 5,
-      title: 'Finance & Resource Management',
-      bullets: ['Monitor budget utilization', 'Optimize resource allocation', 'Ensure financial sustainability'],
-      iconType: 'finance',
+      title: 'Human Resource Management',
+      bullets: [
+        'Oversee recruitment, promotions and service matters.',
+        'Ensure faculty and staff development.',
+        'Approve key HR policies and initiatives.',
+      ],
+      iconType: 'hr',
     },
     {
       id: 'r-6',
       number: 6,
-      title: 'Statutory Meetings & Committees',
-      bullets: ['Chair Executive Council / Academic Council', 'Review committee reports and resolutions', 'Ensure timely decisions and follow-ups'],
-      iconType: 'statutory',
+      title: 'Student Welfare & Development',
+      bullets: [
+        'Ensure student support, scholarships and inclusion.',
+        'Monitor student services, placements and career support.',
+        'Promote a safe, equitable and conducive campus environment.',
+      ],
+      iconType: 'student',
     },
     {
       id: 'r-7',
       number: 7,
-      title: 'Research, Innovation & Collaboration',
-      bullets: ['Promote research activities', 'Facilitate industry and international collaborations', 'Support innovation and incubation centers'],
-      iconType: 'research',
+      title: 'Quality, Accreditation & Compliance',
+      bullets: [
+        'Ensure compliance with UGC/AICTE/PCI/NCTE and State regulations.',
+        'Lead NAAC, NIRF and other accreditation/ranking initiatives.',
+        'Monitor quality assurance and institutional audits.',
+      ],
+      iconType: 'quality',
     },
     {
       id: 'r-8',
       number: 8,
-      title: 'Institutional Development',
-      bullets: ['Drive strategic planning and expansion', 'Enhance university reputation and rankings', 'Strengthen alumni and stakeholder engagement'],
-      iconType: 'development',
+      title: 'Planning, Development & Expansion',
+      bullets: [
+        'Prepare and execute long-term development plans.',
+        'Approve infrastructure, ICT and campus development projects.',
+        'Drive digital transformation and capacity building.',
+      ],
+      iconType: 'planning',
+    },
+    {
+      id: 'r-9',
+      number: 9,
+      title: 'Statutory Meetings & Decision Implementation',
+      bullets: [
+        'Preside over Academic Council, Executive Council & Syndicate.',
+        'Ensure implementation of resolutions and follow-up actions.',
+        'Review progress of key initiatives and projects.',
+      ],
+      iconType: 'statutory',
+    },
+    {
+      id: 'r-10',
+      number: 10,
+      title: 'External Relations & Representation',
+      bullets: [
+        'Represent the university at national and international forums.',
+        'Foster industry, alumni and community engagement.',
+        'Build strategic partnerships and enhance the university’s reputation.',
+      ],
+      iconType: 'external',
     },
   ],
+
   erpModulesAccess: [
-    { module: 'Vice Chancellor Dashboard', keyFeatures: 'University overview, KPIs, pending approvals, key alerts, quick actions' },
-    { module: 'Academic Oversight', keyFeatures: 'Program performance, departments, student results, faculty profile' },
-    { module: 'Administration', keyFeatures: 'Appointments, governance, committee reports, official notifications' },
-    { module: 'Finance & Budget', keyFeatures: 'Budget summary, expenditure, audit reports, financial approvals' },
-    { module: 'Research & Innovation', keyFeatures: 'Research projects, grants, MoUs, publications' },
-    { module: 'Statutory Meetings', keyFeatures: 'Agendas, minutes, resolutions, follow-ups' },
-    { module: 'Approvals & Decisions', keyFeatures: 'Pending proposals, approval workflow, digital signing' },
-    { module: 'Quality & Accreditation', keyFeatures: 'NAAC/NIRF status, compliance reports, audit observations' },
-    { module: 'Reports & Analytics', keyFeatures: 'Performance reports, custom analytics, data export' },
-    { module: 'Communication', keyFeatures: 'Official circulars, announcements, messaging' },
+    {
+      module: 'University Governance',
+      keyFeatures: 'Policies, Statutes & Ordinances | Regulatory Compliance (UGC/AICTE) | Institutional Audit & Governance Reports',
+      iconType: 'governance',
+    },
+    {
+      module: 'Academic Affairs',
+      keyFeatures: 'Programs & Curriculum Approval | Academic Planning & Monitoring | Academic Performance & Quality',
+      iconType: 'academic',
+    },
+    {
+      module: 'Examinations',
+      keyFeatures: 'Examination Policies & Scheduling | Results & Performance Analytics | Evaluation Reforms & Oversight',
+      iconType: 'exam',
+    },
+    {
+      module: 'Research & Innovation',
+      keyFeatures: 'Research Projects & Grants | MoUs & Collaborations | IPR, Innovation & Incubation',
+      iconType: 'research',
+    },
+    {
+      module: 'Human Resources',
+      keyFeatures: 'Recruitment & Appointments | Promotions & Service Matters | Faculty Development & Training',
+      iconType: 'hr',
+    },
+    {
+      module: 'Finance & Budget',
+      keyFeatures: 'Annual Budget & Allocations | Expenditure & Financial Approvals | Audit Reports & Financial Compliance',
+      iconType: 'finance',
+    },
+    {
+      module: 'Planning & Development',
+      keyFeatures: 'University Development Plan (UDP) | Infrastructure & Campus Projects | ICT & Digital Campus Initiatives',
+      iconType: 'planning',
+    },
+    {
+      module: 'Student Affairs',
+      keyFeatures: 'Scholarships & Welfare Schemes | Placements & Career Services | Student Grievances & Support',
+      iconType: 'student',
+    },
+    {
+      module: 'College & Affiliation',
+      keyFeatures: 'Affiliation / Renewal / Extension | College Performance & Compliance | Inspection & Approval Reports',
+      iconType: 'college',
+    },
+    {
+      module: 'Quality & Accreditation',
+      keyFeatures: 'NAAC / NIRF / Rankings | IQAC Activities & Quality Reports | Continuous Improvement Plans',
+      iconType: 'quality',
+    },
+    {
+      module: 'Statutory Bodies & Meetings',
+      keyFeatures: 'Academic Council / Executive Council | Syndicate / Board Meetings | Agendas, Minutes & Resolutions',
+      iconType: 'statutory',
+    },
+    {
+      module: 'Approvals & Workflow',
+      keyFeatures: 'Program / Policy Approvals | Administrative & Financial Approvals | e-File Tracking & Decision History',
+      iconType: 'approvals',
+    },
   ],
-  goal: 'To provide visionary leadership, ensure academic excellence, and drive the university towards growth and global recognition.',
+
+  reportsList: [
+    'University Performance Dashboard',
+    'Academic & Examination Reports',
+    'Research, Grants & MoU Reports',
+    'Finance & Budget Utilization Reports',
+    'HR & Employee Strength Reports',
+    'Accreditation & Compliance Reports',
+    'Project & Development Progress Reports',
+  ],
+
+  importantComponents: [
+    'Digital Signature',
+    'Document Management',
+    'Role-based Access Control',
+    'Notifications & Alerts',
+    'Calendar & Meetings',
+    'MIS & Data Analytics',
+    'Audit Trail & History',
+    'Mobile Access',
+  ],
+
+  goal: 'Ensure academic excellence, research innovation, good governance, financial sustainability, regulatory compliance and holistic development of the university.',
+
   pendingApprovals: {
-    total: 26,
+    total: 37,
     breakdown: [
-      { category: 'New Program Proposals', count: 8, iconType: 'document' },
-      { category: 'Faculty Appointments', count: 5, iconType: 'faculty' },
-      { category: 'Budget Proposals', count: 3, iconType: 'budget' },
-      { category: 'Policy / Regulation Amendments', count: 4, iconType: 'policy' },
-      { category: 'MoU / Collaboration Requests', count: 6, iconType: 'handshake' },
+      { category: 'Program / Curriculum Proposals', count: 6, iconType: 'program' },
+      { category: 'College Affiliation / Renewal', count: 4, iconType: 'affiliation' },
+      { category: 'Recruitment / Appointments', count: 7, iconType: 'recruitment' },
+      { category: 'Research & MoU Proposals', count: 5, iconType: 'research' },
+      { category: 'Budget / Major Expenditure', count: 4, iconType: 'budget' },
+      { category: 'Policy / Regulation Amendments', count: 3, iconType: 'policy' },
     ],
   },
 };
 
 export const vicechancellorApi = {
-  // Fetch Dashboard Overview
-  fetchOverview: async (academicYear = '2024 - 2025'): Promise<ViceChancellorOverviewData> => {
+  // Fetch Overview Data
+  fetchOverview: async (academicYear = '2026 – 2027'): Promise<ViceChancellorOverviewData> => {
     try {
       const res = await fetch(`${API_BASE}/overview?academicYear=${encodeURIComponent(academicYear)}`);
       if (res.ok) {
@@ -283,35 +424,35 @@ export const vicechancellorApi = {
     return FALLBACK_VC_OVERVIEW;
   },
 
-  // Fetch Proposals
+  // Fetch Proposals with Category/Status/Search filters
   fetchProposals: async (params?: {
     category?: string;
     status?: string;
     search?: string;
   }): Promise<ViceChancellorProposalItem[]> => {
     try {
-      const q = new URLSearchParams();
-      if (params?.category && params.category !== 'All') q.append('category', params.category);
-      if (params?.status && params.status !== 'All') q.append('status', params.status);
-      if (params?.search) q.append('search', params.search);
+      const query = new URLSearchParams();
+      if (params?.category) query.append('category', params.category);
+      if (params?.status) query.append('status', params.status);
+      if (params?.search) query.append('search', params.search);
 
-      const res = await fetch(`${API_BASE}/proposals?${q.toString()}`);
+      const res = await fetch(`${API_BASE}/proposals?${query.toString()}`);
       if (res.ok) {
         const json = await res.json();
-        if (json.success && Array.isArray(json.data)) return json.data;
+        if (json.success && json.data) return json.data;
       }
     } catch (err) {
-      console.warn('[Vice Chancellor API] Error fetching proposals:', err);
+      console.warn('[Vice Chancellor API] Using fallback proposals data:', err);
     }
     return [];
   },
 
-  // Statutory Decision
+  // Statutory Delegated Authority Decision Endpoint
   decideProposal: async (
     id: string,
     payload: {
       decision: 'Approve' | 'Endorse for Chancellor' | 'Reject' | 'Return';
-      remarks?: string;
+      remarks: string;
       digitalSignatureId?: string;
     }
   ): Promise<ViceChancellorProposalItem> => {
@@ -323,34 +464,36 @@ export const vicechancellorApi = {
 
     if (!res.ok) {
       const errorJson = await res.json().catch(() => ({}));
-      throw new Error(errorJson.message || 'Failed to submit decision.');
+      throw new Error(errorJson.message || 'Failed to submit Vice Chancellor statutory decision');
     }
+
     const json = await res.json();
     return json.data;
   },
 
-  // Fetch Subcontent Governance Records
+  // Fetch Governance Records for Subcontent Pages
   fetchGovernanceRecords: async (
-    section: string,
-    search?: string
+    section = 'all',
+    search = ''
   ): Promise<ViceChancellorGovernanceRecord[]> => {
     try {
-      const url = `${API_BASE}/governance/${encodeURIComponent(section)}${
-        search ? `?search=${encodeURIComponent(search)}` : ''
-      }`;
-      const res = await fetch(url);
+      const query = new URLSearchParams();
+      if (section && section !== 'all') query.append('section', section);
+      if (search) query.append('search', search);
+
+      const res = await fetch(`${API_BASE}/governance-records?${query.toString()}`);
       if (res.ok) {
         const json = await res.json();
-        if (json.success && Array.isArray(json.data)) return json.data;
+        if (json.success && json.data) return json.data;
       }
     } catch (err) {
-      console.warn('[Vice Chancellor API] Error fetching governance records:', err);
+      console.warn('[Vice Chancellor API] Using fallback governance data:', err);
     }
     return [];
   },
 
   // Fetch Analytics Data (Image 2 & 3)
-  fetchAnalytics: async (academicYear = '2024 - 2025'): Promise<ViceChancellorAnalyticsData> => {
+  fetchAnalytics: async (academicYear = '2026 – 2027'): Promise<ViceChancellorAnalyticsData> => {
     try {
       const res = await fetch(`${API_BASE}/analytics?academicYear=${encodeURIComponent(academicYear)}`);
       if (res.ok) {
@@ -361,7 +504,7 @@ export const vicechancellorApi = {
       console.warn('[Vice Chancellor API] Using fallback analytics data:', err);
     }
     return {
-      academicYear: '2024 - 2025',
+      academicYear: '2026 – 2027',
       enrollmentTrends: [
         { month: 'Jan', students: 650 },
         { month: 'Feb', students: 950 },
@@ -387,7 +530,7 @@ export const vicechancellorApi = {
       strategicInsights: [
         {
           title: 'Inscriptions en hausse',
-          description: 'La faculté d\'informatique a enregistré une croissance de 15% ce trimestre, dépassant les prévisions initiales.',
+          description: "La faculté d'informatique a enregistré une croissance de 15% ce trimestre, dépassant les prévisions initiales.",
           type: 'growth',
         },
         {
@@ -397,7 +540,7 @@ export const vicechancellorApi = {
         },
         {
           title: 'Alerte Rétention',
-          description: 'Une baisse de 3% de l\'engagement a été détectée en Arts & Humanités. Une intervention pédagogique est recommandée.',
+          description: "Une baisse de 3% de l'engagement a été détectée en Arts & Humanités. Une intervention pédagogique est recommandée.",
           type: 'retention',
         },
       ],

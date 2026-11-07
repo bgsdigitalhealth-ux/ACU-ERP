@@ -44,3 +44,4 @@ export const ViceChancellorAnalytics =
   mongoose.model('ViceChancellorAnalytics', ViceChancellorAnalyticsSchema);
 
 export default ViceChancellorAnalytics;
+
