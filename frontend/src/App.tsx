@@ -171,7 +171,11 @@ export const App: React.FC = () => {
       role.id === 'college-admin' ||
       role.id === 'college_admin'
     ) {
-      setViewMode('college-admin');
+      if (homeStage === 'university-portal' && role.id === 'dean') {
+        setViewMode('university-admin');
+      } else {
+        setViewMode('college-admin');
+      }
     } else if (role.id === 'finance') {
       if (homeStage === 'college-portal') {
         setViewMode('college-finance');

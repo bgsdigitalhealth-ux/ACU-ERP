@@ -7,98 +7,98 @@ export interface KarnatakaDialRole extends RoleInfo {
 
 export const KARNATAKA_8_ROLES: KarnatakaDialRole[] = [
   {
-    id: 'principal',
-    title: 'Principal',
-    subtitle: 'Apex institutional governance & college leadership',
-    iconName: 'UserCheck',
-    color: '#e11d48',
-    bgLight: '#ffe4e6',
-    borderColor: '#f43f5e',
-    defaultEmail: 'principal@acu.edu.in',
+    id: 'chancellor',
+    title: 'Chancellor',
+    subtitle: 'Apex university governance, statutory approvals and executive decrees',
+    iconName: 'Crown',
+    color: '#0284c7',
+    bgLight: '#f0f9ff',
+    borderColor: '#38bdf8',
+    defaultEmail: 'chancellor@acu.edu.in',
     angle: 270,
     angleDeg: 270 // 12:00 Top
   },
   {
-    id: 'vice-principal',
-    title: 'Vice Principal',
-    subtitle: 'Academic supervision & institutional management',
+    id: 'vice-chancellor',
+    title: 'Vice Chancellor',
+    subtitle: 'Approvals & Academic Oversight, Institutional Governance',
     iconName: 'Award',
     color: '#ea580c',
     bgLight: '#ffedd5',
     borderColor: '#fb923c',
-    defaultEmail: 'vp@acu.edu.in',
+    defaultEmail: 'vc.office@acu.edu.in',
     angle: 315,
     angleDeg: 315 // 1:30 Top-Right
   },
   {
-    id: 'hr-manager',
-    title: 'HR Manager',
-    subtitle: 'Personnel governance & staff administrative roster',
-    iconName: 'Users',
+    id: 'registrar',
+    title: 'Registrar',
+    subtitle: 'Evaluation, Valuation Centers & Result Processing Administration',
+    iconName: 'FileEdit',
     color: '#db2777',
     bgLight: '#fce7f3',
     borderColor: '#ec4899',
-    defaultEmail: 'hr.admin@acu.edu.in',
+    defaultEmail: 'registrar@acu.edu.in',
     angle: 0,
     angleDeg: 0 // 3:00 Right
   },
   {
-    id: 'finance',
-    title: 'Finance Officer',
-    subtitle: 'Treasury funds, fee reconciliation & financial audits',
-    iconName: 'Coins',
+    id: 'coe',
+    title: 'Controller of Examinations',
+    subtitle: 'University examination schedules, QP generation and centre allocation',
+    iconName: 'ClipboardCheck',
     color: '#7c3aed',
     bgLight: '#ede9fe',
     borderColor: '#8b5cf6',
-    defaultEmail: 'finance@acu.edu.in',
+    defaultEmail: 'coe@acu.edu.in',
     angle: 45,
     angleDeg: 45 // 4:30 Bottom-Right
   },
   {
-    id: 'hod',
-    title: 'HOD (Head of Department)',
-    subtitle: 'Curriculum delivery, faculty workload & student marks',
-    iconName: 'Network',
+    id: 'finance',
+    title: 'Finance Officer',
+    subtitle: 'Treasury funds, examination fee reconciliation & remuneration registers',
+    iconName: 'Coins',
     color: '#16a34a',
     bgLight: '#dcfce7',
     borderColor: '#22c55e',
-    defaultEmail: 'hod.physiology@acu.edu.in',
+    defaultEmail: 'finance.officer@acu.edu.in',
     angle: 90,
     angleDeg: 90 // 6:00 Bottom
   },
   {
-    id: 'faculty',
-    title: 'Faculty / Teaching Staff',
-    subtitle: 'Assessments, attendance, internal marks & classes',
-    iconName: 'GraduationCap',
+    id: 'hr-manager',
+    title: 'HR Manager',
+    subtitle: 'Faculty appointments, roster & university personnel governance',
+    iconName: 'Users',
     color: '#0891b2',
     bgLight: '#cffafe',
     borderColor: '#22d3ee',
-    defaultEmail: 'faculty.medicine@acu.edu.in',
+    defaultEmail: 'hr.university@acu.edu.in',
     angle: 135,
     angleDeg: 135 // 7:30 Bottom-Left
   },
   {
-    id: 'exam-coordinator',
-    title: 'Examination Coordinator',
-    subtitle: 'Examination schedules, QP papers & room allocation',
-    iconName: 'FileCheck',
+    id: 'dean',
+    title: 'Dean',
+    subtitle: 'Chief Superintendent examination oversight & institutional management',
+    iconName: 'UserCheck',
     color: '#2563eb',
     bgLight: '#dbeafe',
     borderColor: '#60a5fa',
-    defaultEmail: 'coe@acu.edu.in',
+    defaultEmail: 'dean.medical@acu.edu.in',
     angle: 180,
     angleDeg: 180 // 9:00 Left
   },
   {
-    id: 'librarian',
-    title: 'Librarian',
-    subtitle: 'Digital catalog, textbook issuance & research access',
+    id: 'iqac',
+    title: 'IQAC Coordinator',
+    subtitle: 'Internal Quality Assurance Cell, NAAC & NIRF Rankings',
     iconName: 'BookOpen',
     color: '#4338ca',
     bgLight: '#e0e7ff',
     borderColor: '#6366f1',
-    defaultEmail: 'library@acu.edu.in',
+    defaultEmail: 'iqac@acu.edu.in',
     angle: 225,
     angleDeg: 225 // 10:30 Top-Left
   }
@@ -173,34 +173,67 @@ export const KarnatakaRoleDial: React.FC<KarnatakaRoleDialProps> = ({
           const isHovered = hoveredRoleId === role.id;
           const pathD = getSectorPath(role.angleDeg);
 
+          // Center coordinate for role badge
+          const midRad = (role.angleDeg * Math.PI) / 180;
+          const labelR = 195;
+          const labelX = cx + labelR * Math.cos(midRad);
+          const labelY = cy + labelR * Math.sin(midRad);
+
           return (
-            <path
+            <g
               key={role.id}
-              d={pathD}
               onClick={() => onSelectRole(role)}
               onMouseEnter={() => setHoveredRoleId(role.id)}
               onMouseLeave={() => setHoveredRoleId(null)}
-              className="transition-all duration-200 cursor-pointer"
-              fill={
-                isSelected
-                  ? 'rgba(139, 0, 41, 0.22)'
-                  : isHovered
-                  ? 'rgba(139, 0, 41, 0.12)'
-                  : 'rgba(0, 0, 0, 0.001)'
-              }
-              stroke={
-                isSelected
-                  ? '#8b0029'
-                  : isHovered
-                  ? 'rgba(139, 0, 41, 0.6)'
-                  : 'transparent'
-              }
-              strokeWidth={isSelected ? 4 : isHovered ? 2.5 : 0}
-              strokeDasharray={isSelected ? 'none' : 'none'}
-              filter={isSelected ? 'url(#petalGlow)' : undefined}
+              className="cursor-pointer group"
             >
-              <title>{role.title} – Click to login</title>
-            </path>
+              <path
+                d={pathD}
+                className="transition-all duration-200 cursor-pointer"
+                fill={
+                  isSelected
+                    ? 'rgba(139, 0, 41, 0.22)'
+                    : isHovered
+                    ? 'rgba(139, 0, 41, 0.12)'
+                    : 'rgba(0, 0, 0, 0.001)'
+                }
+                stroke={
+                  isSelected
+                    ? '#8b0029'
+                    : isHovered
+                    ? 'rgba(139, 0, 41, 0.6)'
+                    : 'transparent'
+                }
+                strokeWidth={isSelected ? 4 : isHovered ? 2.5 : 0}
+                strokeDasharray={isSelected ? 'none' : 'none'}
+                filter={isSelected ? 'url(#petalGlow)' : undefined}
+              >
+                <title>{role.title} – Click to login</title>
+              </path>
+
+              {/* Clean University Role Title Badge matching requested roles */}
+              <foreignObject
+                x={labelX - 65}
+                y={labelY - 18}
+                width="130"
+                height="36"
+                className="pointer-events-none"
+              >
+                <div className="w-full h-full flex items-center justify-center text-center">
+                  <span
+                    className={`px-2.5 py-1 rounded-full text-[10.5px] sm:text-[11px] font-black leading-tight tracking-tight shadow-md transition-all duration-200 ${
+                      isSelected
+                        ? 'bg-[#8b0029] text-white ring-2 ring-white scale-105'
+                        : isHovered
+                        ? 'bg-white text-[#8b0029] ring-2 ring-[#8b0029]/40 scale-105'
+                        : 'bg-white/95 text-slate-900 border border-slate-200/90 backdrop-blur-md'
+                    }`}
+                  >
+                    {role.title}
+                  </span>
+                </div>
+              </foreignObject>
+            </g>
           );
         })}
 
