@@ -1,16 +1,13 @@
 import React from 'react';
 import { ViceChancellorLayout } from '../layouts/ViceChancellorLayout';
-import { ViceChancellorDashboard } from '../pages/ViceChancellorDashboard';
 
 interface ViceChancellorRoutesProps {
   onBackToPortal?: () => void;
+  onLogout?: () => void;
 }
 
-export const ViceChancellorRoutes: React.FC<ViceChancellorRoutesProps> = ({ onBackToPortal }) => {
-  return (
-    <ViceChancellorLayout onBackToPortal={onBackToPortal}>
-      <ViceChancellorDashboard />
-    </ViceChancellorLayout>
-  );
+export const ViceChancellorRoutes: React.FC<ViceChancellorRoutesProps> = ({ onBackToPortal, onLogout }) => {
+  return <ViceChancellorLayout onLogout={onLogout || onBackToPortal} />;
 };
+
 export default ViceChancellorRoutes;

@@ -9,6 +9,7 @@ import { HodLoginPage } from './components/hodAuth/HodLoginPage';
 import { CollegeAdminLayout } from './components/collegeAdmin/CollegeAdminLayout';
 import { CollegeFinanceDashboardLayout } from './components/collegeFinance/CollegeFinanceDashboardLayout';
 import { ChancellorDashboardLayout } from './components/chancellor/ChancellorDashboardLayout';
+import { ViceChancellorLayout } from './University/ViceChancellor/layouts/ViceChancellorLayout';
 import { StudentProvider } from './context/StudentContext';
 import { StudentLayout } from './components/student/StudentLayout';
 import { FacultyProvider } from './context/FacultyContext';
@@ -27,13 +28,13 @@ import { fetchDashboardData, fallbackData } from './services/api';
 import { RoleInfo, UserSession } from './types/auth';
 
 export const App: React.FC = () => {
-  // Primary view mode: 'portal' (Home Page with Dial) | 'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'student' | 'faculty'
+  // Primary view mode: 'portal' (Home Page with Dial) | 'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'vice-chancellor' | 'student' | 'faculty'
   const [viewMode, setViewMode] = useState<
-    'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'portal' | 'student' | 'faculty'
+    'university-admin' | 'hod-dashboard' | 'hod-login' | 'college-admin' | 'college-finance' | 'chancellor' | 'vice-chancellor' | 'portal' | 'student' | 'faculty'
   >(() => {
     try {
       const saved = localStorage.getItem('acu_erp_view_mode');
-      if (saved && ['university-admin', 'hod-dashboard', 'hod-login', 'college-admin', 'college-finance', 'chancellor', 'portal', 'student', 'faculty'].includes(saved)) {
+      if (saved && ['university-admin', 'hod-dashboard', 'hod-login', 'college-admin', 'college-finance', 'chancellor', 'vice-chancellor', 'portal', 'student', 'faculty'].includes(saved)) {
         return saved as any;
       }
     } catch {
@@ -148,8 +149,9 @@ export const App: React.FC = () => {
 
   const handlePortalLogin = (role: RoleInfo, email: string) => {
     setSelectedRole(role);
-    if (
-      role.id === 'vice-chancellor' ||
+    if (role.id === 'vice-chancellor') {
+      setViewMode('vice-chancellor');
+    } else if (
       role.id === 'coe' ||
       role.id === 'registrar' ||
       role.id === 'iqac' ||
@@ -262,6 +264,10 @@ export const App: React.FC = () => {
             <ChancellorProvider>
               <ChancellorDashboardLayout onLogout={handleLogout} />
             </ChancellorProvider>
+          )}
+
+          {viewMode === 'vice-chancellor' && (
+            <ViceChancellorLayout onLogout={handleLogout} />
           )}
 
           {viewMode === 'student' && (

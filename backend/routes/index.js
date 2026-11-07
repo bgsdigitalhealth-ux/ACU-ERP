@@ -64,6 +64,7 @@ router.get('/', (req, res) => {
 router.use('/university/chancellor', chancellorRoutes);
 router.use('/chancellor', chancellorRoutes);
 router.use('/university/vice-chancellor', viceChancellorRoutes);
+router.use('/vice-chancellor', viceChancellorRoutes);
 router.use('/university/registrar', registrarRoutes);
 router.use('/university/finance', universityFinanceRoutes);
 router.use('/university/hr', hrRoutes);
